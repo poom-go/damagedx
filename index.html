@@ -15,17 +15,20 @@
 
       --poomgo:#0040D1;
       --poomgo-weak:#EEF4FF;
-      --poomgo-soft:#F8FAFF;
 
       --ok:#16A34A;
       --ok-weak:#ECFDF5;
       --ok-border:#BBF7D0;
 
-      --warn-bg:#FFF9F0;
-      --warn-line:#F59E0B;
-      --warn-tag-bg:#FFF3D6;
-      --warn-tag-text:#B45309;
-      --warn-text:#92400E;
+      --tip-bg:#F3F8FF;
+      --tip-border:#D6E7FF;
+      --tip-badge-bg:#E8F1FF;
+      --tip-badge-text:#1D4ED8;
+      --tip-text:#1E3A8A;
+
+      --path-line:#DCE6F8;
+      --path-text:#334155;
+      --path-label:#0040D1;
 
       --shadow:0 6px 18px rgba(15,23,42,.05);
       --radius:18px;
@@ -189,19 +192,19 @@
     }
 
     .main{
-      padding:18px;
+      padding:20px;
       min-height:500px;
     }
 
     .stageCard{
       border:1px solid var(--line);
-      border-radius:18px;
+      border-radius:20px;
       overflow:hidden;
       background:#fff;
     }
 
     .stageHead{
-      padding:20px 20px 16px;
+      padding:22px 22px 18px;
       border-bottom:1px solid #EEF2F7;
       background:#fff;
     }
@@ -238,22 +241,22 @@
     }
 
     .blocks{
-      padding:18px;
+      padding:22px;
       display:flex;
       flex-direction:column;
-      gap:14px;
-      background:#FCFDFE;
+      gap:18px;
+      background:#fff;
     }
 
     .block{
       border:1px solid #E9EEF5;
-      border-radius:16px;
+      border-radius:18px;
       background:#fff;
       overflow:hidden;
     }
 
     .blockHead{
-      padding:18px 18px 10px;
+      padding:20px 20px 12px;
       background:#fff;
     }
 
@@ -266,78 +269,70 @@
       color:#111827;
     }
 
-    .highlight{
-      margin:0 18px 14px;
-      padding:14px 16px;
-      border-radius:14px;
-      background:var(--warn-bg);
-      border-left:4px solid var(--warn-line);
+    .tip{
+      margin:0 20px 16px;
+      padding:16px 18px;
+      border:1px solid var(--tip-border);
+      border-radius:16px;
+      background:var(--tip-bg);
       display:flex;
-      gap:10px;
+      gap:12px;
       align-items:flex-start;
     }
 
-    .highlightTag{
+    .tipBadge{
       display:inline-flex;
       align-items:center;
       justify-content:center;
-      min-width:48px;
-      height:28px;
-      padding:0 10px;
+      min-width:66px;
+      height:30px;
+      padding:0 12px;
       border-radius:999px;
-      background:var(--warn-tag-bg);
-      color:var(--warn-tag-text);
+      background:var(--tip-badge-bg);
+      color:var(--tip-badge-text);
       font-size:12px;
       font-weight:900;
       flex:0 0 auto;
       margin-top:1px;
     }
 
-    .highlightText{
-      color:var(--warn-text);
+    .tipText{
+      color:var(--tip-text);
       font-size:14px;
       font-weight:900;
-      line-height:1.75;
+      line-height:1.8;
       word-break:break-word;
     }
 
     .path{
-      margin:0 18px 14px;
-      padding:12px 14px;
-      border-radius:12px;
-      background:var(--poomgo-soft);
+      margin:0 20px 16px;
+      padding:14px 2px;
+      border-top:1px solid var(--path-line);
+      border-bottom:1px solid var(--path-line);
       display:flex;
       gap:10px;
-      align-items:center;
+      align-items:flex-start;
     }
 
     .pathBadge{
-      display:inline-flex;
-      align-items:center;
-      justify-content:center;
-      min-width:52px;
-      height:30px;
-      padding:0 10px;
-      border-radius:10px;
-      background:#fff;
-      border:1px solid #D5E1FF;
-      color:var(--poomgo);
-      font-size:12px;
+      color:var(--path-label);
+      font-size:13px;
       font-weight:900;
       flex:0 0 auto;
+      padding-top:1px;
     }
 
     .pathText{
-      color:#1E3A8A;
+      color:var(--path-text);
       font-size:15px;
-      font-weight:900;
-      line-height:1.6;
+      font-weight:800;
+      line-height:1.7;
       word-break:break-word;
     }
 
     .pathText a,
     .desc a,
-    .highlightText a,
+    .tipText a,
     .checklist a{
       color:var(--poomgo);
       font-weight:900;
@@ -346,16 +341,16 @@
     }
 
     .desc{
-      padding:0 18px 18px;
+      padding:0 20px 20px;
       font-size:15px;
       font-weight:800;
       color:#1F2937;
-      line-height:1.85;
+      line-height:1.9;
       white-space:normal;
     }
 
     .imgWrap{
-      padding:0 18px 18px;
+      padding:0 20px 20px;
       background:#fff;
     }
 
@@ -377,9 +372,10 @@
     }
 
     .buttonArea{
-      padding:0 18px 18px;
+      padding:0 20px 20px;
       display:flex;
-      gap:8px;
+      justify-content:center;
+      gap:10px;
       flex-wrap:wrap;
     }
 
@@ -387,19 +383,21 @@
       display:inline-flex;
       align-items:center;
       justify-content:center;
-      height:42px;
-      padding:0 16px;
-      border-radius:12px;
+      min-width:220px;
+      height:50px;
+      padding:0 22px;
+      border-radius:14px;
       background:var(--poomgo);
       color:#fff;
-      font-size:13px;
+      font-size:15px;
       font-weight:900;
       text-decoration:none;
-      box-shadow:0 6px 14px rgba(0,64,209,.14);
+      box-shadow:0 8px 18px rgba(0,64,209,.14);
+      text-align:center;
     }
 
     .checklist{
-      padding:0 18px 18px;
+      padding:0 20px 20px;
     }
 
     .checklist ul{
@@ -416,26 +414,27 @@
     }
 
     .stageFooter{
-      padding:0 18px 18px;
+      padding:0 20px 22px;
       display:flex;
-      justify-content:flex-end;
-      background:#FCFDFE;
+      justify-content:center;
+      background:#fff;
     }
 
     .nextBtn{
       display:inline-flex;
       align-items:center;
       justify-content:center;
-      height:44px;
-      padding:0 18px;
+      min-width:240px;
+      height:52px;
+      padding:0 24px;
       border:none;
-      border-radius:12px;
+      border-radius:14px;
       background:var(--ok);
       color:#fff;
-      font-size:14px;
+      font-size:15px;
       font-weight:900;
       cursor:pointer;
-      box-shadow:0 6px 14px rgba(22,163,74,.14);
+      box-shadow:0 8px 18px rgba(22,163,74,.14);
     }
 
     .empty{
@@ -525,10 +524,15 @@
         font-size:19px;
       }
       .path{
-        align-items:flex-start;
+        flex-direction:column;
+        gap:6px;
       }
       .pathText{
         font-size:14px;
+      }
+      .linkBtn,
+      .nextBtn{
+        width:100%;
       }
     }
   </style>
@@ -762,10 +766,10 @@
         </div>
       ` : '';
 
-      const highlightHtml = highlight ? `
-        <div class="highlight">
-          <span class="highlightTag">중요</span>
-          <div class="highlightText">${highlight}</div>
+      const tipHtml = highlight ? `
+        <div class="tip">
+          <span class="tipBadge">💡 TIP</span>
+          <div class="tipText">${highlight}</div>
         </div>
       ` : '';
 
@@ -817,7 +821,7 @@
       return `
         <div class="block">
           ${headHtml}
-          ${highlightHtml}
+          ${tipHtml}
           ${pathHtml}
           ${type === '체크리스트' ? checklistHtml : descHtml}
           ${imageHtml}
