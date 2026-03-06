@@ -193,13 +193,8 @@
     }
 
     .stageHead{
-      padding:18px 18px 14px;
+      padding:18px 18px 16px;
       border-bottom:1px solid var(--line);
-      display:flex;
-      justify-content:space-between;
-      gap:12px;
-      align-items:center;
-      flex-wrap:wrap;
     }
 
     .stageTitleRow{
@@ -232,21 +227,6 @@
       letter-spacing:-.02em;
     }
 
-    .doneBtn{
-      display:inline-flex;
-      align-items:center;
-      justify-content:center;
-      height:40px;
-      padding:0 16px;
-      border:none;
-      border-radius:12px;
-      background:var(--ok);
-      color:#fff;
-      font-size:13px;
-      font-weight:900;
-      cursor:pointer;
-    }
-
     .blocks{
       padding:16px;
       display:flex;
@@ -262,8 +242,7 @@
     }
 
     .blockHead{
-      padding:14px 16px;
-      border-bottom:1px solid var(--line);
+      padding:16px 16px 10px;
       background:#FAFAFB;
     }
 
@@ -329,7 +308,7 @@
     }
 
     .highlight{
-      margin:0 16px 16px;
+      margin:12px 16px 16px;
       padding:14px 16px;
       border-radius:14px;
       border:1px solid var(--highlight-border);
@@ -420,6 +399,27 @@
       font-size:15px;
       font-weight:800;
       line-height:1.7;
+    }
+
+    .stageFooter{
+      padding:0 16px 16px;
+      display:flex;
+      justify-content:flex-end;
+    }
+
+    .nextBtn{
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
+      height:42px;
+      padding:0 18px;
+      border:none;
+      border-radius:12px;
+      background:var(--ok);
+      color:#fff;
+      font-size:14px;
+      font-weight:900;
+      cursor:pointer;
     }
 
     .empty{
@@ -712,14 +712,16 @@
               <div class="badge">${isCompleted(step.stepNo) ? '완료 STEP ' + step.stepNo : 'STEP ' + step.stepNo}</div>
               <p class="stageTitle">${escapeHtml(step.stepName)}</p>
             </div>
-            ${!isCompleted(step.stepNo)
-              ? `<button class="doneBtn" type="button" id="completeCurrentStepBtn" data-step="${step.stepNo}">완료</button>`
-              : ''
-            }
           </div>
           <div class="blocks">
             ${step.blocks.sort((a,b) => a.blockOrder - b.blockOrder).map(renderBlockHtml).join('')}
           </div>
+          ${!isCompleted(step.stepNo)
+            ? `<div class="stageFooter">
+                <button class="nextBtn" type="button" id="completeCurrentStepBtn" data-step="${step.stepNo}">다음 단계 이동</button>
+              </div>`
+            : ''
+          }
         </section>
       `;
     }
@@ -741,6 +743,13 @@
         </div>
       ` : '';
 
+      const highlightHtml = highlight ? `
+        <div class="highlight">
+          <span class="highlightTag">중요</span>
+          <div class="highlightText">${highlight}</div>
+        </div>
+      ` : '';
+
       const pathHtml = path ? `
         <div class="path">
           <span class="pathBadge">경로</span>
@@ -750,13 +759,6 @@
 
       const descHtml = desc ? `
         <div class="desc">${desc}</div>
-      ` : '';
-
-      const highlightHtml = highlight ? `
-        <div class="highlight">
-          <span class="highlightTag">중요</span>
-          <div class="highlightText">${highlight}</div>
-        </div>
       ` : '';
 
       const imageHtml = imageThumb ? `
@@ -796,9 +798,9 @@
       return `
         <div class="block">
           ${headHtml}
+          ${highlightHtml}
           ${pathHtml}
           ${type === '체크리스트' ? checklistHtml : descHtml}
-          ${highlightHtml}
           ${imageHtml}
           ${buttonHtml}
         </div>
