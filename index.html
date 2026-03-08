@@ -31,9 +31,17 @@
       --method-label-text:#111827;
       --method-text:#1F2937;
 
+      --desc-border:#D8DEE9;
+      --desc-label-bg:#FFFFFF;
+      --desc-label-text:#111827;
+      --desc-text:#1F2937;
+
       --toggle-bg:#F3E8FF;
       --toggle-text:#7C3AED;
       --toggle-border:#DDD6FE;
+
+      --cta-bg:#F59E0B;
+      --cta-text:#FFFFFF;
 
       --shadow:0 8px 24px rgba(15,23,42,.05);
       --radius:18px;
@@ -309,6 +317,64 @@
       white-space:nowrap;
     }
 
+    .method,
+    .descBox{
+      position:relative;
+      margin:0 20px 14px;
+      padding:24px 18px 16px;
+      border:2px solid;
+      border-radius:16px;
+      background:#fff;
+    }
+
+    .method{
+      border-color:var(--method-border);
+    }
+
+    .descBox{
+      border-color:var(--desc-border);
+    }
+
+    .methodLabel,
+    .descLabel{
+      position:absolute;
+      top:-14px;
+      left:50%;
+      transform:translateX(-50%);
+      background:#fff;
+      padding:0 10px;
+      font-size:14px;
+      font-weight:900;
+      line-height:1.4;
+      white-space:nowrap;
+    }
+
+    .methodLabel{
+      color:var(--method-label-text);
+    }
+
+    .descLabel{
+      color:var(--desc-label-text);
+    }
+
+    .methodText{
+      color:var(--method-text);
+      font-size:15px;
+      font-weight:900;
+      line-height:1.8;
+      text-align:left;
+      word-break:break-word;
+    }
+
+    .descText{
+      color:var(--desc-text);
+      font-size:15px;
+      font-weight:800;
+      line-height:1.9;
+      text-align:left;
+      word-break:break-word;
+    }
+
     .tip{
       margin:0 20px 14px;
       padding:12px 14px;
@@ -344,56 +410,14 @@
       word-break:break-word;
     }
 
-    /* 핵심: 진행방법 라벨이 상단 중앙 */
-    .method{
-      position:relative;
-      margin:0 20px 14px;
-      padding:24px 18px 16px;
-      border:2px solid var(--method-border);
-      border-radius:16px;
-      background:#fff;
-    }
-
-    .methodLabel{
-      position:absolute;
-      top:-14px;
-      left:50%;
-      transform:translateX(-50%);
-      background:var(--method-label-bg);
-      color:var(--method-label-text);
-      padding:0 10px;
-      font-size:14px;
-      font-weight:900;
-      line-height:1.4;
-      white-space:nowrap;
-    }
-
-    .methodText{
-      color:var(--method-text);
-      font-size:15px;
-      font-weight:900;
-      line-height:1.8;
-      text-align:left;
-      word-break:break-word;
-    }
-
     .methodText a,
-    .desc a,
+    .descText a,
     .tipText a,
     .checklist a{
       color:var(--primary);
       font-weight:900;
       text-decoration:underline;
       word-break:break-all;
-    }
-
-    .desc{
-      padding:0 20px 20px;
-      font-size:15px;
-      font-weight:800;
-      color:#1F2937;
-      line-height:1.9;
-      white-space:normal;
     }
 
     .imagePanel{
@@ -442,8 +466,8 @@
       min-height:52px;
       padding:0 22px;
       border-radius:14px;
-      background:#F59E0B;
-      color:#fff;
+      background:var(--cta-bg);
+      color:var(--cta-text);
       font-size:15px;
       font-weight:900;
       text-decoration:none;
@@ -578,7 +602,8 @@
       .blockTitle{
         font-size:19px;
       }
-      .methodText{
+      .methodText,
+      .descText{
         font-size:14px;
       }
       .linkBtn,
@@ -835,13 +860,6 @@
         </div>
       ` : '';
 
-      const tipHtml = highlight ? `
-        <div class="tip">
-          <span class="tipBadge">💡 TIP</span>
-          <div class="tipText">${highlight}</div>
-        </div>
-      ` : '';
-
       const methodHtml = path ? `
         <div class="method">
           <span class="methodLabel">진행 방법</span>
@@ -849,8 +867,18 @@
         </div>
       ` : '';
 
+      const tipHtml = highlight ? `
+        <div class="tip">
+          <span class="tipBadge">💡 TIP</span>
+          <div class="tipText">${highlight}</div>
+        </div>
+      ` : '';
+
       const descHtml = desc ? `
-        <div class="desc">${desc}</div>
+        <div class="descBox">
+          <span class="descLabel">설명</span>
+          <div class="descText">${desc}</div>
+        </div>
       ` : '';
 
       const imageHtml = imageThumb ? `
@@ -892,8 +920,8 @@
       return `
         <div class="block">
           ${headHtml}
-          ${tipHtml}
           ${methodHtml}
+          ${tipHtml}
           ${type === '체크리스트' ? checklistHtml : descHtml}
           ${imageHtml}
           ${buttonHtml}
@@ -928,7 +956,7 @@
 
       const main = document.querySelector('.main');
       if (main) {
-        main.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        main.scrollIntoView({ behavior:'smooth', block:'start' });
       }
     }
 
