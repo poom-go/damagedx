@@ -20,11 +20,12 @@
       --ok-weak:#ECFDF5;
       --ok-border:#BBF7D0;
 
-      --tip-bg:#F8FBFF;
-      --tip-border:#D9E8FF;
-      --tip-badge-bg:#EAF2FF;
-      --tip-badge-text:#1D4ED8;
-      --tip-text:#1E3A8A;
+      /* TIP - 노랑 계열 */
+      --tip-bg:#FFF8E6;
+      --tip-border:#F4D38A;
+      --tip-badge-bg:#FFE7A8;
+      --tip-badge-text:#8A4B00;
+      --tip-text:#7A3E00;
 
       --method-border:#D1D5DB;
       --method-label-bg:#FFFFFF;
@@ -269,6 +270,7 @@
       border-radius:18px;
       background:#fff;
       overflow:hidden;
+      padding-bottom:6px;
     }
 
     .blockHead{
@@ -315,13 +317,42 @@
       line-height:1.4;
       cursor:pointer;
       white-space:nowrap;
-      box-shadow:none;
+    }
+
+    .imagePanel{
+      display:none;
+    }
+
+    .imagePanel.open{
+      display:block;
+    }
+
+    .imgWrap{
+      padding:0 20px 20px;
+      background:#fff;
+    }
+
+    .imgWrap img{
+      width:100%;
+      display:block;
+      border-radius:14px;
+      border:1px solid var(--line);
+      cursor:zoom-in;
+      background:#fff;
+    }
+
+    .imgHint{
+      margin:8px 0 0;
+      text-align:right;
+      color:var(--muted);
+      font-size:12px;
+      font-weight:700;
     }
 
     .method,
     .descBox{
       position:relative;
-      margin:0 20px 14px;
+      margin:0 20px 16px;
       padding:26px 18px 16px;
       border:2px solid;
       border-radius:16px;
@@ -386,10 +417,11 @@
       word-break:break-word;
     }
 
+    /* TIP 위아래 여백 넉넉하게 */
     .tip{
-      margin:0 20px 14px;
-      padding:12px 14px;
-      border-radius:12px;
+      margin:8px 20px 18px;
+      padding:14px 16px;
+      border-radius:14px;
       background:var(--tip-bg);
       border:1px solid var(--tip-border);
       display:flex;
@@ -402,12 +434,12 @@
       align-items:center;
       justify-content:center;
       min-width:auto;
-      height:24px;
-      padding:0 8px;
+      height:26px;
+      padding:0 9px;
       border-radius:999px;
       background:var(--tip-badge-bg);
       color:var(--tip-badge-text);
-      font-size:11px;
+      font-size:12px;
       font-weight:900;
       flex:0 0 auto;
       margin-top:2px;
@@ -417,7 +449,7 @@
       color:var(--tip-text);
       font-size:15px;
       font-weight:800;
-      line-height:1.7;
+      line-height:1.8;
       word-break:break-word;
     }
 
@@ -435,36 +467,6 @@
       margin:14px 0;
       border:0;
       border-top:1px solid #D8DEE9;
-    }
-
-    .imagePanel{
-      display:none;
-    }
-
-    .imagePanel.open{
-      display:block;
-    }
-
-    .imgWrap{
-      padding:0 20px 20px;
-      background:#fff;
-    }
-
-    .imgWrap img{
-      width:100%;
-      display:block;
-      border-radius:14px;
-      border:1px solid var(--line);
-      cursor:zoom-in;
-      background:#fff;
-    }
-
-    .imgHint{
-      margin:8px 0 0;
-      text-align:right;
-      color:var(--muted);
-      font-size:12px;
-      font-weight:700;
     }
 
     .buttonArea{
@@ -634,6 +636,9 @@
         font-size:15px;
       }
       .descText{
+        font-size:14px;
+      }
+      .tipText{
         font-size:14px;
       }
       .linkBtn,
@@ -864,10 +869,8 @@
 
     function renderRichContent(text) {
       if (!text) return '';
-
       const parts = String(text).split('<br>');
       let html = '';
-
       for (const raw of parts) {
         const line = raw.trim();
         if (line === '---') {
@@ -890,7 +893,6 @@
       const buttonUrl = block.buttonUrl || '';
       const highlight = block.highlight || '';
       const platformClass = normalizePlatform(block.platform);
-
       const hasImage = !!imageThumb;
 
       const headHtml = title ? `
@@ -904,6 +906,20 @@
                 이미지 보기
               </button>
             ` : ''}
+          </div>
+        </div>
+      ` : '';
+
+      const imageHtml = imageThumb ? `
+        <div class="imagePanel">
+          <div class="imgWrap">
+            <img
+              src="${escapeAttr(imageThumb)}"
+              data-zoom="${escapeAttr(imageZoom || imageThumb)}"
+              data-title="${escapeAttr(title || '이미지')}"
+              alt="${escapeAttr(title || '이미지')}"
+            />
+            <p class="imgHint">이미지를 클릭하면 확대됩니다.</p>
           </div>
         </div>
       ` : '';
@@ -926,20 +942,6 @@
         <div class="descBox">
           <span class="descLabel"></span>
           <div class="descText">${renderRichContent(desc)}</div>
-        </div>
-      ` : '';
-
-      const imageHtml = imageThumb ? `
-        <div class="imagePanel">
-          <div class="imgWrap">
-            <img
-              src="${escapeAttr(imageThumb)}"
-              data-zoom="${escapeAttr(imageZoom || imageThumb)}"
-              data-title="${escapeAttr(title || '이미지')}"
-              alt="${escapeAttr(title || '이미지')}"
-            />
-            <p class="imgHint">이미지를 클릭하면 확대됩니다.</p>
-          </div>
         </div>
       ` : '';
 
@@ -968,10 +970,10 @@
       return `
         <div class="block">
           ${headHtml}
+          ${imageHtml}
           ${methodHtml}
           ${tipHtml}
           ${type === '체크리스트' ? checklistHtml : descHtml}
-          ${imageHtml}
           ${buttonHtml}
         </div>
       `;
