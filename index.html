@@ -2,33 +2,29 @@
 <html lang="ko">
 <head>
   <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>품고 셀프 온보딩 가이드</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>품고 셀프 온보딩</title>
 
-  <link rel="preconnect" href="https://cdn.jsdelivr.net" />
   <link rel="stylesheet" as="style" crossorigin
     href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable.css" />
 
   <style>
     :root{
-      --bg:#f6f8fc;
+      --bg:#f6f8fb;
       --card:#ffffff;
       --text:#111827;
       --muted:#6b7280;
       --line:#e5e7eb;
       --primary:#03C75A;
-      --primary-soft:#ECFDF3;
+      --primary-soft:#ecfdf3;
       --primary-deep:#02b350;
-      --warn-bg:#fff7ed;
+      --blue-soft:#eff6ff;
+      --blue-line:#bfdbfe;
+      --blue-text:#1d4ed8;
+      --warn-soft:#fff7ed;
       --warn-line:#fed7aa;
       --warn-text:#9a3412;
-      --danger-bg:#fff1f2;
-      --danger-line:#fecdd3;
-      --danger-text:#be123c;
-      --info-bg:#eff6ff;
-      --info-line:#bfdbfe;
-      --info-text:#1d4ed8;
-      --shadow:0 10px 30px rgba(17,24,39,.08);
+      --shadow:0 12px 28px rgba(15,23,42,.08);
       --radius-xl:24px;
       --radius-lg:18px;
       --radius-md:14px;
@@ -37,10 +33,20 @@
     *{box-sizing:border-box}
     html,body{margin:0;padding:0}
     body{
-      font-family:"Pretendard Variable","Pretendard",system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
-      background:linear-gradient(180deg,#f8fafc 0%, #f6f8fc 100%);
+      font-family:"Pretendard Variable","Pretendard",system-ui,sans-serif;
+      background:var(--bg);
       color:var(--text);
-      line-height:1.55;
+      line-height:1.6;
+    }
+
+    img{
+      max-width:100%;
+      height:auto;
+      display:block;
+    }
+
+    button,input{
+      font:inherit;
     }
 
     .wrap{
@@ -49,41 +55,31 @@
       padding:24px;
     }
 
-    .topbar{
-      display:flex;
-      align-items:flex-start;
-      justify-content:space-between;
-      gap:16px;
+    .top{
       margin-bottom:20px;
     }
 
-    .brand{
-      display:flex;
-      flex-direction:column;
-      gap:8px;
-    }
-
-    .eyebrow{
+    .badge{
       display:inline-flex;
       align-items:center;
       gap:8px;
-      font-size:13px;
-      font-weight:700;
-      color:var(--primary-deep);
-      background:var(--primary-soft);
       padding:8px 12px;
       border-radius:999px;
-      width:max-content;
+      background:var(--primary-soft);
+      color:var(--primary-deep);
+      font-weight:800;
+      font-size:13px;
+      margin-bottom:12px;
     }
 
     h1{
-      margin:0;
+      margin:0 0 8px;
       font-size:32px;
       line-height:1.2;
       letter-spacing:-.03em;
     }
 
-    .subtitle{
+    .sub{
       margin:0;
       color:var(--muted);
       font-size:15px;
@@ -91,7 +87,7 @@
 
     .layout{
       display:grid;
-      grid-template-columns:320px minmax(0,1fr);
+      grid-template-columns:340px minmax(0,1fr);
       gap:24px;
       align-items:start;
     }
@@ -101,14 +97,14 @@
       top:20px;
     }
 
-    .panel{
+    .card{
       background:var(--card);
-      border:1px solid rgba(229,231,235,.9);
+      border:1px solid var(--line);
       border-radius:var(--radius-xl);
       box-shadow:var(--shadow);
     }
 
-    .side-card{
+    .sidebar-card{
       padding:18px;
     }
 
@@ -116,102 +112,141 @@
       display:flex;
       justify-content:space-between;
       align-items:center;
+      gap:12px;
       margin-bottom:14px;
     }
 
     .side-title{
       font-size:18px;
       font-weight:800;
-      letter-spacing:-.02em;
     }
 
-    .progress-badge{
-      font-size:12px;
-      font-weight:700;
-      color:var(--primary-deep);
-      background:var(--primary-soft);
-      border-radius:999px;
+    .progress{
       padding:7px 10px;
+      border-radius:999px;
+      background:var(--primary-soft);
+      color:var(--primary-deep);
+      font-size:12px;
+      font-weight:800;
+      white-space:nowrap;
     }
 
-    .step-list{
+    .accordion{
       display:flex;
       flex-direction:column;
       gap:10px;
     }
 
-    .step-btn{
-      width:100%;
-      text-align:left;
+    .step-item{
       border:1px solid var(--line);
-      background:#fff;
       border-radius:18px;
-      padding:14px;
+      overflow:hidden;
+      background:#fff;
+    }
+
+    .step-header{
+      width:100%;
+      border:none;
+      background:#fff;
       cursor:pointer;
-      transition:.18s ease;
       display:flex;
+      align-items:center;
       gap:12px;
-      align-items:flex-start;
+      padding:14px;
+      text-align:left;
     }
 
-    .step-btn:hover{
-      transform:translateY(-1px);
-      box-shadow:0 8px 20px rgba(17,24,39,.05);
+    .step-header:hover{
+      background:#fafafa;
     }
 
-    .step-btn.active{
-      border-color:rgba(3,199,90,.28);
+    .step-item.active .step-header{
       background:linear-gradient(180deg,#fafffc 0%, #f3fff8 100%);
-      box-shadow:0 10px 24px rgba(3,199,90,.10);
     }
 
     .step-num{
       width:34px;
       height:34px;
       border-radius:12px;
-      flex:0 0 34px;
       display:grid;
       place-items:center;
       font-weight:800;
-      font-size:14px;
       background:#f3f4f6;
-      color:#111827;
+      flex:0 0 34px;
     }
 
-    .step-btn.active .step-num{
+    .step-item.active .step-num{
       background:var(--primary);
       color:#fff;
     }
 
-    .step-meta{
+    .step-main{
       min-width:0;
       flex:1;
     }
 
-    .step-name{
+    .step-title{
       font-size:15px;
       font-weight:800;
       margin:0 0 4px;
       letter-spacing:-.02em;
     }
 
-    .step-status{
+    .step-state{
       display:flex;
       align-items:center;
       gap:8px;
       color:var(--muted);
       font-size:13px;
-      font-weight:600;
+      font-weight:700;
     }
 
-    .status-dot{
+    .dot{
       width:8px;
       height:8px;
       border-radius:50%;
       background:#d1d5db;
     }
-    .status-dot.done{background:var(--primary)}
-    .status-dot.current{background:#2563eb}
+
+    .dot.done{background:var(--primary)}
+    .dot.current{background:#2563eb}
+
+    .chev{
+      font-size:18px;
+      color:#6b7280;
+      transition:transform .2s ease;
+      flex:0 0 auto;
+    }
+
+    .step-item.active .chev{
+      transform:rotate(180deg);
+    }
+
+    .step-body{
+      display:none;
+      border-top:1px solid var(--line);
+      padding:12px 14px 14px;
+      background:#fcfcfd;
+    }
+
+    .step-item.active .step-body{
+      display:block;
+    }
+
+    .step-sublist{
+      display:flex;
+      flex-direction:column;
+      gap:8px;
+    }
+
+    .step-subitem{
+      display:flex;
+      gap:8px;
+      font-size:13px;
+      color:#374151;
+      word-break:break-word;
+      overflow-wrap:anywhere;
+    }
 
     .side-note{
       margin-top:14px;
@@ -219,21 +254,23 @@
       border-radius:16px;
       background:#f9fafb;
       border:1px solid var(--line);
-      color:var(--muted);
       font-size:13px;
+      color:var(--muted);
     }
 
     .content{
       padding:24px;
+      min-width:0;
+      overflow:hidden;
     }
 
     .hero{
       display:flex;
       justify-content:space-between;
-      align-items:flex-start;
       gap:16px;
-      margin-bottom:20px;
+      align-items:flex-start;
       flex-wrap:wrap;
+      margin-bottom:18px;
     }
 
     .hero-left{
@@ -258,12 +295,14 @@
       font-size:30px;
       line-height:1.2;
       letter-spacing:-.03em;
+      word-break:keep-all;
     }
 
     .hero p{
       margin:0;
       color:var(--muted);
       font-size:15px;
+      word-break:keep-all;
     }
 
     .hero-actions{
@@ -274,64 +313,39 @@
 
     .btn{
       border:none;
-      background:#111827;
-      color:#fff;
-      padding:12px 16px;
       border-radius:14px;
-      font-size:14px;
+      padding:12px 16px;
       font-weight:800;
       cursor:pointer;
-      transition:.18s ease;
     }
-    .btn:hover{transform:translateY(-1px)}
+
     .btn.secondary{
       background:#fff;
-      color:#111827;
       border:1px solid var(--line);
+      color:#111827;
     }
+
     .btn.primary{
       background:var(--primary);
+      color:#fff;
     }
-    .btn.primary:hover{
-      background:var(--primary-deep);
-    }
+
     .btn:disabled{
       opacity:.45;
       cursor:not-allowed;
-      transform:none;
     }
 
-    .grid{
-      display:grid;
-      grid-template-columns:1.15fr .85fr;
-      gap:18px;
-      margin-top:8px;
-    }
-
-    .section{
-      border:1px solid var(--line);
-      border-radius:20px;
-      padding:20px;
-      background:#fff;
-    }
-
-    .section h3{
-      margin:0 0 12px;
-      font-size:18px;
-      letter-spacing:-.02em;
-    }
-
-    .lead-box{
-      background:linear-gradient(180deg,#fbfffd 0%, #f3fff8 100%);
-      border:1px solid rgba(3,199,90,.20);
-      border-radius:20px;
+    .lead{
       padding:18px;
+      border-radius:20px;
+      border:1px solid rgba(3,199,90,.2);
+      background:linear-gradient(180deg,#fbfffd 0%, #f3fff8 100%);
       margin-bottom:18px;
     }
 
-    .lead-title{
+    .lead-label{
       font-size:13px;
-      font-weight:800;
+      font-weight:900;
       color:var(--primary-deep);
       margin-bottom:8px;
     }
@@ -340,11 +354,31 @@
       margin:0;
       font-size:18px;
       font-weight:800;
-      line-height:1.45;
+      letter-spacing:-.02em;
+      word-break:keep-all;
+    }
+
+    .main-grid{
+      display:grid;
+      grid-template-columns:minmax(0,1.1fr) minmax(320px,.9fr);
+      gap:18px;
+    }
+
+    .section{
+      border:1px solid var(--line);
+      border-radius:20px;
+      padding:20px;
+      min-width:0;
+      overflow:hidden;
+    }
+
+    .section h3{
+      margin:0 0 12px;
+      font-size:18px;
       letter-spacing:-.02em;
     }
 
-    .check-list{
+    .flow-list{
       display:flex;
       flex-direction:column;
       gap:10px;
@@ -353,54 +387,80 @@
       list-style:none;
     }
 
-    .check-list li{
+    .flow-list li{
       display:flex;
-      align-items:flex-start;
       gap:10px;
       padding:12px 14px;
+      border-radius:16px;
       background:#f9fafb;
       border:1px solid #eef2f7;
-      border-radius:16px;
-      font-size:14px;
+      word-break:break-word;
+      overflow-wrap:anywhere;
     }
 
     .check-icon{
       width:22px;
       height:22px;
-      flex:0 0 22px;
       border-radius:999px;
       display:grid;
       place-items:center;
       background:#e5e7eb;
-      color:#111827;
       font-size:12px;
       font-weight:900;
-      margin-top:1px;
+      flex:0 0 22px;
     }
 
-    .info-box,.warn-box,.danger-box{
+    .blocks{
+      display:flex;
+      flex-direction:column;
+      gap:14px;
+      margin-top:18px;
+      min-width:0;
+    }
+
+    .block{
+      border:1px solid var(--line);
       border-radius:18px;
       padding:16px;
-      margin-top:14px;
+      background:#fff;
+      min-width:0;
+      overflow:hidden;
+    }
+
+    .block h4{
+      margin:0 0 8px;
+      font-size:16px;
+      letter-spacing:-.02em;
+      word-break:keep-all;
+    }
+
+    .block p{
+      margin:0;
+      font-size:14px;
+      color:#374151;
+      word-break:break-word;
+      overflow-wrap:anywhere;
+    }
+
+    .info-box,.warn-box{
+      border-radius:18px;
+      padding:16px;
       border:1px solid;
+      margin-top:12px;
+      min-width:0;
+      overflow:hidden;
     }
 
     .info-box{
-      background:var(--info-bg);
-      border-color:var(--info-line);
-      color:var(--info-text);
+      background:var(--blue-soft);
+      border-color:var(--blue-line);
+      color:var(--blue-text);
     }
 
     .warn-box{
-      background:var(--warn-bg);
+      background:var(--warn-soft);
       border-color:var(--warn-line);
       color:var(--warn-text);
-    }
-
-    .danger-box{
-      background:var(--danger-bg);
-      border-color:var(--danger-line);
-      color:var(--danger-text);
     }
 
     .box-title{
@@ -414,58 +474,58 @@
       padding-left:18px;
     }
 
-    .mini-list li + li{margin-top:6px}
+    .mini-list li{
+      word-break:break-word;
+      overflow-wrap:anywhere;
+    }
+
+    .mini-list li + li{
+      margin-top:6px;
+    }
 
     .path{
+      margin-top:10px;
+      padding:14px;
+      border-radius:16px;
       background:#0f172a;
       color:#f8fafc;
-      border-radius:18px;
-      padding:16px;
       font-size:14px;
-      line-height:1.8;
-      white-space:pre-line;
-      margin-top:12px;
       font-weight:700;
+      white-space:pre-line;
+      word-break:break-word;
+      overflow-wrap:anywhere;
     }
 
-    .subsections{
-      display:flex;
-      flex-direction:column;
-      gap:14px;
-    }
-
-    .sub-card{
-      border:1px solid var(--line);
+    .placeholder{
+      border:1px dashed #cbd5e1;
       border-radius:18px;
-      padding:16px;
-      background:#fff;
-    }
-
-    .sub-title{
-      margin:0 0 8px;
-      font-size:16px;
-      font-weight:800;
-      letter-spacing:-.02em;
-    }
-
-    .sub-text{
-      margin:0;
-      color:#374151;
+      background:linear-gradient(180deg,#fcfcfd 0%, #f8fafc 100%);
+      min-height:220px;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      text-align:center;
+      color:#64748b;
       font-size:14px;
+      font-weight:700;
+      padding:20px;
+      word-break:keep-all;
     }
 
     .table-wrap{
-      overflow:auto;
+      width:100%;
+      overflow-x:auto;
       border:1px solid var(--line);
       border-radius:16px;
       margin-top:10px;
+      -webkit-overflow-scrolling:touch;
     }
 
     table{
       width:100%;
+      min-width:520px;
       border-collapse:collapse;
       background:#fff;
-      min-width:520px;
     }
 
     th,td{
@@ -474,36 +534,24 @@
       text-align:left;
       vertical-align:top;
       font-size:14px;
+      word-break:break-word;
     }
 
     th{
       background:#f9fafb;
       font-size:13px;
-      color:#374151;
       font-weight:800;
+      color:#374151;
     }
 
-    .complete-card{
-      margin-top:18px;
-      border:1px solid var(--line);
-      border-radius:20px;
-      padding:18px;
-      background:#fff;
-    }
-
-    .complete-card h3{
-      margin:0 0 10px;
-      font-size:18px;
-    }
-
-    .task-list{
+    .check-area{
       display:flex;
       flex-direction:column;
       gap:10px;
       margin-top:12px;
     }
 
-    .task-item{
+    .check-row{
       display:flex;
       gap:10px;
       align-items:flex-start;
@@ -511,20 +559,22 @@
       border:1px solid var(--line);
       border-radius:16px;
       background:#fafafa;
+      min-width:0;
     }
 
-    .task-item input{
+    .check-row input{
       width:18px;
       height:18px;
       margin-top:2px;
       accent-color:var(--primary);
-      cursor:pointer;
+      flex:0 0 auto;
     }
 
-    .task-label{
+    .check-row span{
       font-size:14px;
       font-weight:700;
-      color:#111827;
+      word-break:break-word;
+      overflow-wrap:anywhere;
     }
 
     .footer-nav{
@@ -535,93 +585,58 @@
       flex-wrap:wrap;
     }
 
-    .muted{
-      color:var(--muted);
-      font-size:13px;
-    }
-
-    .pill{
-      display:inline-flex;
-      align-items:center;
-      gap:6px;
-      padding:7px 10px;
-      border-radius:999px;
-      background:#f3f4f6;
-      font-size:12px;
-      font-weight:800;
-      color:#374151;
-    }
-
-    .empty-image{
-      width:100%;
-      border:1px dashed #cbd5e1;
-      background:linear-gradient(180deg,#fcfcfd 0%, #f8fafc 100%);
-      border-radius:18px;
-      min-height:240px;
-      display:flex;
-      align-items:center;
-      justify-content:center;
-      text-align:center;
-      color:#64748b;
-      padding:20px;
-      font-size:14px;
-      font-weight:700;
-    }
-
-    @media (max-width: 1100px){
+    @media (max-width:1100px){
       .layout{
         grid-template-columns:1fr;
       }
       .sidebar{
-        position:relative;
-        top:auto;
+        position:static;
       }
-      .grid{
+      .main-grid{
         grid-template-columns:1fr;
       }
     }
 
-    @media (max-width: 640px){
+    @media (max-width:640px){
       .wrap{padding:14px}
       h1{font-size:26px}
       .hero h2{font-size:24px}
       .content{padding:18px}
-      .step-btn{padding:12px}
+      .step-header{padding:12px}
+      .section{padding:16px}
     }
   </style>
 </head>
 <body>
   <div class="wrap">
-    <div class="topbar">
-      <div class="brand">
-        <div class="eyebrow">셀프 세팅 가이드</div>
-        <h1>품고 셀프 온보딩</h1>
-        <p class="subtitle">문의 없이 순서대로 따라가면 세팅이 완료되도록 설계된 가이드입니다.</p>
-      </div>
+    <div class="top">
+      <div class="badge">셀프 세팅 가이드</div>
+      <h1>품고 셀프 온보딩</h1>
+      <p class="sub">질문 없이 순서대로 따라가면 세팅이 완료되도록 구성한 셀프 온보딩입니다.</p>
     </div>
 
     <div class="layout">
       <aside class="sidebar">
-        <div class="panel side-card">
+        <div class="card sidebar-card">
           <div class="side-head">
             <div class="side-title">진행 단계</div>
-            <div class="progress-badge" id="progressText">0 / 5 완료</div>
+            <div class="progress" id="progressText">0 / 5 완료</div>
           </div>
 
-          <div class="step-list" id="stepList"></div>
+          <div class="accordion" id="stepAccordion"></div>
 
           <div class="side-note">
-            현재 단계의 <strong>완료 기준</strong>을 체크하면 다음 단계로 넘어갈 수 있습니다.
+            각 STEP의 완료 항목을 모두 체크하면 해당 STEP은 완료 처리되며 자동으로 닫힙니다.
           </div>
         </div>
       </aside>
 
-      <main class="panel content">
+      <main class="card content">
         <div class="hero">
           <div class="hero-left">
             <div class="step-chip" id="heroChip">STEP 1</div>
             <h2 id="heroTitle">고객사 등록</h2>
-            <p id="heroDesc">현재 단계의 핵심 안내가 여기에 표시됩니다.</p>
+            <p id="heroDesc"></p>
           </div>
 
           <div class="hero-actions">
@@ -629,27 +644,25 @@
           </div>
         </div>
 
-        <div class="lead-box">
-          <div class="lead-title">지금 해야 할 일</div>
+        <div class="lead">
+          <div class="lead-label">지금 해야 할 일</div>
           <p class="lead-text" id="leadText"></p>
         </div>
 
-        <div class="grid">
+        <div class="main-grid">
           <section class="section">
             <h3>진행 순서</h3>
-            <ul class="check-list" id="flowList"></ul>
-
-            <div class="subsections" id="detailSections" style="margin-top:18px;"></div>
+            <ul class="flow-list" id="flowList"></ul>
+            <div class="blocks" id="detailBlocks"></div>
           </section>
 
           <section class="section">
-            <h3>입력 기준 / 주의사항</h3>
+            <h3>완료 기준</h3>
             <div id="rightInfo"></div>
 
-            <div class="complete-card">
-              <h3>다음 단계로 넘어가기 전 확인</h3>
-              <p class="muted">아래 항목을 모두 체크하면 이 단계가 완료로 표시됩니다.</p>
-              <div class="task-list" id="taskList"></div>
+            <div class="info-box">
+              <div class="box-title">다음 단계로 넘어가기 전 확인</div>
+              <div class="check-area" id="checkArea"></div>
             </div>
           </section>
         </div>
@@ -663,398 +676,147 @@
   </div>
 
   <script>
-    const STEPS = [
+    const DATA = [
       {
         id: "client_register",
         title: "고객사 등록",
-        shortDesc: "고객사 등록 메일 확인 후 정보 입력, 로그인, 구성원 추가까지 완료해주세요.",
+        desc: "고객사 등록, 로그인, 구성원 추가를 진행합니다.",
         lead: "고객사 등록 메일을 확인하고 고객사 정보 입력 → 품고 나우 로그인 → 구성원 추가까지 완료해주세요.",
-        flow: [
-          "고객사 등록 메일 수신",
-          "고객사 정보 입력",
-          "품고 나우 로그인",
-          "구성원 추가"
-        ],
-        details: [
+        items: [
           {
             title: "고객사 등록 메일 수신",
-            html: `
-              <p class="sub-text">품고에서 발송된 <strong>고객사 등록 메일</strong>을 확인한 후, 메일 내 <strong>[고객사 등록하기]</strong> 버튼을 클릭하여 등록을 진행해주세요.</p>
-              <div class="warn-box">
-                <div class="box-title">주의</div>
-                <ul class="mini-list">
-                  <li>메일 수신 후 <strong>24시간 이내 등록</strong>이 필요합니다.</li>
-                </ul>
-              </div>
-            `
+            type: "section",
+            body: "품고에서 발송된 고객사 등록 메일을 확인한 후 메일 내 [고객사 등록하기] 버튼을 클릭하여 등록을 진행해주세요.",
+            notice: ["메일 수신 후 24시간 이내 등록이 필요합니다."]
           },
           {
             title: "고객사 정보 입력",
-            html: `
-              <p class="sub-text">브랜드 및 사업자 정보를 입력해주세요.</p>
-              <div class="info-box">
-                <div class="box-title">입력 기준</div>
-                <ul class="mini-list">
-                  <li>고객사명 : <strong>브랜드명과 동일하게 입력</strong></li>
-                  <li>사업자 정보 : <strong>네이버 기준 사업자 정보 입력</strong></li>
-                </ul>
-              </div>
-            `
+            type: "section",
+            body: "브랜드 및 사업자 정보를 입력해주세요.",
+            notice: ["고객사명은 브랜드명과 동일하게 입력해주세요.", "사업자 정보는 네이버 기준으로 입력해주세요."]
           },
           {
-            title: "품고 나우 로그인",
-            html: `
-              <p class="sub-text">고객사 등록이 완료되면 <strong>품고 나우 로그인</strong>을 진행해주세요.</p>
-            `
+            title: "품고 나우 로그인 하기",
+            type: "section",
+            body: "고객사 등록 완료 후 품고 나우 로그인을 진행해주세요."
           },
           {
             title: "구성원 추가",
-            html: `
-              <p class="sub-text">시스템을 사용할 내부 구성원을 추가해주세요.</p>
-              <div class="path">품고 나우
-→ 등록
-→ + 구성원 추가
-→ 이름 / 이메일 / 전화번호 입력
-→ 구성원 추가</div>
-            `
+            type: "path",
+            body: "품고 나우 > 등록 > + 구성원 추가 클릭 > 이름, 이메일, 전화번호 입력 > 구성원 추가 클릭"
           }
         ],
-        rightInfo: `
-          <div class="info-box">
-            <div class="box-title">완료 기준</div>
-            <ul class="mini-list">
-              <li>품고 나우 로그인 가능</li>
-              <li>필요한 구성원 계정 추가 완료</li>
-            </ul>
-          </div>
-
-          <div class="danger-box">
-            <div class="box-title">문제가 발생한 경우</div>
-            <p style="margin:0 0 8px;">다음 상황에 해당하는 경우 아래 정보를 전달해주세요.</p>
-            <ul class="mini-list">
-              <li>고객사 등록 버튼이 보이지 않는 경우</li>
-              <li>메일 수신 후 24시간이 초과된 경우</li>
-            </ul>
-            <div class="table-wrap" style="margin-top:10px;">
-              <table>
-                <thead>
-                  <tr><th>전달 필요 정보</th></tr>
-                </thead>
-                <tbody>
-                  <tr><td>사업자 주소</td></tr>
-                  <tr><td>브랜드 고객센터 대표번호</td></tr>
-                  <tr><td>반품지 주소</td></tr>
-                  <tr><td>담당자명 / 연락처 / 이메일</td></tr>
-                </tbody>
-              </table>
-            </div>
-          </div>
-        `,
-        tasks: [
+        checks: [
           "고객사 등록 메일 확인 완료",
           "고객사 정보 입력 완료",
           "품고 나우 로그인 완료",
-          "필요한 구성원 추가 완료"
+          "구성원 추가 완료"
         ]
       },
       {
-        id: "fulfillment_connect",
+        id: "fulfillment",
         title: "풀필먼트 연동",
-        shortDesc: "판매처 등록 후 풀필먼트 신청, 연동 상태 확인, N배송 동의까지 진행해주세요.",
-        lead: "판매처 등록 후 풀필먼트 신청 → 연동 상태 확인 → N배송 동의까지 진행해주세요.",
-        flow: [
-          "판매처 등록",
-          "풀필먼트 신청",
-          "연동 확인",
-          "N배송 동의"
-        ],
-        details: [
+        desc: "판매처 등록, 풀필먼트 신청, 연동 확인을 진행합니다.",
+        lead: "판매처 등록 후 풀필먼트 신청 → 연동 확인 → N배송 동의까지 진행해주세요.",
+        items: [
           {
             title: "판매처 등록",
-            html: `
-              <p class="sub-text">스마트스토어 등 <strong>판매처 계정</strong>을 등록해주세요.</p>
-            `
+            type: "section",
+            body: "스마트스토어 등 판매처 계정을 등록해주세요."
           },
           {
             title: "풀필먼트 신청",
-            html: `
-              <p class="sub-text">네이버 풀필먼트 이용을 위해 <strong>풀필먼트 신청</strong>을 진행해주세요.</p>
-            `
+            type: "section",
+            body: "네이버 풀필먼트 신청을 진행해주세요."
           },
           {
             title: "연동 확인 & N배송 동의",
-            html: `
-              <p class="sub-text">아래 항목이 정확히 표시되는지 반드시 확인해주세요.</p>
-              <div class="info-box">
-                <div class="box-title">확인 항목</div>
-                <ul class="mini-list">
-                  <li>물류사 : <strong>품고</strong></li>
-                  <li>연동 상태 : <strong>연동중</strong></li>
-                </ul>
-              </div>
-            `
+            type: "notice",
+            body: "아래 두 가지를 반드시 확인해주세요.",
+            notice: [
+              "물류사 품고 / 연동 상태가 연동중으로 되어있는지 확인해주세요.",
+              "타물류사를 이용하지 않는 경우 연동중으로 노출되는 물류사는 모두 철회 처리해주세요."
+            ]
           }
         ],
-        rightInfo: `
-          <div class="warn-box">
-            <div class="box-title">자주 발생하는 문제</div>
-            <ul class="mini-list">
-              <li>타 물류사가 <strong>연동중</strong>으로 남아있는 경우</li>
-              <li>연동 신청만 하고 상태 확인을 하지 않는 경우</li>
-            </ul>
-          </div>
-
-          <div class="danger-box">
-            <div class="box-title">반드시 처리해주세요</div>
-            <p style="margin:0;">타 물류사를 이용하지 않는 경우, 연동중으로 표시된 물류사는 <strong>모두 철회 처리</strong>해야 합니다.</p>
-          </div>
-
-          <div class="info-box">
-            <div class="box-title">완료 기준</div>
-            <ul class="mini-list">
-              <li>물류사 : 품고</li>
-              <li>연동 상태 : 연동중</li>
-              <li>불필요한 타 물류사 연동 없음</li>
-            </ul>
-          </div>
-        `,
-        tasks: [
+        checks: [
           "판매처 등록 완료",
           "풀필먼트 신청 완료",
-          "물류사 품고 / 연동 상태 연동중 확인 완료",
-          "불필요한 타 물류사 연동 철회 완료"
+          "연동 상태 확인 완료"
         ]
       },
       {
-        id: "sku_register",
-        title: "SKU 등록",
-        shortDesc: "상품 식별 정보와 보관 정보를 정확히 입력하고, 연결상품 매핑까지 완료해주세요.",
+        id: "sku",
+        title: "SKU 등록 하기",
+        desc: "SKU 등록과 연결상품 매핑을 진행합니다.",
         lead: "상품 식별 정보와 보관 정보를 기준에 맞게 입력하여 SKU 등록 → 연결상품 매핑까지 완료해주세요.",
-        flow: [
-          "SKU 등록 전 유의사항 확인",
-          "SKU 등록",
-          "연결상품 매핑"
-        ],
-        details: [
+        items: [
           {
-            title: "SKU 등록 화면 안내",
-            html: `
-              <div class="empty-image">
-                여기에 SKU 등록 화면 이미지를 넣어주세요.<br><br>
-                추천: 이미지 위에 ① SKU명 ② 바코드 ③ 보관온도 ④ 소비기한 ⑤ 로트번호 ⑥ 보관사이즈 ⑦ SKU유형 번호 표시
-              </div>
-            `
+            title: "SKU 등록 전 유의사항",
+            type: "section",
+            body: "SKU명은 식별 가능한 형태로 입력하고, 바코드는 실물과 동일하게 입력해주세요."
           },
           {
-            title: "SKU명",
-            html: `
-              <p class="sub-text">SKU명은 <strong>모두가 식별 가능한 형태</strong>로 입력해주세요.</p>
-              <div class="table-wrap">
-                <table>
-                  <thead>
-                    <tr><th>기준</th><th>예시</th></tr>
-                  </thead>
-                  <tbody>
-                    <tr><td>식별 가능</td><td>꽃물 틴트 1호 체리</td></tr>
-                    <tr><td>식별 가능</td><td>꽃물 틴트 2호 딸기</td></tr>
-                    <tr><td>식별 불가</td><td>체리 / 딸기</td></tr>
-                  </tbody>
-                </table>
-              </div>
-            `
+            title: "SKU 등록",
+            type: "custom",
+            body: "skuGuide"
           },
           {
-            title: "바코드",
-            html: `
-              <p class="sub-text">실제 상품에 부착된 <strong>실물 바코드와 동일하게 입력</strong>해주세요.</p>
-              <div class="table-wrap">
-                <table>
-                  <thead>
-                    <tr><th>상황</th><th>처리 방법</th></tr>
-                  </thead>
-                  <tbody>
-                    <tr><td>실물 바코드 없음</td><td>네이버 바코드 선택</td></tr>
-                    <tr><td>실물 바코드 있음</td><td>실물과 동일한 바코드 입력</td></tr>
-                    <tr><td>바코드 미검수</td><td>임의 바코드 입력 또는 네이버 바코드 선택</td></tr>
-                  </tbody>
-                </table>
-              </div>
-            `
-          },
-          {
-            title: "보관 정보 설정",
-            html: `
-              <div class="table-wrap">
-                <table>
-                  <thead>
-                    <tr><th>항목</th><th>입력 기준</th></tr>
-                  </thead>
-                  <tbody>
-                    <tr><td>보관 온도</td><td>상온</td></tr>
-                    <tr><td>소비기한 관리 여부</td><td>소비기한을 관리하는 상품만 관리 선택</td></tr>
-                    <tr><td>로트번호 관리 여부</td><td>제조 로트를 관리하는 상품만 관리 선택</td></tr>
-                    <tr><td>보관 사이즈</td><td>가로 / 세로 / 높이 / 무게 모두 1 입력</td></tr>
-                    <tr><td>SKU 유형</td><td>상품 선택</td></tr>
-                  </tbody>
-                </table>
-              </div>
-            `
-          },
-          {
-            title: "연결상품 매핑",
-            html: `
-              <p class="sub-text">등록된 SKU와 <strong>스마트스토어 상품을 연결</strong>해주세요.</p>
-            `
+            title: "연결상품매핑",
+            type: "section",
+            body: "등록된 SKU와 판매처 상품을 연결해주세요."
           }
         ],
-        rightInfo: `
-          <div class="warn-box">
-            <div class="box-title">자주 틀리는 항목</div>
-            <ul class="mini-list">
-              <li>SKU명을 옵션 없이 입력</li>
-              <li>실물과 다른 바코드 입력</li>
-              <li>관리하지 않는 SKU를 관리로 설정</li>
-              <li>SKU 유형을 사은품으로 선택</li>
-            </ul>
-          </div>
-
-          <div class="danger-box">
-            <div class="box-title">주의</div>
-            <ul class="mini-list">
-              <li>관리 여부는 <strong>설정 후 수정이 불가</strong>합니다.</li>
-              <li>사은품 선택 시 <strong>SKU 등록이 되지 않습니다.</strong></li>
-            </ul>
-          </div>
-
-          <div class="info-box">
-            <div class="box-title">보관 사이즈 안내</div>
-            <p style="margin:0;">최초 입고 SKU는 품고에서 실제 체적 정보를 측정하여 <strong>자동 반영</strong>됩니다.</p>
-          </div>
-
-          <div class="info-box">
-            <div class="box-title">완료 기준</div>
-            <ul class="mini-list">
-              <li>SKU 등록 완료</li>
-              <li>판매처 상품과 연결상품 매핑 완료</li>
-            </ul>
-          </div>
-        `,
-        tasks: [
+        checks: [
           "SKU 등록 전 유의사항 확인 완료",
           "SKU 등록 완료",
-          "연결상품 매핑 완료"
+          "연결상품매핑 완료"
         ]
       },
       {
-        id: "inbound_guide",
+        id: "inbound",
         title: "입고 가이드 확인",
-        shortDesc: "입고 전 포장 방법과 입고 기준을 반드시 확인해주세요.",
-        lead: "상품 입고 전 포장 방법 및 입고 기준을 반드시 확인해주세요.",
-        flow: [
-          "입고 기준 확인",
-          "포장 방법 확인",
-          "파렛타이징 기준 확인",
-          "벌크 입고 기준 확인"
-        ],
-        details: [
+        desc: "입고 기준과 포장 방법을 확인합니다.",
+        lead: "입고 전 포장 방법과 입고 기준을 반드시 확인해주세요.",
+        items: [
           {
-            title: "입고 전 반드시 확인해주세요",
-            html: `
-              <p class="sub-text">입고 전 아래 기준을 확인한 후 진행해주세요.</p>
-              <ul class="mini-list">
-                <li>입고 기준</li>
-                <li>포장 방법</li>
-                <li>파렛타이징 기준</li>
-                <li>벌크 입고 기준</li>
-              </ul>
-            `
+            title: "입고 가이드 확인",
+            type: "section",
+            body: "입고 기준, 포장 방법, 파렛타이징 기준, 벌크 입고 기준을 확인해주세요."
           },
           {
             title: "포장 유형 안내",
-            html: `
-              <div class="empty-image">
-                여기에 포장 유형별 이미지 카드 3개를 넣어주세요.<br><br>
-                추천 구성: 박스 패키지 / 일반 풀패키지 / 친환경 풀패키지
-              </div>
-            `
+            type: "placeholder",
+            body: "여기에 박스 패키지 / 일반 풀패키지 / 친환경 풀패키지 이미지를 넣어주세요."
           }
         ],
-        rightInfo: `
-          <div class="warn-box">
-            <div class="box-title">기준 미준수 시</div>
-            <ul class="mini-list">
-              <li>입고 지연 가능</li>
-              <li>추가 작업 비용 발생 가능</li>
-            </ul>
-          </div>
-
-          <div class="info-box">
-            <div class="box-title">완료 기준</div>
-            <ul class="mini-list">
-              <li>포장 방법 확인 완료</li>
-              <li>입고 기준 확인 완료</li>
-            </ul>
-          </div>
-        `,
-        tasks: [
-          "입고 기준 확인 완료",
-          "포장 방법 확인 완료",
-          "파렛타이징 / 벌크 입고 기준 확인 완료"
+        checks: [
+          "입고 가이드 확인 완료"
         ]
       },
       {
-        id: "n_delivery",
+        id: "ndelivery",
         title: "N배송 설정",
-        shortDesc: "연결상품과 재고를 점검한 뒤 N배송 설정을 완료해주세요.",
-        lead: "상품 연결 상태와 재고를 점검한 후 N배송 설정을 완료해주세요.",
-        flow: [
-          "연결 상품 점검",
-          "재고 점검",
-          "N배송 설정하기"
-        ],
-        details: [
+        desc: "연결 상품 및 재고 점검 후 N배송 설정을 진행합니다.",
+        lead: "연결 상품과 재고를 점검한 뒤 N배송 설정을 완료해주세요.",
+        items: [
           {
             title: "연결 상품 점검",
-            html: `
-              <p class="sub-text">SKU와 판매처 상품 연결 상태를 확인해주세요.</p>
-              <div class="danger-box">
-                <div class="box-title">중요</div>
-                <p style="margin:0;">연결되지 않은 상품은 <strong>출고되지 않습니다.</strong></p>
-              </div>
-            `
+            type: "section",
+            body: "SKU와 판매처 상품 연결 상태를 확인해주세요."
           },
           {
             title: "재고 점검",
-            html: `
-              <p class="sub-text">입고된 상품의 재고가 정상 반영되었는지 확인해주세요.</p>
-            `
+            type: "section",
+            body: "입고 재고가 정상 반영되었는지 확인해주세요."
           },
           {
             title: "N배송 설정하기",
-            html: `
-              <p class="sub-text">N배송 출고 설정을 활성화해주세요.</p>
-            `
+            type: "section",
+            body: "N배송 출고 설정을 진행해주세요."
           }
         ],
-        rightInfo: `
-          <div class="warn-box">
-            <div class="box-title">설정 전 확인사항</div>
-            <ul class="mini-list">
-              <li>연결되지 않은 상품 없음</li>
-              <li>재고 정상 반영 완료</li>
-            </ul>
-          </div>
-
-          <div class="info-box">
-            <div class="box-title">완료 기준</div>
-            <ul class="mini-list">
-              <li>연결 상품 이상 없음</li>
-              <li>재고 정상 반영</li>
-              <li>N배송 설정 완료</li>
-            </ul>
-          </div>
-        `,
-        tasks: [
+        checks: [
           "연결 상품 점검 완료",
           "재고 점검 완료",
           "N배송 설정 완료"
@@ -1062,176 +824,361 @@
       }
     ];
 
-    const STORAGE_KEY = "poomgo_onboarding_state_v1";
+    const STORAGE_KEY = "poomgo_self_onboarding_v2";
 
     const state = loadState();
+    let currentIndex = state.currentIndex ?? 0;
+    let openStepId = state.openStepId ?? DATA[0].id;
 
-    let currentStepIndex = state.currentStepIndex ?? 0;
-
-    const stepListEl = document.getElementById("stepList");
-    const progressTextEl = document.getElementById("progressText");
-    const heroChipEl = document.getElementById("heroChip");
-    const heroTitleEl = document.getElementById("heroTitle");
-    const heroDescEl = document.getElementById("heroDesc");
-    const leadTextEl = document.getElementById("leadText");
-    const flowListEl = document.getElementById("flowList");
-    const detailSectionsEl = document.getElementById("detailSections");
-    const rightInfoEl = document.getElementById("rightInfo");
-    const taskListEl = document.getElementById("taskList");
+    const stepAccordion = document.getElementById("stepAccordion");
+    const progressText = document.getElementById("progressText");
+    const heroChip = document.getElementById("heroChip");
+    const heroTitle = document.getElementById("heroTitle");
+    const heroDesc = document.getElementById("heroDesc");
+    const leadText = document.getElementById("leadText");
+    const flowList = document.getElementById("flowList");
+    const detailBlocks = document.getElementById("detailBlocks");
+    const rightInfo = document.getElementById("rightInfo");
+    const checkArea = document.getElementById("checkArea");
     const prevBtn = document.getElementById("prevBtn");
     const nextBtn = document.getElementById("nextBtn");
     const resetBtn = document.getElementById("resetBtn");
 
-    function loadState(){
-      try{
+    function loadState() {
+      try {
         const raw = localStorage.getItem(STORAGE_KEY);
-        if(!raw) return { tasks:{}, currentStepIndex:0 };
-        return JSON.parse(raw);
-      }catch(e){
-        return { tasks:{}, currentStepIndex:0 };
+        return raw ? JSON.parse(raw) : { checks: {}, currentIndex: 0, openStepId: DATA[0]?.id };
+      } catch (e) {
+        return { checks: {}, currentIndex: 0, openStepId: DATA[0]?.id };
       }
     }
 
-    function saveState(){
+    function saveState() {
       localStorage.setItem(STORAGE_KEY, JSON.stringify({
-        tasks: state.tasks || {},
-        currentStepIndex
+        checks: state.checks || {},
+        currentIndex,
+        openStepId
       }));
     }
 
-    function getStepTaskState(stepId){
-      if(!state.tasks) state.tasks = {};
-      if(!state.tasks[stepId]) state.tasks[stepId] = [];
-      return state.tasks[stepId];
+    function getChecks(stepId) {
+      if (!state.checks) state.checks = {};
+      if (!state.checks[stepId]) state.checks[stepId] = [];
+      return state.checks[stepId];
     }
 
-    function isStepDone(step){
-      const tasks = getStepTaskState(step.id);
-      return step.tasks.length > 0 && step.tasks.every((_, idx) => !!tasks[idx]);
+    function isStepDone(step) {
+      const arr = getChecks(step.id);
+      return step.checks.length > 0 && step.checks.every((_, i) => !!arr[i]);
     }
 
-    function isAnyTaskChecked(step){
-      const tasks = getStepTaskState(step.id);
-      return tasks.some(Boolean);
+    function getStatus(step, idx) {
+      if (isStepDone(step)) return { text: "완료", cls: "done" };
+      if (idx === currentIndex) return { text: "진행중", cls: "current" };
+      return { text: "대기", cls: "" };
     }
 
-    function renderSidebar(){
-      stepListEl.innerHTML = "";
-      const completedCount = STEPS.filter(isStepDone).length;
-      progressTextEl.textContent = `${completedCount} / ${STEPS.length} 완료`;
+    function renderAccordion() {
+      stepAccordion.innerHTML = "";
+      const doneCount = DATA.filter(isStepDone).length;
+      progressText.textContent = `${doneCount} / ${DATA.length} 완료`;
 
-      STEPS.forEach((step, index) => {
-        const btn = document.createElement("button");
-        btn.type = "button";
-        btn.className = "step-btn" + (index === currentStepIndex ? " active" : "");
-        btn.addEventListener("click", () => {
-          currentStepIndex = index;
+      DATA.forEach((step, idx) => {
+        const status = getStatus(step, idx);
+        const item = document.createElement("div");
+        item.className = "step-item" + (openStepId === step.id ? " active" : "");
+
+        const subItemsHtml = step.items.map(x => `
+          <div class="step-subitem">
+            <span>ㄴ</span>
+            <span>${escapeHtml(x.title)}</span>
+          </div>
+        `).join("");
+
+        item.innerHTML = `
+          <button class="step-header" type="button">
+            <div class="step-num">${idx + 1}</div>
+            <div class="step-main">
+              <div class="step-title">${escapeHtml(step.title)}</div>
+              <div class="step-state">
+                <span class="dot ${status.cls}"></span>
+                <span>${status.text}</span>
+              </div>
+            </div>
+            <div class="chev">⌄</div>
+          </button>
+          <div class="step-body">
+            <div class="step-sublist">${subItemsHtml}</div>
+          </div>
+        `;
+
+        const header = item.querySelector(".step-header");
+        header.addEventListener("click", () => {
+          currentIndex = idx;
+          openStepId = openStepId === step.id ? "" : step.id;
           saveState();
           render();
         });
 
-        const done = isStepDone(step);
-        const started = isAnyTaskChecked(step);
-
-        let statusText = "대기";
-        let dotClass = "";
-        if(index === currentStepIndex){
-          statusText = done ? "완료" : "진행중";
-          dotClass = done ? "done" : "current";
-        }else if(done){
-          statusText = "완료";
-          dotClass = "done";
-        }else if(started){
-          statusText = "진행중";
-          dotClass = "current";
-        }
-
-        btn.innerHTML = `
-          <div class="step-num">${index + 1}</div>
-          <div class="step-meta">
-            <div class="step-name">${step.title}</div>
-            <div class="step-status">
-              <span class="status-dot ${dotClass}"></span>
-              <span>${statusText}</span>
-            </div>
-          </div>
-        `;
-        stepListEl.appendChild(btn);
+        stepAccordion.appendChild(item);
       });
     }
 
-    function renderMain(){
-      const step = STEPS[currentStepIndex];
-      heroChipEl.textContent = `STEP ${currentStepIndex + 1}`;
-      heroTitleEl.textContent = step.title;
-      heroDescEl.textContent = step.shortDesc;
-      leadTextEl.textContent = step.lead;
+    function renderMain() {
+      const step = DATA[currentIndex];
+      heroChip.textContent = `STEP ${currentIndex + 1}`;
+      heroTitle.textContent = step.title;
+      heroDesc.textContent = step.desc;
+      leadText.textContent = step.lead;
 
-      flowListEl.innerHTML = "";
-      step.flow.forEach((item) => {
+      flowList.innerHTML = "";
+      step.items.forEach(item => {
         const li = document.createElement("li");
-        li.innerHTML = `<span class="check-icon">✓</span><div>${item}</div>`;
-        flowListEl.appendChild(li);
+        li.innerHTML = `<span class="check-icon">✓</span><div>${escapeHtml(item.title)}</div>`;
+        flowList.appendChild(li);
       });
 
-      detailSectionsEl.innerHTML = "";
-      step.details.forEach((item) => {
-        const card = document.createElement("div");
-        card.className = "sub-card";
-        card.innerHTML = `
-          <h4 class="sub-title">${item.title}</h4>
-          ${item.html}
-        `;
-        detailSectionsEl.appendChild(card);
+      detailBlocks.innerHTML = "";
+      step.items.forEach(item => {
+        const block = document.createElement("div");
+        block.className = "block";
+        block.innerHTML = renderItem(item);
+        detailBlocks.appendChild(block);
       });
 
-      rightInfoEl.innerHTML = step.rightInfo;
+      rightInfo.innerHTML = renderRightInfo(step);
 
-      taskListEl.innerHTML = "";
-      const taskState = getStepTaskState(step.id);
+      checkArea.innerHTML = "";
+      const checks = getChecks(step.id);
 
-      step.tasks.forEach((task, idx) => {
+      step.checks.forEach((label, i) => {
         const row = document.createElement("label");
-        row.className = "task-item";
+        row.className = "check-row";
         row.innerHTML = `
-          <input type="checkbox" ${taskState[idx] ? "checked" : ""} />
-          <span class="task-label">${task}</span>
+          <input type="checkbox" ${checks[i] ? "checked" : ""}>
+          <span>${escapeHtml(label)}</span>
         `;
 
-        const checkbox = row.querySelector("input");
-        checkbox.addEventListener("change", (e) => {
-          taskState[idx] = e.target.checked;
+        row.querySelector("input").addEventListener("change", (e) => {
+          checks[i] = e.target.checked;
+
+          if (isStepDone(step)) {
+            openStepId = "";
+            if (currentIndex < DATA.length - 1) {
+              currentIndex += 1;
+              openStepId = DATA[currentIndex].id;
+            }
+          } else {
+            openStepId = step.id;
+          }
+
           saveState();
-          renderSidebar();
-          updateNavButtons();
+          render();
         });
 
-        taskListEl.appendChild(row);
+        checkArea.appendChild(row);
       });
 
-      updateNavButtons();
+      prevBtn.disabled = currentIndex === 0;
+      nextBtn.disabled = currentIndex === DATA.length - 1;
     }
 
-    function updateNavButtons(){
-      prevBtn.disabled = currentStepIndex === 0;
-      nextBtn.disabled = currentStepIndex === STEPS.length - 1;
-
-      const step = STEPS[currentStepIndex];
-      if(currentStepIndex < STEPS.length - 1){
-        nextBtn.textContent = isStepDone(step) ? "다음 단계" : "다음 단계";
-      }else{
-        nextBtn.textContent = "마지막 단계";
+    function renderItem(item) {
+      if (item.type === "path") {
+        return `
+          <h4>${escapeHtml(item.title)}</h4>
+          <div class="path">${escapeHtml(item.body).replaceAll(" > ", "\n→ ")}</div>
+        `;
       }
+
+      if (item.type === "notice") {
+        return `
+          <h4>${escapeHtml(item.title)}</h4>
+          <p>${escapeHtml(item.body)}</p>
+          <div class="warn-box">
+            <div class="box-title">반드시 확인해주세요</div>
+            <ul class="mini-list">
+              ${(item.notice || []).map(x => `<li>${escapeHtml(x)}</li>`).join("")}
+            </ul>
+          </div>
+        `;
+      }
+
+      if (item.type === "placeholder") {
+        return `
+          <h4>${escapeHtml(item.title)}</h4>
+          <div class="placeholder">${escapeHtml(item.body)}</div>
+        `;
+      }
+
+      if (item.type === "custom" && item.body === "skuGuide") {
+        return `
+          <h4>SKU 등록</h4>
+          <div class="placeholder">여기에 SKU 등록 화면 이미지를 넣어주세요. 추천: ① SKU명 ② 바코드 ③ 보관온도 ④ 소비기한 ⑤ 로트번호 ⑥ 보관사이즈 ⑦ SKU유형 번호 표시</div>
+
+          <div class="table-wrap">
+            <table>
+              <thead>
+                <tr><th>항목</th><th>입력 기준</th></tr>
+              </thead>
+              <tbody>
+                <tr><td>SKU명</td><td>모두가 식별 가능한 형태로 입력</td></tr>
+                <tr><td>바코드</td><td>실물 바코드와 동일하게 입력</td></tr>
+                <tr><td>보관 온도</td><td>상온</td></tr>
+                <tr><td>소비기한 관리여부</td><td>소비기한을 관리하는 품목인 경우에만 관리 선택</td></tr>
+                <tr><td>로트번호 관리여부</td><td>제조 로트를 관리하는 품목인 경우에만 관리 선택</td></tr>
+                <tr><td>보관사이즈</td><td>모두 1 입력</td></tr>
+                <tr><td>SKU 유형</td><td>상품 선택</td></tr>
+              </tbody>
+            </table>
+          </div>
+
+          <div class="info-box">
+            <div class="box-title">SKU명 예시</div>
+            <div class="table-wrap">
+              <table>
+                <thead>
+                  <tr><th>기준</th><th>상품명</th></tr>
+                </thead>
+                <tbody>
+                  <tr><td>식별 가능</td><td>꽃물 틴트 1호 체리, 꽃물 틴트 2호 딸기</td></tr>
+                  <tr><td>식별 불가</td><td>체리, 딸기</td></tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+
+          <div class="warn-box">
+            <div class="box-title">주의사항</div>
+            <ul class="mini-list">
+              <li>관리하지 않는 상품을 관리함으로 설정하지 않도록 주의해주세요. 수정이 불가합니다.</li>
+              <li>사은품 선택 시 품고 전산에 등록되지 않으므로 상품으로 선택해주세요.</li>
+              <li>최초 입고 SKU는 품고에서 체적 정보를 측정하여 자동 반영됩니다.</li>
+            </ul>
+          </div>
+        `;
+      }
+
+      return `
+        <h4>${escapeHtml(item.title)}</h4>
+        <p>${escapeHtml(item.body)}</p>
+        ${
+          item.notice?.length
+            ? `
+              <div class="info-box">
+                <div class="box-title">확인해주세요</div>
+                <ul class="mini-list">
+                  ${item.notice.map(x => `<li>${escapeHtml(x)}</li>`).join("")}
+                </ul>
+              </div>
+            `
+            : ""
+        }
+      `;
     }
 
-    function render(){
-      renderSidebar();
+    function renderRightInfo(step) {
+      if (step.id === "client_register") {
+        return `
+          <div class="info-box">
+            <div class="box-title">완료 기준</div>
+            <ul class="mini-list">
+              <li>품고 나우 로그인 가능</li>
+              <li>필요한 구성원 계정 추가 완료</li>
+            </ul>
+          </div>
+          <div class="warn-box">
+            <div class="box-title">문제가 발생한 경우</div>
+            <ul class="mini-list">
+              <li>고객사 등록 버튼이 보이지 않는 경우</li>
+              <li>메일 수신 후 24시간이 초과된 경우</li>
+              <li>사업자 주소 / 브랜드 고객센터 대표번호 / 반품지 주소 / 담당자명 / 연락처 / 이메일 정보를 전달해주세요.</li>
+            </ul>
+          </div>
+        `;
+      }
+
+      if (step.id === "fulfillment") {
+        return `
+          <div class="info-box">
+            <div class="box-title">완료 기준</div>
+            <ul class="mini-list">
+              <li>물류사 품고 확인 완료</li>
+              <li>연동 상태 연동중 확인 완료</li>
+              <li>불필요한 타 물류사 연동 철회 완료</li>
+            </ul>
+          </div>
+        `;
+      }
+
+      if (step.id === "sku") {
+        return `
+          <div class="info-box">
+            <div class="box-title">완료 기준</div>
+            <ul class="mini-list">
+              <li>SKU 등록 완료</li>
+              <li>판매처 상품과 연결상품 매핑 완료</li>
+            </ul>
+          </div>
+          <div class="warn-box">
+            <div class="box-title">자주 틀리는 항목</div>
+            <ul class="mini-list">
+              <li>SKU명을 옵션 없이 입력</li>
+              <li>실물과 다른 바코드 입력</li>
+              <li>SKU 유형을 사은품으로 선택</li>
+            </ul>
+          </div>
+        `;
+      }
+
+      if (step.id === "inbound") {
+        return `
+          <div class="info-box">
+            <div class="box-title">완료 기준</div>
+            <ul class="mini-list">
+              <li>입고 기준 확인 완료</li>
+              <li>포장 방법 확인 완료</li>
+            </ul>
+          </div>
+          <div class="warn-box">
+            <div class="box-title">주의</div>
+            <ul class="mini-list">
+              <li>기준 미준수 시 입고 지연 또는 추가 작업 비용이 발생할 수 있습니다.</li>
+            </ul>
+          </div>
+        `;
+      }
+
+      return `
+        <div class="info-box">
+          <div class="box-title">완료 기준</div>
+          <ul class="mini-list">
+            <li>연결 상품 이상 없음</li>
+            <li>재고 정상 반영</li>
+            <li>N배송 설정 완료</li>
+          </ul>
+        </div>
+      `;
+    }
+
+    function render() {
+      renderAccordion();
       renderMain();
     }
 
+    function escapeHtml(str = "") {
+      return String(str)
+        .replaceAll("&", "&amp;")
+        .replaceAll("<", "&lt;")
+        .replaceAll(">", "&gt;")
+        .replaceAll('"', "&quot;")
+        .replaceAll("'", "&#39;");
+    }
+
     prevBtn.addEventListener("click", () => {
-      if(currentStepIndex > 0){
-        currentStepIndex -= 1;
+      if (currentIndex > 0) {
+        currentIndex -= 1;
+        openStepId = DATA[currentIndex].id;
         saveState();
         render();
         window.scrollTo({ top: 0, behavior: "smooth" });
@@ -1239,8 +1186,9 @@
     });
 
     nextBtn.addEventListener("click", () => {
-      if(currentStepIndex < STEPS.length - 1){
-        currentStepIndex += 1;
+      if (currentIndex < DATA.length - 1) {
+        currentIndex += 1;
+        openStepId = DATA[currentIndex].id;
         saveState();
         render();
         window.scrollTo({ top: 0, behavior: "smooth" });
@@ -1248,10 +1196,11 @@
     });
 
     resetBtn.addEventListener("click", () => {
-      if(!confirm("체크한 완료 항목을 모두 초기화할까요?")) return;
+      if (!confirm("체크한 완료 항목을 모두 초기화할까요?")) return;
       localStorage.removeItem(STORAGE_KEY);
-      state.tasks = {};
-      currentStepIndex = 0;
+      state.checks = {};
+      currentIndex = 0;
+      openStepId = DATA[0].id;
       saveState();
       render();
     });
