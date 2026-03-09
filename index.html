@@ -839,7 +839,7 @@
     </div>
 
     <section class="introCard" id="introCard">
-      <h2 class="introTitle">N배송 시작 전 최종 점검</h2>
+      <h2 class="introTitle">물류사 질의 사항 최종 확인</h2>
       <p class="introDesc">
         본 항목은 네이버에 제출한 내용을 품고에서 최종 확인하기 위한 절차입니다.<br>
         네이버에 입력한 정보와 동일하게 작성해주세요.
@@ -1091,6 +1091,10 @@
       document.body.style.overflow = '';
     }
 
+    function sleep(ms) {
+      return new Promise(resolve => setTimeout(resolve, ms));
+    }
+
     function loadData() {
       if (!clientCode) {
         alert('고객사 코드가 없습니다.');
@@ -1109,6 +1113,11 @@
       };
 
       window.renderOnboardingData = function(data) {
+        if (!data || data.ok === false) {
+          alert((data && data.message) || '가이드 데이터를 불러오지 못했습니다.');
+          return;
+        }
+
         payload = data;
         loadProgress();
         buildSteps();
@@ -1235,10 +1244,6 @@
       document.body.style.overflow = '';
     }
 
-    function sleep(ms) {
-      return new Promise(resolve => setTimeout(resolve, ms));
-    }
-
     async function submitInquiry() {
       if (!pendingInquiryData) return;
 
@@ -1265,7 +1270,6 @@
         params.append('systemEmail', pendingInquiryData.systemEmail || '');
         params.append('userAgent', pendingInquiryData.userAgent || '');
 
-        // 응답 파싱 대신 fire-and-forget 방식으로 전송
         await fetch(APPS_SCRIPT_WEBAPP_URL, {
           method: 'POST',
           mode: 'no-cors',
@@ -1275,7 +1279,6 @@
           body: params.toString()
         });
 
-        // 체감상 너무 짧지 않게 최소 잠깐 유지
         await sleep(900);
 
         setInquiryDone();
