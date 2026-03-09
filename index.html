@@ -49,9 +49,7 @@
       padding:22px 24px 36px;
     }
 
-    .top{
-      margin-bottom:18px;
-    }
+    .top{ margin-bottom:18px; }
 
     .title{
       margin:0;
@@ -96,7 +94,7 @@
       font-weight:700;
     }
 
-    .primaryBtn,.secondaryBtn,.submitBtn,.ghostBtn,.linkBtn,.nextBtn{
+    .primaryBtn,.secondaryBtn,.submitBtn,.ghostBtn,.linkBtn,.nextBtn,.navMiniBtn{
       display:inline-flex;
       align-items:center;
       justify-content:center;
@@ -151,7 +149,18 @@
       box-shadow:0 8px 18px rgba(22,163,74,.12);
     }
 
-    .primaryBtn:hover,.secondaryBtn:hover,.submitBtn:hover,.ghostBtn:hover,.linkBtn:hover,.nextBtn:hover{
+    .navMiniBtn{
+      min-width:auto;
+      min-height:40px;
+      padding:0 14px;
+      font-size:14px;
+      background:#fff;
+      color:#334155;
+      border:1px solid #DCE3EC;
+      box-shadow:none;
+    }
+
+    .primaryBtn:hover,.secondaryBtn:hover,.submitBtn:hover,.ghostBtn:hover,.linkBtn:hover,.nextBtn:hover,.navMiniBtn:hover{
       transform:translateY(-1px);
     }
 
@@ -298,7 +307,7 @@
 
     .layout{
       display:grid;
-      grid-template-columns:336px minmax(0, 1fr);
+      grid-template-columns:360px minmax(0, 1fr);
       gap:18px;
       align-items:start;
     }
@@ -314,6 +323,8 @@
       padding:16px;
       position:sticky;
       top:16px;
+      max-height:calc(100vh - 32px);
+      overflow:auto;
     }
 
     .sidebarTitle{
@@ -332,54 +343,139 @@
       gap:12px;
     }
 
-    .stepNavItem{
+    .stepGroup{
       border:1px solid #E6ECF5;
       border-radius:16px;
-      padding:14px 14px;
       background:#fff;
+      overflow:hidden;
     }
 
-    .stepNavItem.done{
+    .stepGroup.done{
       background:#ECFDF5;
       border-color:#BBF7D0;
     }
 
-    .stepNavItem.current{
+    .stepGroup.current{
       border-color:#C8D7FF;
-      background:#F8FBFF;
       box-shadow:0 0 0 3px rgba(0,64,209,.04);
     }
 
-    .stepNavTop{
+    .stepGroupHeader{
+      width:100%;
       display:flex;
       justify-content:space-between;
-      gap:8px;
-      align-items:center;
+      align-items:flex-start;
+      gap:10px;
+      padding:14px 14px;
+      background:transparent;
+      border:none;
+      cursor:pointer;
+      text-align:left;
     }
 
-    .stepNavLabel{
+    .stepGroupHeaderLeft{
+      min-width:0;
+      flex:1 1 auto;
+    }
+
+    .stepGroupTitle{
       font-size:15px;
-      font-weight:800;
+      font-weight:900;
       line-height:1.55;
       color:#111827;
-      display:flex;
-      align-items:center;
-      min-height:24px;
+      display:block;
     }
 
-    .navBtn{
-      border:1px solid #DCE3EC;
-      background:#fff;
-      border-radius:12px;
-      padding:8px 12px;
+    .stepGroupMeta{
+      margin-top:4px;
+      font-size:12px;
+      color:#64748B;
+      font-weight:800;
+    }
+
+    .stepGroupArrow{
+      flex:0 0 auto;
       font-size:14px;
+      color:#64748B;
       font-weight:900;
+      padding-top:2px;
+    }
+
+    .stepSubList{
+      display:none;
+      padding:0 10px 10px 10px;
+      border-top:1px solid #EDF2F7;
+      background:#FBFCFF;
+    }
+
+    .stepGroup.open .stepSubList{
+      display:flex;
+      flex-direction:column;
+      gap:6px;
+    }
+
+    .stepSubItem{
+      width:100%;
+      border:none;
+      background:#fff;
+      border:1px solid #E8EDF5;
+      border-radius:12px;
+      padding:10px 12px;
+      text-align:left;
       cursor:pointer;
-      white-space:nowrap;
-      color:#334155;
+      display:flex;
+      gap:10px;
+      align-items:flex-start;
+    }
+
+    .stepSubItem:hover{
+      border-color:#C9D8FF;
+      background:#F8FBFF;
+    }
+
+    .stepSubItem.current{
+      border-color:#0040D1;
+      background:#EEF4FF;
+    }
+
+    .stepSubIndex{
+      flex:0 0 auto;
+      min-width:22px;
+      height:22px;
+      border-radius:999px;
+      background:#E9EEF8;
+      color:#475569;
+      font-size:11px;
+      font-weight:900;
       display:inline-flex;
       align-items:center;
       justify-content:center;
+      margin-top:1px;
+    }
+
+    .stepSubItem.current .stepSubIndex{
+      background:#0040D1;
+      color:#fff;
+    }
+
+    .stepSubTextWrap{
+      min-width:0;
+      flex:1 1 auto;
+    }
+
+    .stepSubText{
+      font-size:13px;
+      font-weight:800;
+      line-height:1.5;
+      color:#111827;
+      word-break:break-word;
+    }
+
+    .stepSubType{
+      margin-top:3px;
+      font-size:11px;
+      color:#64748B;
+      font-weight:800;
     }
 
     .main{
@@ -433,6 +529,14 @@
       align-items:center;
     }
 
+    .stageSubTitle{
+      margin:12px 0 0;
+      font-size:14px;
+      color:#64748B;
+      font-weight:800;
+      line-height:1.7;
+    }
+
     .blocks{
       padding:24px;
       display:flex;
@@ -482,6 +586,28 @@
       display:flex;
       align-items:center;
       gap:8px;
+    }
+
+    .blockMetaBar{
+      margin:0 20px 16px;
+      display:flex;
+      gap:8px;
+      flex-wrap:wrap;
+      align-items:center;
+    }
+
+    .metaPill{
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
+      min-height:28px;
+      padding:0 10px;
+      border-radius:999px;
+      background:#F8FAFC;
+      border:1px solid #E5EAF2;
+      color:#475569;
+      font-size:12px;
+      font-weight:900;
     }
 
     .imageToggleBtn{
@@ -737,11 +863,19 @@
     .stageFooter{
       padding:0 20px 20px;
       display:flex;
-      justify-content:center;
+      justify-content:space-between;
       align-items:center;
       background:#fff;
+      gap:12px;
+      flex-wrap:wrap;
+      border-top:1px solid #F1F5F9;
+    }
+
+    .stageFooterLeft,.stageFooterRight{
+      display:flex;
       gap:10px;
       flex-wrap:wrap;
+      align-items:center;
     }
 
     .empty{
@@ -921,6 +1055,17 @@
       to { transform: rotate(360deg); }
     }
 
+    @media (max-width: 1100px){
+      .layout{
+        grid-template-columns:1fr;
+      }
+
+      .sidebar{
+        position:static;
+        max-height:none;
+      }
+    }
+
     @media (max-width: 980px){
       .wrap{
         padding:18px 16px 30px;
@@ -934,28 +1079,12 @@
         font-size:15px;
       }
 
-      .layout{
-        grid-template-columns:1fr;
-      }
-
-      .sidebar{
-        position:static;
-      }
-
       .formGrid{
         grid-template-columns:1fr;
       }
 
       .sidebarTitle{
         font-size:18px;
-      }
-
-      .stepNavLabel{
-        font-size:14px;
-      }
-
-      .navBtn{
-        font-size:13px;
       }
 
       .main{
@@ -1009,11 +1138,15 @@
         padding:0 0 20px;
       }
 
+      .stageFooterLeft,.stageFooterRight{
+        width:100%;
+      }
+
       .methodText,.descText,.tipText{
         font-size:15px;
       }
 
-      .linkBtn,.nextBtn,.primaryBtn,.secondaryBtn,.submitBtn,.ghostBtn{
+      .linkBtn,.nextBtn,.primaryBtn,.secondaryBtn,.submitBtn,.ghostBtn,.navMiniBtn{
         width:100%;
       }
 
@@ -1222,6 +1355,8 @@
     let completedSteps = [];
     let viewingStepNo = null;
     let viewingInboundStepNo = null;
+    let selectedBlockOrderByStep = {};
+    let selectedInboundBlockOrderByStep = {};
     let pendingInquiryData = null;
 
     let currentGalleryImages = [];
@@ -1232,6 +1367,14 @@
 
     function progressKey() {
       return 'onboarding_progress_' + clientCode;
+    }
+
+    function blockSelectionKey() {
+      return 'onboarding_block_selection_' + clientCode;
+    }
+
+    function inboundBlockSelectionKey() {
+      return 'onboarding_inbound_block_selection_' + clientCode;
     }
 
     function loadProgress() {
@@ -1246,6 +1389,29 @@
 
     function saveProgress() {
       localStorage.setItem(progressKey(), JSON.stringify(completedSteps));
+    }
+
+    function loadBlockSelections() {
+      try {
+        const raw = localStorage.getItem(blockSelectionKey());
+        const parsed = raw ? JSON.parse(raw) : {};
+        selectedBlockOrderByStep = parsed && typeof parsed === 'object' ? parsed : {};
+      } catch (e) {
+        selectedBlockOrderByStep = {};
+      }
+
+      try {
+        const raw2 = localStorage.getItem(inboundBlockSelectionKey());
+        const parsed2 = raw2 ? JSON.parse(raw2) : {};
+        selectedInboundBlockOrderByStep = parsed2 && typeof parsed2 === 'object' ? parsed2 : {};
+      } catch (e) {
+        selectedInboundBlockOrderByStep = {};
+      }
+    }
+
+    function saveBlockSelections() {
+      localStorage.setItem(blockSelectionKey(), JSON.stringify(selectedBlockOrderByStep));
+      localStorage.setItem(inboundBlockSelectionKey(), JSON.stringify(selectedInboundBlockOrderByStep));
     }
 
     function isInquiryDone() {
@@ -1273,6 +1439,102 @@
     function getInboundDisplayStepNo() {
       if (viewingInboundStepNo) return viewingInboundStepNo;
       return inboundGroupedSteps.length ? inboundGroupedSteps[0].stepNo : null;
+    }
+
+    function getSortedBlocks(step) {
+      return (step && step.blocks ? [...step.blocks] : []).sort((a, b) => a.blockOrder - b.blockOrder);
+    }
+
+    function ensureSelectedBlock(step) {
+      if (!step) return null;
+      const stepKey = String(step.stepNo);
+      const blocks = getSortedBlocks(step);
+      if (!blocks.length) return null;
+
+      const savedOrder = Number(selectedBlockOrderByStep[stepKey] || 0);
+      let found = blocks.find(block => Number(block.blockOrder) === savedOrder);
+
+      if (!found) {
+        found = blocks[0];
+        selectedBlockOrderByStep[stepKey] = found.blockOrder;
+        saveBlockSelections();
+      }
+
+      return found;
+    }
+
+    function ensureSelectedInboundBlock(step) {
+      if (!step) return null;
+      const stepKey = String(step.stepNo);
+      const blocks = getSortedBlocks(step);
+      if (!blocks.length) return null;
+
+      const savedOrder = Number(selectedInboundBlockOrderByStep[stepKey] || 0);
+      let found = blocks.find(block => Number(block.blockOrder) === savedOrder);
+
+      if (!found) {
+        found = blocks[0];
+        selectedInboundBlockOrderByStep[stepKey] = found.blockOrder;
+        saveBlockSelections();
+      }
+
+      return found;
+    }
+
+    function getSelectedBlockIndex(step) {
+      const blocks = getSortedBlocks(step);
+      const current = ensureSelectedBlock(step);
+      if (!current) return -1;
+      return blocks.findIndex(b => Number(b.blockOrder) === Number(current.blockOrder));
+    }
+
+    function getSelectedInboundBlockIndex(step) {
+      const blocks = getSortedBlocks(step);
+      const current = ensureSelectedInboundBlock(step);
+      if (!current) return -1;
+      return blocks.findIndex(b => Number(b.blockOrder) === Number(current.blockOrder));
+    }
+
+    function setSelectedBlock(stepNo, blockOrder) {
+      selectedBlockOrderByStep[String(stepNo)] = Number(blockOrder);
+      saveBlockSelections();
+    }
+
+    function setSelectedInboundBlock(stepNo, blockOrder) {
+      selectedInboundBlockOrderByStep[String(stepNo)] = Number(blockOrder);
+      saveBlockSelections();
+    }
+
+    function moveBlock(step, direction) {
+      if (!step) return;
+      const blocks = getSortedBlocks(step);
+      if (!blocks.length) return;
+
+      const currentIndex = getSelectedBlockIndex(step);
+      if (currentIndex < 0) return;
+
+      const nextIndex = currentIndex + direction;
+      if (nextIndex < 0 || nextIndex >= blocks.length) return;
+
+      setSelectedBlock(step.stepNo, blocks[nextIndex].blockOrder);
+      renderSidebar();
+      renderCurrentStage();
+    }
+
+    function moveInboundBlock(step, direction) {
+      if (!step) return;
+      const blocks = getSortedBlocks(step);
+      if (!blocks.length) return;
+
+      const currentIndex = getSelectedInboundBlockIndex(step);
+      if (currentIndex < 0) return;
+
+      const nextIndex = currentIndex + direction;
+      if (nextIndex < 0 || nextIndex >= blocks.length) return;
+
+      setSelectedInboundBlock(step.stepNo, blocks[nextIndex].blockOrder);
+      renderInboundSidebar();
+      renderInboundStage();
     }
 
     function extractGoogleDriveFileId(url = '') {
@@ -1362,6 +1624,7 @@
 
         payload = data;
         loadProgress();
+        loadBlockSelections();
         buildSteps();
         buildInboundSteps();
         renderStaticText();
@@ -1618,6 +1881,15 @@
       return '';
     }
 
+    function getBlockTypeLabel(type) {
+      const t = String(type || '').trim();
+      if (!t) return '안내';
+      if (t.includes('이미지')) return '이미지';
+      if (t.includes('버튼')) return '바로가기';
+      if (t.includes('체크')) return '체크리스트';
+      return t;
+    }
+
     function htmlToPlainTextForSplit(html) {
       return String(html || '')
         .replace(/<br\s*\/?>/gi, '\n')
@@ -1642,120 +1914,116 @@
         .replace(/\n/g, '<br>');
     }
 
-function buildCustomTableHtml(tableContent) {
-  const normalized = htmlToPlainTextForSplit(tableContent);
-  const rawLines = normalized.split('\n').map(line => line.trim()).filter(Boolean);
-  if (!rawLines.length) return '';
+    function buildCustomTableHtml(tableContent) {
+      const normalized = htmlToPlainTextForSplit(tableContent);
+      const rawLines = normalized.split('\n').map(line => line.trim()).filter(Boolean);
+      if (!rawLines.length) return '';
 
-  const rows = rawLines.map(line => {
-    const textOnly = stripHtmlTags(line);
-    if (textOnly === '--') return { separator: true, cells: [] };
+      const rows = rawLines.map(line => {
+        const textOnly = stripHtmlTags(line);
+        if (textOnly === '--') return { separator: true, cells: [] };
 
-    const cells = splitTableRowPreservingHtml(line).map(cell => cell.trim());
-    return { separator: false, cells };
-  });
+        const cells = splitTableRowPreservingHtml(line).map(cell => cell.trim());
+        return { separator: false, cells };
+      });
 
-  const headerRow = rows.find(r => !r.separator && r.cells.length > 0);
-  if (!headerRow) return '';
+      const headerRow = rows.find(r => !r.separator && r.cells.length > 0);
+      if (!headerRow) return '';
 
-  const colCount = headerRow.cells.length;
-  const headerIndex = rows.indexOf(headerRow);
+      const colCount = headerRow.cells.length;
+      const headerIndex = rows.indexOf(headerRow);
 
-  const bodyRows = rows.slice(headerIndex + 1).map(row => {
-    if (row.separator) return row;
-    const cells = [...row.cells];
-    while (cells.length < colCount) cells.push('');
-    return { separator: false, cells: cells.slice(0, colCount) };
-  });
+      const bodyRows = rows.slice(headerIndex + 1).map(row => {
+        if (row.separator) return row;
+        const cells = [...row.cells];
+        while (cells.length < colCount) cells.push('');
+        return { separator: false, cells: cells.slice(0, colCount) };
+      });
 
-  const thead = `
-    <thead>
-      <tr>
-        ${headerRow.cells.map(h => `<th>${formatTableCellHtml(h)}</th>`).join('')}
-      </tr>
-    </thead>
-  `;
+      const thead = `
+        <thead>
+          <tr>
+            ${headerRow.cells.map(h => `<th>${formatTableCellHtml(h)}</th>`).join('')}
+          </tr>
+        </thead>
+      `;
 
-  // rowspan 계산용 메타
-  const rowspanMeta = bodyRows.map(row => {
-    if (row.separator) {
-      return Array.from({ length: colCount }, () => ({ skip: false, rowspan: 1 }));
-    }
-    return Array.from({ length: colCount }, () => ({ skip: false, rowspan: 1 }));
-  });
-
-  // 0열, 1열만 병합 처리
-  [0, 1].forEach(colIndex => {
-    let r = 0;
-
-    while (r < bodyRows.length) {
-      const row = bodyRows[r];
-
-      if (row.separator) {
-        r++;
-        continue;
-      }
-
-      const current = stripHtmlTags(row.cells[colIndex] || '');
-
-      // 값이 비어 있으면 병합 시작점이 될 수 없음
-      if (!current) {
-        r++;
-        continue;
-      }
-
-      let span = 1;
-      let next = r + 1;
-
-      while (next < bodyRows.length) {
-        const nextRow = bodyRows[next];
-        if (nextRow.separator) break;
-
-        const nextText = stripHtmlTags(nextRow.cells[colIndex] || '');
-
-        // 아래 행이 빈 칸이면 위와 병합
-        if (nextText === '') {
-          span++;
-          next++;
-        } else {
-          break;
-        }
-      }
-
-      rowspanMeta[r][colIndex].rowspan = span;
-
-      for (let k = r + 1; k < r + span; k++) {
-        rowspanMeta[k][colIndex].skip = true;
-      }
-
-      r = r + span;
-    }
-  });
-
-  const tbody = bodyRows.length ? `
-    <tbody>
-      ${bodyRows.map((row, rowIndex) => {
+      const rowspanMeta = bodyRows.map(row => {
         if (row.separator) {
-          return `<tr class="table-separator"><td colspan="${colCount}"></td></tr>`;
+          return Array.from({ length: colCount }, () => ({ skip: false, rowspan: 1 }));
         }
+        return Array.from({ length: colCount }, () => ({ skip: false, rowspan: 1 }));
+      });
 
-        let tds = '';
+      [0, 1].forEach(colIndex => {
+        let r = 0;
 
-        row.cells.forEach((cell, colIndex) => {
-          const meta = rowspanMeta[rowIndex][colIndex];
-          if (meta.skip) return;
+        while (r < bodyRows.length) {
+          const row = bodyRows[r];
 
-          const rowspanAttr = meta.rowspan > 1 ? ` rowspan="${meta.rowspan}"` : '';
-          tds += `<td${rowspanAttr}>${formatTableCellHtml(cell)}</td>`;
-        });
+          if (row.separator) {
+            r++;
+            continue;
+          }
 
-        return `<tr>${tds}</tr>`;
-      }).join('')}
-    </tbody>
-  ` : '';
+          const current = stripHtmlTags(row.cells[colIndex] || '');
 
-  return `<table>${thead}${tbody}</table>`;
-}
+          if (!current) {
+            r++;
+            continue;
+          }
+
+          let span = 1;
+          let next = r + 1;
+
+          while (next < bodyRows.length) {
+            const nextRow = bodyRows[next];
+            if (nextRow.separator) break;
+
+            const nextText = stripHtmlTags(nextRow.cells[colIndex] || '');
+
+            if (nextText === '') {
+              span++;
+              next++;
+            } else {
+              break;
+            }
+          }
+
+          rowspanMeta[r][colIndex].rowspan = span;
+
+          for (let k = r + 1; k < r + span; k++) {
+            rowspanMeta[k][colIndex].skip = true;
+          }
+
+          r = r + span;
+        }
+      });
+
+      const tbody = bodyRows.length ? `
+        <tbody>
+          ${bodyRows.map((row, rowIndex) => {
+            if (row.separator) {
+              return `<tr class="table-separator"><td colspan="${colCount}"></td></tr>`;
+            }
+
+            let tds = '';
+
+            row.cells.forEach((cell, colIndex) => {
+              const meta = rowspanMeta[rowIndex][colIndex];
+              if (meta.skip) return;
+
+              const rowspanAttr = meta.rowspan > 1 ? ` rowspan="${meta.rowspan}"` : '';
+              tds += `<td${rowspanAttr}>${formatTableCellHtml(cell)}</td>`;
+            });
+
+            return `<tr>${tds}</tr>`;
+          }).join('')}
+        </tbody>
+      ` : '';
+
+      return `<table>${thead}${tbody}</table>`;
+    }
 
     function buildProcessHtml(processContent) {
       const normalized = htmlToPlainTextForSplit(processContent);
@@ -1846,7 +2114,7 @@ function buildCustomTableHtml(tableContent) {
     function renderSidebar() {
       const nav = document.getElementById('stepNav');
       if (!groupedSteps.length) {
-        nav.innerHTML = '<div class="stepNavItem"><div class="stepNavLabel">단계 정보 없음</div></div>';
+        nav.innerHTML = '<div class="stepGroup"><div class="stepGroupHeader"><span class="stepGroupTitle">단계 정보 없음</span></div></div>';
         return;
       }
 
@@ -1856,16 +2124,33 @@ function buildCustomTableHtml(tableContent) {
       nav.innerHTML = groupedSteps.map(step => {
         const done = isCompleted(step.stepNo);
         const current = !done && step.stepNo === currentStepNo;
-        const viewing = step.stepNo === displayStepNo;
+        const open = step.stepNo === displayStepNo || done;
+        const blocks = getSortedBlocks(step);
+        const selectedBlock = ensureSelectedBlock(step);
 
         return `
-          <div class="stepNavItem ${done ? 'done' : ''} ${current || viewing ? 'current' : ''}">
-            <div class="stepNavTop">
-              <div class="stepNavLabel">${done ? '✅' : (current ? '🔵' : '⚪')} STEP${step.stepNo} ${escapeHtml(step.stepName)}</div>
-              ${done
-                ? `<button class="navBtn" type="button" data-view-step="${step.stepNo}">보기</button>`
-                : (current ? `<button class="navBtn" type="button" data-view-step="${step.stepNo}">진행중</button>` : '')
-              }
+          <div class="stepGroup ${done ? 'done' : ''} ${current ? 'current' : ''} ${open ? 'open' : ''}">
+            <button class="stepGroupHeader" type="button" data-toggle-step="${step.stepNo}">
+              <div class="stepGroupHeaderLeft">
+                <span class="stepGroupTitle">${done ? '✅' : (current ? '🔵' : '⚪')} STEP${step.stepNo} ${escapeHtml(step.stepName)}</span>
+                <div class="stepGroupMeta">${blocks.length}개 세부항목</div>
+              </div>
+              <span class="stepGroupArrow">${open ? '▾' : '▸'}</span>
+            </button>
+
+            <div class="stepSubList">
+              ${blocks.map((block, idx) => `
+                <button
+                  type="button"
+                  class="stepSubItem ${selectedBlock && Number(selectedBlock.blockOrder) === Number(block.blockOrder) && step.stepNo === displayStepNo ? 'current' : ''}"
+                  data-select-block="${step.stepNo}|${block.blockOrder}">
+                  <span class="stepSubIndex">${idx + 1}</span>
+                  <span class="stepSubTextWrap">
+                    <span class="stepSubText">${escapeHtml(block.blockTitle || ('세부항목 ' + (idx + 1)))}</span>
+                    <span class="stepSubType">${escapeHtml(getBlockTypeLabel(block.blockType))}</span>
+                  </span>
+                </button>
+              `).join('')}
             </div>
           </div>
         `;
@@ -1875,20 +2160,44 @@ function buildCustomTableHtml(tableContent) {
     function renderInboundSidebar() {
       const nav = document.getElementById('inboundStepNav');
       if (!inboundGroupedSteps.length) {
-        nav.innerHTML = '<div class="stepNavItem"><div class="stepNavLabel">입고 가이드 없음</div></div>';
+        nav.innerHTML = '<div class="stepGroup"><div class="stepGroupHeader"><span class="stepGroupTitle">입고 가이드 없음</span></div></div>';
         return;
       }
 
       const displayStepNo = getInboundDisplayStepNo();
 
-      nav.innerHTML = inboundGroupedSteps.map(step => `
-        <div class="stepNavItem ${step.stepNo === displayStepNo ? 'current' : ''}">
-          <div class="stepNavTop">
-            <div class="stepNavLabel">📦 STEP${step.stepNo} ${escapeHtml(step.stepName)}</div>
-            <button class="navBtn" type="button" data-view-inbound-step="${step.stepNo}">보기</button>
+      nav.innerHTML = inboundGroupedSteps.map(step => {
+        const open = step.stepNo === displayStepNo;
+        const blocks = getSortedBlocks(step);
+        const selectedBlock = ensureSelectedInboundBlock(step);
+
+        return `
+          <div class="stepGroup ${open ? 'open current' : ''}">
+            <button class="stepGroupHeader" type="button" data-toggle-inbound-step="${step.stepNo}">
+              <div class="stepGroupHeaderLeft">
+                <span class="stepGroupTitle">📦 STEP${step.stepNo} ${escapeHtml(step.stepName)}</span>
+                <div class="stepGroupMeta">${blocks.length}개 세부항목</div>
+              </div>
+              <span class="stepGroupArrow">${open ? '▾' : '▸'}</span>
+            </button>
+
+            <div class="stepSubList">
+              ${blocks.map((block, idx) => `
+                <button
+                  type="button"
+                  class="stepSubItem ${selectedBlock && Number(selectedBlock.blockOrder) === Number(block.blockOrder) && step.stepNo === displayStepNo ? 'current' : ''}"
+                  data-select-inbound-block="${step.stepNo}|${block.blockOrder}">
+                  <span class="stepSubIndex">${idx + 1}</span>
+                  <span class="stepSubTextWrap">
+                    <span class="stepSubText">${escapeHtml(block.blockTitle || ('세부항목 ' + (idx + 1)))}</span>
+                    <span class="stepSubType">${escapeHtml(getBlockTypeLabel(block.blockType))}</span>
+                  </span>
+                </button>
+              `).join('')}
+            </div>
           </div>
-        </div>
-      `).join('');
+        `;
+      }).join('');
     }
 
     function getInboundGateBlock(step) {
@@ -1911,8 +2220,18 @@ function buildCustomTableHtml(tableContent) {
         return;
       }
 
+      const blocks = getSortedBlocks(step);
+      const selectedBlock = ensureSelectedBlock(step);
+
+      if (!selectedBlock) {
+        area.innerHTML = '<div class="empty">세부항목이 없습니다.</div>';
+        return;
+      }
+
+      const selectedIndex = blocks.findIndex(b => Number(b.blockOrder) === Number(selectedBlock.blockOrder));
       const inboundGateBlock = getInboundGateBlock(step);
       const hasInboundGate = !!inboundGateBlock;
+      const isLastBlock = selectedIndex === blocks.length - 1;
 
       area.innerHTML = `
         <section class="stageCard">
@@ -1921,17 +2240,22 @@ function buildCustomTableHtml(tableContent) {
               <div class="badge">${isCompleted(step.stepNo) ? '완료 STEP ' + step.stepNo : 'STEP ' + step.stepNo}</div>
               <p class="stageTitle">${escapeHtml(step.stepName)}</p>
             </div>
+            <p class="stageSubTitle">세부항목 ${selectedIndex + 1} / ${blocks.length}</p>
           </div>
+
           <div class="blocks">
-            ${step.blocks
-              .sort((a,b) => a.blockOrder - b.blockOrder)
-              .map(block => renderBlockHtml(block, false, hasInboundGate))
-              .join('')}
+            ${renderBlockHtml(selectedBlock, false, hasInboundGate)}
           </div>
-          ${!isCompleted(step.stepNo)
-            ? `
-              <div class="stageFooter">
-                ${hasInboundGate
+
+          <div class="stageFooter">
+            <div class="stageFooterLeft">
+              <button type="button" class="navMiniBtn" data-prev-block="${step.stepNo}" ${selectedIndex <= 0 ? 'disabled style="opacity:.45;cursor:not-allowed;"' : ''}>이전 세부항목</button>
+              <button type="button" class="navMiniBtn" data-next-block="${step.stepNo}" ${selectedIndex >= blocks.length - 1 ? 'disabled style="opacity:.45;cursor:not-allowed;"' : ''}>다음 세부항목</button>
+            </div>
+
+            <div class="stageFooterRight">
+              ${isLastBlock ? (
+                hasInboundGate
                   ? `
                     <button class="linkBtn" type="button" data-open-inbound-guide>
                       ${escapeHtml(inboundGateBlock.buttonText || '입고 가이드 보러가기')}
@@ -1940,12 +2264,10 @@ function buildCustomTableHtml(tableContent) {
                       N배송설정하기
                     </button>
                   `
-                  : `<button class="nextBtn" type="button" id="completeCurrentStepBtn" data-step="${step.stepNo}">다음 단계 이동</button>`
-                }
-              </div>
-            `
-            : ''
-          }
+                  : `<button class="nextBtn" type="button" id="completeCurrentStepBtn" data-step="${step.stepNo}">STEP 완료</button>`
+              ) : ''}
+            </div>
+          </div>
         </section>
       `;
     }
@@ -1965,6 +2287,16 @@ function buildCustomTableHtml(tableContent) {
         return;
       }
 
+      const blocks = getSortedBlocks(step);
+      const selectedBlock = ensureSelectedInboundBlock(step);
+
+      if (!selectedBlock) {
+        area.innerHTML = '<div class="empty">세부항목이 없습니다.</div>';
+        return;
+      }
+
+      const selectedIndex = blocks.findIndex(b => Number(b.blockOrder) === Number(selectedBlock.blockOrder));
+
       area.innerHTML = `
         <section class="stageCard">
           <div class="stageHead">
@@ -1972,9 +2304,19 @@ function buildCustomTableHtml(tableContent) {
               <div class="badge">입고 STEP ${step.stepNo}</div>
               <p class="stageTitle">${escapeHtml(step.stepName)}</p>
             </div>
+            <p class="stageSubTitle">세부항목 ${selectedIndex + 1} / ${blocks.length}</p>
           </div>
+
           <div class="blocks">
-            ${step.blocks.sort((a,b) => a.blockOrder - b.blockOrder).map(block => renderBlockHtml(block, true, false)).join('')}
+            ${renderBlockHtml(selectedBlock, true, false)}
+          </div>
+
+          <div class="stageFooter">
+            <div class="stageFooterLeft">
+              <button type="button" class="navMiniBtn" data-prev-inbound-block="${step.stepNo}" ${selectedIndex <= 0 ? 'disabled style="opacity:.45;cursor:not-allowed;"' : ''}>이전 세부항목</button>
+              <button type="button" class="navMiniBtn" data-next-inbound-block="${step.stepNo}" ${selectedIndex >= blocks.length - 1 ? 'disabled style="opacity:.45;cursor:not-allowed;"' : ''}>다음 세부항목</button>
+            </div>
+            <div class="stageFooterRight"></div>
           </div>
         </section>
       `;
@@ -2004,6 +2346,11 @@ function buildCustomTableHtml(tableContent) {
             </div>
           </div>
 
+          <div class="blockMetaBar">
+            <span class="metaPill">${escapeHtml(getBlockTypeLabel(block.blockType))}</span>
+            ${block.platform ? `<span class="metaPill">${escapeHtml(block.platform)}</span>` : ''}
+          </div>
+
           ${imageThumb ? `
             <div class="imagePanel">
               <div class="imgWrap">
@@ -2022,7 +2369,7 @@ function buildCustomTableHtml(tableContent) {
 
           ${path ? `
             <div class="method ${platformClass}">
-              <span class="methodLabel"></span>
+              <span class="methodLabel">경로 안내</span>
               <div class="methodText">${renderRichContent(path)}</div>
             </div>
           ` : ''}
@@ -2036,7 +2383,7 @@ function buildCustomTableHtml(tableContent) {
 
           ${desc ? `
             <div class="descBox">
-              <span class="descLabel"></span>
+              <span class="descLabel">상세 안내</span>
               <div class="descText">${renderRichContent(desc)}</div>
             </div>
           ` : ''}
@@ -2073,7 +2420,15 @@ function buildCustomTableHtml(tableContent) {
         completedSteps.sort((a, b) => a - b);
         saveProgress();
       }
+
       viewingStepNo = null;
+
+      const nextStep = groupedSteps.find(step => !isCompleted(step.stepNo));
+      if (nextStep) {
+        const firstBlock = getSortedBlocks(nextStep)[0];
+        if (firstBlock) setSelectedBlock(nextStep.stepNo, firstBlock.blockOrder);
+      }
+
       renderSidebar();
       renderCurrentStage();
       renderProgress();
@@ -2193,9 +2548,13 @@ function buildCustomTableHtml(tableContent) {
         return;
       }
 
-      const viewBtn = e.target.closest('[data-view-step]');
-      if (viewBtn) {
-        viewingStepNo = Number(viewBtn.getAttribute('data-view-step')) || null;
+      const toggleStepBtn = e.target.closest('[data-toggle-step]');
+      if (toggleStepBtn) {
+        const stepNo = Number(toggleStepBtn.getAttribute('data-toggle-step'));
+        if (!stepNo) return;
+        viewingStepNo = stepNo;
+        const step = groupedSteps.find(s => s.stepNo === stepNo);
+        if (step) ensureSelectedBlock(step);
         renderSidebar();
         renderCurrentStage();
         renderProgress();
@@ -2203,11 +2562,77 @@ function buildCustomTableHtml(tableContent) {
         return;
       }
 
-      const inboundViewBtn = e.target.closest('[data-view-inbound-step]');
-      if (inboundViewBtn) {
-        viewingInboundStepNo = Number(inboundViewBtn.getAttribute('data-view-inbound-step')) || null;
+      const selectBlockBtn = e.target.closest('[data-select-block]');
+      if (selectBlockBtn) {
+        const raw = selectBlockBtn.getAttribute('data-select-block') || '';
+        const parts = raw.split('|');
+        const stepNo = Number(parts[0]);
+        const blockOrder = Number(parts[1]);
+        if (!stepNo || !blockOrder) return;
+        viewingStepNo = stepNo;
+        setSelectedBlock(stepNo, blockOrder);
+        renderSidebar();
+        renderCurrentStage();
+        renderProgress();
+        renderFinalMessage();
+        return;
+      }
+
+      const toggleInboundStepBtn = e.target.closest('[data-toggle-inbound-step]');
+      if (toggleInboundStepBtn) {
+        const stepNo = Number(toggleInboundStepBtn.getAttribute('data-toggle-inbound-step'));
+        if (!stepNo) return;
+        viewingInboundStepNo = stepNo;
+        const step = inboundGroupedSteps.find(s => s.stepNo === stepNo);
+        if (step) ensureSelectedInboundBlock(step);
         renderInboundSidebar();
         renderInboundStage();
+        return;
+      }
+
+      const selectInboundBlockBtn = e.target.closest('[data-select-inbound-block]');
+      if (selectInboundBlockBtn) {
+        const raw = selectInboundBlockBtn.getAttribute('data-select-inbound-block') || '';
+        const parts = raw.split('|');
+        const stepNo = Number(parts[0]);
+        const blockOrder = Number(parts[1]);
+        if (!stepNo || !blockOrder) return;
+        viewingInboundStepNo = stepNo;
+        setSelectedInboundBlock(stepNo, blockOrder);
+        renderInboundSidebar();
+        renderInboundStage();
+        return;
+      }
+
+      const prevBlockBtn = e.target.closest('[data-prev-block]');
+      if (prevBlockBtn) {
+        const stepNo = Number(prevBlockBtn.getAttribute('data-prev-block'));
+        const step = groupedSteps.find(s => s.stepNo === stepNo);
+        if (step) moveBlock(step, -1);
+        return;
+      }
+
+      const nextBlockBtn = e.target.closest('[data-next-block]');
+      if (nextBlockBtn) {
+        const stepNo = Number(nextBlockBtn.getAttribute('data-next-block'));
+        const step = groupedSteps.find(s => s.stepNo === stepNo);
+        if (step) moveBlock(step, 1);
+        return;
+      }
+
+      const prevInboundBlockBtn = e.target.closest('[data-prev-inbound-block]');
+      if (prevInboundBlockBtn) {
+        const stepNo = Number(prevInboundBlockBtn.getAttribute('data-prev-inbound-block'));
+        const step = inboundGroupedSteps.find(s => s.stepNo === stepNo);
+        if (step) moveInboundBlock(step, -1);
+        return;
+      }
+
+      const nextInboundBlockBtn = e.target.closest('[data-next-inbound-block]');
+      if (nextInboundBlockBtn) {
+        const stepNo = Number(nextInboundBlockBtn.getAttribute('data-next-inbound-block'));
+        const step = inboundGroupedSteps.find(s => s.stepNo === stepNo);
+        if (step) moveInboundBlock(step, 1);
         return;
       }
 
