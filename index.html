@@ -236,6 +236,7 @@
       border-radius:12px;
       border:1px solid #E5E7EB;
       background:#fff;
+      cursor:zoom-in;
     }
 
     .progressInline{
@@ -986,13 +987,55 @@
       return getCurrentStepNo();
     }
 
+    function extractGoogleDriveFileId(url = '') {
+      const s = String(url || '').trim();
+      if (!s) return '';
+
+      const patterns = [
+        /\/file\/d\/([a-zA-Z0-9_-]+)/,
+        /[?&]id=([a-zA-Z0-9_-]+)/,
+        /\/d\/([a-zA-Z0-9_-]+)/,
+        /\/thumbnail\?id=([a-zA-Z0-9_-]+)/,
+        /\/uc\?(?:export=view&)?id=([a-zA-Z0-9_-]+)/
+      ];
+
+      for (const pattern of patterns) {
+        const m = s.match(pattern);
+        if (m && m[1]) return m[1];
+      }
+
+      if (/^[a-zA-Z0-9_-]{20,}$/.test(s)) return s;
+      return '';
+    }
+
+    function convertDriveUrlToThumb(url = '', size = 'w1600') {
+      const fileId = extractGoogleDriveFileId(url);
+      if (!fileId) return String(url || '').trim();
+      return `https://drive.google.com/thumbnail?id=${fileId}&sz=${size}`;
+    }
+
+    function convertDriveUrlToZoom(url = '', size = 'w4000') {
+      const fileId = extractGoogleDriveFileId(url);
+      if (!fileId) return String(url || '').trim();
+      return `https://drive.google.com/thumbnail?id=${fileId}&sz=${size}`;
+    }
+
     function loadData() {
       if (!clientCode) {
         alert('고객사 코드가 없습니다.');
         return;
       }
 
-      document.getElementById('packingGuideImg').src = PACKING_GUIDE_IMAGE_URL;
+      const packingGuideImg = document.getElementById('packingGuideImg');
+      const packingGuideThumb = convertDriveUrlToThumb(PACKING_GUIDE_IMAGE_URL, 'w1600');
+      const packingGuideZoom = convertDriveUrlToZoom(PACKING_GUIDE_IMAGE_URL, 'w4000');
+
+      packingGuideImg.src = packingGuideThumb;
+      packingGuideImg.setAttribute('data-zoom', packingGuideZoom);
+      packingGuideImg.setAttribute('data-title', '포장 방법 예시');
+      packingGuideImg.onerror = function() {
+        this.src = PACKING_GUIDE_IMAGE_URL;
+      };
 
       window.renderOnboardingData = function(data) {
         payload = data;
