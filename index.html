@@ -1199,56 +1199,95 @@
       document.body.style.overflow = '';
     }
 
-    async function submitInquiry() {
-      if (!pendingInquiryData) return;
+    <script>
+  async function submitInquiry() {
+    if (!pendingInquiryData) return;
 
-      try {
-        const params = new URLSearchParams();
-        params.append('mode', 'submit_inquiry');
-        params.append('clientCode', pendingInquiryData.clientCode || '');
-        params.append('smartStoreUrl', pendingInquiryData.smartStoreUrl || '');
-        params.append('firstInboundDate', pendingInquiryData.firstInboundDate || '');
-        params.append('skuCount', pendingInquiryData.skuCount || '');
-        params.append('pltCount', pendingInquiryData.pltCount || '');
-        params.append('returnInfo', pendingInquiryData.returnInfo || '');
-        params.append('packingType', pendingInquiryData.packingType || '');
-        params.append('systemEmail', pendingInquiryData.systemEmail || '');
-        params.append('userAgent', pendingInquiryData.userAgent || '');
+    const formCard = document.getElementById('inquiryFormCard');
+    const guideSection = document.getElementById('guideSection');
+    const finalSubmitBtn = document.getElementById('finalSubmitBtn');
 
-        const res = await fetch(APPS_SCRIPT_WEBAPP_URL, {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/x-www-form-urlencoded;charset=UTF-8'
-          },
-          body: params.toString()
-        });
-
-        const text = await res.text();
-        let result = {};
-
-        try {
-          result = JSON.parse(text);
-        } catch (e) {
-          console.error('응답 파싱 실패:', text);
-          alert('제출 응답 확인 중 오류가 발생했습니다. 웹앱 재배포 상태를 확인해주세요.');
-          return;
-        }
-
-        if (!result.ok) {
-          alert(result.message || '제출 중 오류가 발생했습니다.');
-          return;
-        }
-
-        setInquiryDone();
-        closeConfirmModal();
-        renderIntroState();
-        document.getElementById('guideSection').scrollIntoView({ behavior:'smooth', block:'start' });
-      } catch (err) {
-        console.error(err);
-        alert('제출 요청 중 오류가 발생했습니다. 웹앱 배포 상태를 확인해주세요.');
-      }
+    // 1) 누르자마자 중복클릭 막기
+    if (finalSubmitBtn) {
+      finalSubmitBtn.disabled = true;
+      finalSubmitBtn.textContent = '제출중...';
+      finalSubmitBtn.style.opacity = '0.7';
+      finalSubmitBtn.style.cursor = 'not-allowed';
     }
 
+    // 2) 화면은 즉시 완료 처리
+    setInquiryDone();
+    closeConfirmModal();
+    renderIntroState();
+    guideSection.classList.remove('hidden');
+    renderSidebar();
+    renderCurrentStage();
+    renderProgress();
+    renderFinalMessage();
+    guideSection.scrollIntoView({ behavior:'smooth', block:'start' });
+
+    try {
+      const params = new URLSearchParams();
+      params.append('mode', 'submit_inquiry');
+      params.append('clientCode', pendingInquiryData.clientCode || '');
+      params.append('smartStoreUrl', pendingInquiryData.smartStoreUrl || '');
+      params.append('firstInboundDate', pendingInquiryData.firstInboundDate || '');
+      params.append('skuCount', pendingInquiryData.skuCount || '');
+      params.append('pltCount', pendingInquiryData.pltCount || '');
+      params.append('returnInfo', pendingInquiryData.returnInfo || '');
+      params.append('packingType', pendingInquiryData.packingType || '');
+      params.append('systemEmail', pendingInquiryData.systemEmail || '');
+      params.append('userAgent', pendingInquiryData.userAgent || '');
+
+      const res = await fetch(APPS_SCRIPT_WEBAPP_URL, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/x-www-form-urlencoded;charset=UTF-8'
+        },
+        body: params.toString()
+      });
+
+      const text = await res.text();
+      let result = {};
+
+      try {
+        result = JSON.parse(text);
+      } catch (e) {
+        throw new Error('응답 파싱 실패');
+      }
+
+      if (!result.ok) {
+        throw new Error(result.message || '제출 중 오류가 발생했습니다.');
+      }
+
+    } catch (err) {
+      console.error(err);
+
+      // 서버 저장 실패하면 완료처리 원복
+      localStorage.removeItem(inquiryDoneKey());
+      alert('화면은 먼저 넘어갔지만 실제 제출 저장에 실패했습니다. 다시 제출해주세요.');
+
+      document.getElementById('guideSection').classList.add('hidden');
+      document.getElementById('introCard').classList.add('hidden');
+      document.getElementById('inquiryFormCard').classList.remove('hidden');
+
+      if (finalSubmitBtn) {
+        finalSubmitBtn.disabled = false;
+        finalSubmitBtn.textContent = '제출하기';
+        finalSubmitBtn.style.opacity = '';
+        finalSubmitBtn.style.cursor = '';
+      }
+
+      return;
+    }
+
+    if (finalSubmitBtn) {
+      finalSubmitBtn.disabled = false;
+      finalSubmitBtn.textContent = '제출완료!';
+      finalSubmitBtn.style.opacity = '';
+      finalSubmitBtn.style.cursor = '';
+    }
+  }
     function normalizePlatform(value) {
       const v = String(value || '').trim();
       if (v === '품고') return 'platform-poomgo';
