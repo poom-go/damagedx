@@ -10,7 +10,7 @@
 
   <style>
     :root{
-      --bg:#f6f8fb;
+      --bg:#f5f7fb;
       --card:#ffffff;
       --text:#111827;
       --muted:#6b7280;
@@ -18,20 +18,18 @@
       --primary:#03C75A;
       --primary-soft:#ecfdf3;
       --primary-deep:#02b350;
-      --blue-soft:#eff6ff;
-      --blue-line:#bfdbfe;
-      --blue-text:#1d4ed8;
-      --warn-soft:#fff7ed;
+      --soft:#f8fafc;
+      --warn-bg:#fff7ed;
       --warn-line:#fed7aa;
       --warn-text:#9a3412;
-      --shadow:0 12px 28px rgba(15,23,42,.08);
-      --radius-xl:24px;
-      --radius-lg:18px;
-      --radius-md:14px;
+      --shadow:0 10px 30px rgba(15,23,42,.06);
+      --radius-xl:22px;
+      --radius-lg:16px;
+      --radius-md:12px;
     }
 
     *{box-sizing:border-box}
-    html,body{margin:0;padding:0}
+    html,body{margin:0;padding:0;height:100%}
     body{
       font-family:"Pretendard Variable","Pretendard",system-ui,sans-serif;
       background:var(--bg);
@@ -39,24 +37,18 @@
       line-height:1.6;
     }
 
-    img{
-      max-width:100%;
-      height:auto;
-      display:block;
+    button,input{font:inherit}
+    img{max-width:100%;display:block}
+
+    .app{
+      width:100%;
+      min-height:100vh;
+      padding:16px;
     }
 
-    button,input{
-      font:inherit;
-    }
-
-    .wrap{
-      max-width:1440px;
-      margin:0 auto;
-      padding:24px;
-    }
-
-    .top{
-      margin-bottom:20px;
+    .topbar{
+      margin-bottom:16px;
+      padding:0 4px;
     }
 
     .badge{
@@ -67,14 +59,14 @@
       border-radius:999px;
       background:var(--primary-soft);
       color:var(--primary-deep);
-      font-weight:800;
       font-size:13px;
-      margin-bottom:12px;
+      font-weight:800;
+      margin-bottom:10px;
     }
 
     h1{
-      margin:0 0 8px;
-      font-size:32px;
+      margin:0 0 6px;
+      font-size:30px;
       line-height:1.2;
       letter-spacing:-.03em;
     }
@@ -82,19 +74,14 @@
     .sub{
       margin:0;
       color:var(--muted);
-      font-size:15px;
+      font-size:14px;
     }
 
     .layout{
       display:grid;
-      grid-template-columns:340px minmax(0,1fr);
-      gap:24px;
-      align-items:start;
-    }
-
-    .sidebar{
-      position:sticky;
-      top:20px;
+      grid-template-columns:300px minmax(0,1fr);
+      gap:16px;
+      min-height:calc(100vh - 110px);
     }
 
     .card{
@@ -104,25 +91,29 @@
       box-shadow:var(--shadow);
     }
 
-    .sidebar-card{
-      padding:18px;
+    /* left */
+    .sidebar{
+      padding:16px;
+      position:sticky;
+      top:16px;
+      height:fit-content;
     }
 
     .side-head{
       display:flex;
       justify-content:space-between;
       align-items:center;
-      gap:12px;
+      gap:8px;
       margin-bottom:14px;
     }
 
     .side-title{
-      font-size:18px;
+      font-size:17px;
       font-weight:800;
     }
 
     .progress{
-      padding:7px 10px;
+      padding:6px 10px;
       border-radius:999px;
       background:var(--primary-soft);
       color:var(--primary-deep);
@@ -139,7 +130,7 @@
 
     .step-item{
       border:1px solid var(--line);
-      border-radius:18px;
+      border-radius:16px;
       overflow:hidden;
       background:#fff;
     }
@@ -148,28 +139,25 @@
       width:100%;
       border:none;
       background:#fff;
-      cursor:pointer;
+      padding:14px;
       display:flex;
       align-items:center;
       gap:12px;
-      padding:14px;
       text-align:left;
-    }
-
-    .step-header:hover{
-      background:#fafafa;
+      cursor:pointer;
     }
 
     .step-item.active .step-header{
-      background:linear-gradient(180deg,#fafffc 0%, #f3fff8 100%);
+      background:linear-gradient(180deg,#fbfffd 0%, #f3fff8 100%);
     }
 
     .step-num{
       width:34px;
       height:34px;
-      border-radius:12px;
+      border-radius:11px;
       display:grid;
       place-items:center;
+      font-size:14px;
       font-weight:800;
       background:#f3f4f6;
       flex:0 0 34px;
@@ -186,18 +174,18 @@
     }
 
     .step-title{
-      font-size:15px;
-      font-weight:800;
       margin:0 0 4px;
+      font-size:14px;
+      font-weight:800;
       letter-spacing:-.02em;
     }
 
     .step-state{
       display:flex;
       align-items:center;
-      gap:8px;
+      gap:7px;
       color:var(--muted);
-      font-size:13px;
+      font-size:12px;
       font-weight:700;
     }
 
@@ -212,26 +200,21 @@
     .dot.current{background:#2563eb}
 
     .chev{
-      font-size:18px;
       color:#6b7280;
       transition:transform .2s ease;
-      flex:0 0 auto;
+      font-size:18px;
     }
 
-    .step-item.active .chev{
-      transform:rotate(180deg);
-    }
+    .step-item.active .chev{transform:rotate(180deg)}
 
     .step-body{
       display:none;
+      padding:10px 14px 14px;
       border-top:1px solid var(--line);
-      padding:12px 14px 14px;
       background:#fcfcfd;
     }
 
-    .step-item.active .step-body{
-      display:block;
-    }
+    .step-item.active .step-body{display:block}
 
     .step-sublist{
       display:flex;
@@ -245,36 +228,31 @@
       font-size:13px;
       color:#374151;
       word-break:break-word;
-      overflow-wrap:anywhere;
     }
 
     .side-note{
       margin-top:14px;
-      padding:12px 14px;
-      border-radius:16px;
+      padding:12px 13px;
+      border-radius:14px;
       background:#f9fafb;
       border:1px solid var(--line);
-      font-size:13px;
       color:var(--muted);
+      font-size:12px;
     }
 
-    .content{
-      padding:24px;
+    /* right */
+    .main{
+      padding:24px 28px;
       min-width:0;
-      overflow:hidden;
     }
 
     .hero{
       display:flex;
       justify-content:space-between;
-      gap:16px;
       align-items:flex-start;
-      flex-wrap:wrap;
+      gap:12px;
       margin-bottom:18px;
-    }
-
-    .hero-left{
-      min-width:0;
+      flex-wrap:wrap;
     }
 
     .step-chip{
@@ -292,7 +270,7 @@
 
     .hero h2{
       margin:0 0 8px;
-      font-size:30px;
+      font-size:28px;
       line-height:1.2;
       letter-spacing:-.03em;
       word-break:keep-all;
@@ -305,7 +283,7 @@
       word-break:keep-all;
     }
 
-    .hero-actions{
+    .actions{
       display:flex;
       gap:10px;
       flex-wrap:wrap;
@@ -313,8 +291,8 @@
 
     .btn{
       border:none;
-      border-radius:14px;
-      padding:12px 16px;
+      padding:12px 15px;
+      border-radius:12px;
       font-weight:800;
       cursor:pointer;
     }
@@ -335,52 +313,46 @@
       cursor:not-allowed;
     }
 
-    .lead{
-      padding:18px;
+    .guide{
+      border:1px solid var(--line);
       border-radius:20px;
-      border:1px solid rgba(3,199,90,.2);
-      background:linear-gradient(180deg,#fbfffd 0%, #f3fff8 100%);
-      margin-bottom:18px;
+      overflow:hidden;
+      background:#fff;
     }
 
-    .lead-label{
+    .guide-section{
+      padding:24px;
+    }
+
+    .guide-section + .guide-section{
+      border-top:1px solid var(--line);
+    }
+
+    .section-label{
+      margin:0 0 12px;
       font-size:13px;
       font-weight:900;
-      color:var(--primary-deep);
-      margin-bottom:8px;
+      color:#6b7280;
+      text-transform:uppercase;
+      letter-spacing:.04em;
+    }
+
+    .lead-box{
+      background:linear-gradient(180deg,#fbfffd 0%, #f3fff8 100%);
     }
 
     .lead-text{
       margin:0;
-      font-size:18px;
+      font-size:20px;
+      line-height:1.5;
       font-weight:800;
       letter-spacing:-.02em;
       word-break:keep-all;
     }
 
-    .main-grid{
-      display:grid;
-      grid-template-columns:minmax(0,1.1fr) minmax(320px,.9fr);
-      gap:18px;
-    }
-
-    .section{
-      border:1px solid var(--line);
-      border-radius:20px;
-      padding:20px;
-      min-width:0;
-      overflow:hidden;
-    }
-
-    .section h3{
-      margin:0 0 12px;
-      font-size:18px;
-      letter-spacing:-.02em;
-    }
-
     .flow-list{
-      display:flex;
-      flex-direction:column;
+      display:grid;
+      grid-template-columns:repeat(3,minmax(0,1fr));
       gap:10px;
       margin:0;
       padding:0;
@@ -390,140 +362,122 @@
     .flow-list li{
       display:flex;
       gap:10px;
-      padding:12px 14px;
-      border-radius:16px;
-      background:#f9fafb;
-      border:1px solid #eef2f7;
-      word-break:break-word;
-      overflow-wrap:anywhere;
+      align-items:flex-start;
+      padding:14px;
+      border:1px solid var(--line);
+      border-radius:14px;
+      background:#fafafa;
+      min-width:0;
     }
 
-    .check-icon{
-      width:22px;
-      height:22px;
+    .flow-num{
+      width:24px;
+      height:24px;
       border-radius:999px;
       display:grid;
       place-items:center;
-      background:#e5e7eb;
+      background:#111827;
+      color:#fff;
       font-size:12px;
-      font-weight:900;
-      flex:0 0 22px;
+      font-weight:800;
+      flex:0 0 24px;
+      margin-top:1px;
     }
 
-    .blocks{
+    .flow-text{
+      font-size:14px;
+      font-weight:700;
+      word-break:break-word;
+    }
+
+    .detail-list{
       display:flex;
       flex-direction:column;
-      gap:14px;
-      margin-top:18px;
-      min-width:0;
+      gap:0;
     }
 
-    .block{
-      border:1px solid var(--line);
-      border-radius:18px;
-      padding:16px;
-      background:#fff;
-      min-width:0;
-      overflow:hidden;
+    .detail-item{
+      padding:18px 0;
+      border-bottom:1px solid #eef2f7;
     }
 
-    .block h4{
+    .detail-item:last-child{
+      border-bottom:none;
+      padding-bottom:0;
+    }
+
+    .detail-title{
       margin:0 0 8px;
-      font-size:16px;
+      font-size:17px;
+      font-weight:800;
       letter-spacing:-.02em;
       word-break:keep-all;
     }
 
-    .block p{
+    .detail-body{
       margin:0;
-      font-size:14px;
+      font-size:15px;
       color:#374151;
       word-break:break-word;
       overflow-wrap:anywhere;
     }
 
-    .info-box,.warn-box{
-      border-radius:18px;
-      padding:16px;
-      border:1px solid;
-      margin-top:12px;
-      min-width:0;
-      overflow:hidden;
-    }
-
-    .info-box{
-      background:var(--blue-soft);
-      border-color:var(--blue-line);
-      color:var(--blue-text);
-    }
-
-    .warn-box{
-      background:var(--warn-soft);
-      border-color:var(--warn-line);
-      color:var(--warn-text);
-    }
-
-    .box-title{
-      font-size:13px;
-      font-weight:900;
-      margin-bottom:8px;
-    }
-
-    .mini-list{
-      margin:0;
-      padding-left:18px;
-    }
-
-    .mini-list li{
-      word-break:break-word;
-      overflow-wrap:anywhere;
-    }
-
-    .mini-list li + li{
-      margin-top:6px;
-    }
-
-    .path{
+    .subnote{
       margin-top:10px;
       padding:14px;
-      border-radius:16px;
-      background:#0f172a;
-      color:#f8fafc;
+      border-radius:14px;
+      background:var(--soft);
+      border:1px solid var(--line);
       font-size:14px;
-      font-weight:700;
+      color:#374151;
       white-space:pre-line;
       word-break:break-word;
       overflow-wrap:anywhere;
     }
 
+    .warn{
+      margin-top:10px;
+      padding:14px;
+      border-radius:14px;
+      background:var(--warn-bg);
+      border:1px solid var(--warn-line);
+      color:var(--warn-text);
+      font-size:14px;
+    }
+
+    .warn strong{
+      display:block;
+      margin-bottom:6px;
+      font-size:13px;
+    }
+
     .placeholder{
+      margin-top:10px;
+      min-height:200px;
       border:1px dashed #cbd5e1;
-      border-radius:18px;
-      background:linear-gradient(180deg,#fcfcfd 0%, #f8fafc 100%);
-      min-height:220px;
+      border-radius:16px;
       display:flex;
       align-items:center;
       justify-content:center;
       text-align:center;
+      background:#fafcff;
       color:#64748b;
       font-size:14px;
       font-weight:700;
       padding:20px;
-      word-break:keep-all;
     }
 
     .table-wrap{
       width:100%;
       overflow-x:auto;
+      margin-top:12px;
       border:1px solid var(--line);
-      border-radius:16px;
-      margin-top:10px;
-      -webkit-overflow-scrolling:touch;
+      border-radius:14px;
     }
 
     table{
       width:100%;
-      min-width:520px;
+      min-width:560px;
       border-collapse:collapse;
       background:#fff;
     }
@@ -545,19 +499,18 @@
     }
 
     .check-area{
-      display:flex;
-      flex-direction:column;
+      display:grid;
+      grid-template-columns:repeat(2,minmax(0,1fr));
       gap:10px;
-      margin-top:12px;
     }
 
     .check-row{
       display:flex;
       gap:10px;
       align-items:flex-start;
-      padding:12px 14px;
+      padding:14px;
       border:1px solid var(--line);
-      border-radius:16px;
+      border-radius:14px;
       background:#fafafa;
       min-width:0;
     }
@@ -574,98 +527,102 @@
       font-size:14px;
       font-weight:700;
       word-break:break-word;
-      overflow-wrap:anywhere;
     }
 
     .footer-nav{
       display:flex;
       justify-content:space-between;
       gap:12px;
-      margin-top:18px;
+      margin-top:16px;
       flex-wrap:wrap;
     }
 
-    @media (max-width:1100px){
+    @media (max-width:1200px){
+      .flow-list{
+        grid-template-columns:1fr 1fr;
+      }
+      .check-area{
+        grid-template-columns:1fr;
+      }
+    }
+
+    @media (max-width:1024px){
       .layout{
         grid-template-columns:1fr;
       }
       .sidebar{
         position:static;
       }
-      .main-grid{
+      .flow-list{
         grid-template-columns:1fr;
       }
     }
 
     @media (max-width:640px){
-      .wrap{padding:14px}
-      h1{font-size:26px}
-      .hero h2{font-size:24px}
-      .content{padding:18px}
-      .step-header{padding:12px}
-      .section{padding:16px}
+      .app{padding:10px}
+      .main{padding:18px}
+      h1{font-size:24px}
+      .hero h2{font-size:23px}
+      .guide-section{padding:18px}
     }
   </style>
 </head>
 <body>
-  <div class="wrap">
-    <div class="top">
+  <div class="app">
+    <div class="topbar">
       <div class="badge">셀프 세팅 가이드</div>
       <h1>품고 셀프 온보딩</h1>
       <p class="sub">질문 없이 순서대로 따라가면 세팅이 완료되도록 구성한 셀프 온보딩입니다.</p>
     </div>
 
     <div class="layout">
-      <aside class="sidebar">
-        <div class="card sidebar-card">
-          <div class="side-head">
-            <div class="side-title">진행 단계</div>
-            <div class="progress" id="progressText">0 / 5 완료</div>
-          </div>
+      <aside class="card sidebar">
+        <div class="side-head">
+          <div class="side-title">진행 단계</div>
+          <div class="progress" id="progressText">0 / 5 완료</div>
+        </div>
 
-          <div class="accordion" id="stepAccordion"></div>
+        <div class="accordion" id="stepAccordion"></div>
 
-          <div class="side-note">
-            각 STEP의 완료 항목을 모두 체크하면 해당 STEP은 완료 처리되며 자동으로 닫힙니다.
-          </div>
+        <div class="side-note">
+          완료 항목을 모두 체크하면 해당 STEP은 완료 처리되며 자동으로 닫히고 다음 STEP이 열립니다.
         </div>
       </aside>
 
-      <main class="card content">
+      <main class="card main">
         <div class="hero">
-          <div class="hero-left">
+          <div>
             <div class="step-chip" id="heroChip">STEP 1</div>
             <h2 id="heroTitle">고객사 등록</h2>
             <p id="heroDesc"></p>
           </div>
 
-          <div class="hero-actions">
+          <div class="actions">
             <button class="btn secondary" id="resetBtn" type="button">체크 초기화</button>
           </div>
         </div>
 
-        <div class="lead">
-          <div class="lead-label">지금 해야 할 일</div>
-          <p class="lead-text" id="leadText"></p>
-        </div>
+        <section class="guide">
+          <div class="guide-section lead-box">
+            <div class="section-label">지금 해야 할 일</div>
+            <p class="lead-text" id="leadText"></p>
+          </div>
 
-        <div class="main-grid">
-          <section class="section">
-            <h3>진행 순서</h3>
+          <div class="guide-section">
+            <div class="section-label">진행 순서</div>
             <ul class="flow-list" id="flowList"></ul>
-            <div class="blocks" id="detailBlocks"></div>
-          </section>
+          </div>
 
-          <section class="section">
-            <h3>완료 기준</h3>
-            <div id="rightInfo"></div>
+          <div class="guide-section">
+            <div class="section-label">상세 안내</div>
+            <div class="detail-list" id="detailList"></div>
+          </div>
 
-            <div class="info-box">
-              <div class="box-title">다음 단계로 넘어가기 전 확인</div>
-              <div class="check-area" id="checkArea"></div>
-            </div>
-          </section>
-        </div>
+          <div class="guide-section">
+            <div class="section-label">완료 체크</div>
+            <div class="check-area" id="checkArea"></div>
+          </div>
+        </section>
 
         <div class="footer-nav">
           <button class="btn secondary" id="prevBtn" type="button">이전 단계</button>
@@ -687,13 +644,13 @@
             title: "고객사 등록 메일 수신",
             type: "section",
             body: "품고에서 발송된 고객사 등록 메일을 확인한 후 메일 내 [고객사 등록하기] 버튼을 클릭하여 등록을 진행해주세요.",
-            notice: ["메일 수신 후 24시간 이내 등록이 필요합니다."]
+            warn: ["메일 수신 후 24시간 이내 등록이 필요합니다."]
           },
           {
             title: "고객사 정보 입력",
             type: "section",
             body: "브랜드 및 사업자 정보를 입력해주세요.",
-            notice: ["고객사명은 브랜드명과 동일하게 입력해주세요.", "사업자 정보는 네이버 기준으로 입력해주세요."]
+            note: "고객사명은 브랜드명과 동일하게 입력해주세요.\n사업자 정보는 네이버 기준으로 입력해주세요."
           },
           {
             title: "품고 나우 로그인 하기",
@@ -731,9 +688,9 @@
           },
           {
             title: "연동 확인 & N배송 동의",
-            type: "notice",
+            type: "section",
             body: "아래 두 가지를 반드시 확인해주세요.",
-            notice: [
+            warn: [
               "물류사 품고 / 연동 상태가 연동중으로 되어있는지 확인해주세요.",
               "타물류사를 이용하지 않는 경우 연동중으로 노출되는 물류사는 모두 철회 처리해주세요."
             ]
@@ -782,7 +739,8 @@
           {
             title: "입고 가이드 확인",
             type: "section",
-            body: "입고 기준, 포장 방법, 파렛타이징 기준, 벌크 입고 기준을 확인해주세요."
+            body: "입고 기준, 포장 방법, 파렛타이징 기준, 벌크 입고 기준을 확인해주세요.",
+            warn: ["기준 미준수 시 입고 지연 또는 추가 작업 비용이 발생할 수 있습니다."]
           },
           {
             title: "포장 유형 안내",
@@ -803,7 +761,8 @@
           {
             title: "연결 상품 점검",
             type: "section",
-            body: "SKU와 판매처 상품 연결 상태를 확인해주세요."
+            body: "SKU와 판매처 상품 연결 상태를 확인해주세요.",
+            warn: ["연결되지 않은 상품은 출고되지 않습니다."]
           },
           {
             title: "재고 점검",
@@ -824,9 +783,9 @@
       }
     ];
 
-    const STORAGE_KEY = "poomgo_self_onboarding_v2";
-
+    const STORAGE_KEY = "poomgo_self_onboarding_v3";
     const state = loadState();
+
     let currentIndex = state.currentIndex ?? 0;
     let openStepId = state.openStepId ?? DATA[0].id;
 
@@ -837,8 +796,7 @@
     const heroDesc = document.getElementById("heroDesc");
     const leadText = document.getElementById("leadText");
     const flowList = document.getElementById("flowList");
-    const detailBlocks = document.getElementById("detailBlocks");
-    const rightInfo = document.getElementById("rightInfo");
+    const detailList = document.getElementById("detailList");
     const checkArea = document.getElementById("checkArea");
     const prevBtn = document.getElementById("prevBtn");
     const nextBtn = document.getElementById("nextBtn");
@@ -847,9 +805,9 @@
     function loadState() {
       try {
         const raw = localStorage.getItem(STORAGE_KEY);
-        return raw ? JSON.parse(raw) : { checks: {}, currentIndex: 0, openStepId: DATA[0]?.id };
+        return raw ? JSON.parse(raw) : { checks: {}, currentIndex: 0, openStepId: DATA[0].id };
       } catch (e) {
-        return { checks: {}, currentIndex: 0, openStepId: DATA[0]?.id };
+        return { checks: {}, currentIndex: 0, openStepId: DATA[0].id };
       }
     }
 
@@ -872,7 +830,7 @@
       return step.checks.length > 0 && step.checks.every((_, i) => !!arr[i]);
     }
 
-    function getStatus(step, idx) {
+    function statusOf(step, idx) {
       if (isStepDone(step)) return { text: "완료", cls: "done" };
       if (idx === currentIndex) return { text: "진행중", cls: "current" };
       return { text: "대기", cls: "" };
@@ -884,16 +842,9 @@
       progressText.textContent = `${doneCount} / ${DATA.length} 완료`;
 
       DATA.forEach((step, idx) => {
-        const status = getStatus(step, idx);
+        const s = statusOf(step, idx);
         const item = document.createElement("div");
         item.className = "step-item" + (openStepId === step.id ? " active" : "");
-
-        const subItemsHtml = step.items.map(x => `
-          <div class="step-subitem">
-            <span>ㄴ</span>
-            <span>${escapeHtml(x.title)}</span>
-          </div>
-        `).join("");
 
         item.innerHTML = `
           <button class="step-header" type="button">
@@ -901,19 +852,20 @@
             <div class="step-main">
               <div class="step-title">${escapeHtml(step.title)}</div>
               <div class="step-state">
-                <span class="dot ${status.cls}"></span>
-                <span>${status.text}</span>
+                <span class="dot ${s.cls}"></span>
+                <span>${s.text}</span>
               </div>
             </div>
             <div class="chev">⌄</div>
           </button>
           <div class="step-body">
-            <div class="step-sublist">${subItemsHtml}</div>
+            <div class="step-sublist">
+              ${step.items.map(x => `<div class="step-subitem"><span>ㄴ</span><span>${escapeHtml(x.title)}</span></div>`).join("")}
+            </div>
           </div>
         `;
 
-        const header = item.querySelector(".step-header");
-        header.addEventListener("click", () => {
+        item.querySelector(".step-header").addEventListener("click", () => {
           currentIndex = idx;
           openStepId = openStepId === step.id ? "" : step.id;
           saveState();
@@ -932,21 +884,22 @@
       leadText.textContent = step.lead;
 
       flowList.innerHTML = "";
-      step.items.forEach(item => {
+      step.items.forEach((item, idx) => {
         const li = document.createElement("li");
-        li.innerHTML = `<span class="check-icon">✓</span><div>${escapeHtml(item.title)}</div>`;
+        li.innerHTML = `
+          <div class="flow-num">${idx + 1}</div>
+          <div class="flow-text">${escapeHtml(item.title)}</div>
+        `;
         flowList.appendChild(li);
       });
 
-      detailBlocks.innerHTML = "";
+      detailList.innerHTML = "";
       step.items.forEach(item => {
-        const block = document.createElement("div");
-        block.className = "block";
-        block.innerHTML = renderItem(item);
-        detailBlocks.appendChild(block);
+        const div = document.createElement("div");
+        div.className = "detail-item";
+        div.innerHTML = renderDetail(item);
+        detailList.appendChild(div);
       });
-
-      rightInfo.innerHTML = renderRightInfo(step);
 
       checkArea.innerHTML = "";
       const checks = getChecks(step.id);
@@ -983,37 +936,26 @@
       nextBtn.disabled = currentIndex === DATA.length - 1;
     }
 
-    function renderItem(item) {
+    function renderDetail(item) {
       if (item.type === "path") {
         return `
-          <h4>${escapeHtml(item.title)}</h4>
-          <div class="path">${escapeHtml(item.body).replaceAll(" > ", "\n→ ")}</div>
-        `;
-      }
-
-      if (item.type === "notice") {
-        return `
-          <h4>${escapeHtml(item.title)}</h4>
-          <p>${escapeHtml(item.body)}</p>
-          <div class="warn-box">
-            <div class="box-title">반드시 확인해주세요</div>
-            <ul class="mini-list">
-              ${(item.notice || []).map(x => `<li>${escapeHtml(x)}</li>`).join("")}
-            </ul>
-          </div>
+          <h3 class="detail-title">${escapeHtml(item.title)}</h3>
+          <p class="detail-body">아래 경로대로 진행해주세요.</p>
+          <div class="subnote">${escapeHtml(item.body).replaceAll(" > ", "\n→ ")}</div>
         `;
       }
 
       if (item.type === "placeholder") {
         return `
-          <h4>${escapeHtml(item.title)}</h4>
+          <h3 class="detail-title">${escapeHtml(item.title)}</h3>
           <div class="placeholder">${escapeHtml(item.body)}</div>
         `;
       }
 
       if (item.type === "custom" && item.body === "skuGuide") {
         return `
-          <h4>SKU 등록</h4>
+          <h3 class="detail-title">SKU 등록</h3>
+          <p class="detail-body">SKU 등록 화면에서 필수 항목을 기준에 맞게 입력해주세요.</p>
           <div class="placeholder">여기에 SKU 등록 화면 이미지를 넣어주세요. 추천: ① SKU명 ② 바코드 ③ 보관온도 ④ 소비기한 ⑤ 로트번호 ⑥ 보관사이즈 ⑦ SKU유형 번호 표시</div>
 
           <div class="table-wrap">
@@ -1033,137 +975,33 @@
             </table>
           </div>
 
-          <div class="info-box">
-            <div class="box-title">SKU명 예시</div>
-            <div class="table-wrap">
-              <table>
-                <thead>
-                  <tr><th>기준</th><th>상품명</th></tr>
-                </thead>
-                <tbody>
-                  <tr><td>식별 가능</td><td>꽃물 틴트 1호 체리, 꽃물 틴트 2호 딸기</td></tr>
-                  <tr><td>식별 불가</td><td>체리, 딸기</td></tr>
-                </tbody>
-              </table>
-            </div>
+          <div class="table-wrap">
+            <table>
+              <thead>
+                <tr><th>기준</th><th>상품명</th></tr>
+              </thead>
+              <tbody>
+                <tr><td>식별 가능</td><td>꽃물 틴트 1호 체리, 꽃물 틴트 2호 딸기</td></tr>
+                <tr><td>식별 불가</td><td>체리, 딸기</td></tr>
+              </tbody>
+            </table>
           </div>
 
-          <div class="warn-box">
-            <div class="box-title">주의사항</div>
-            <ul class="mini-list">
-              <li>관리하지 않는 상품을 관리함으로 설정하지 않도록 주의해주세요. 수정이 불가합니다.</li>
-              <li>사은품 선택 시 품고 전산에 등록되지 않으므로 상품으로 선택해주세요.</li>
-              <li>최초 입고 SKU는 품고에서 체적 정보를 측정하여 자동 반영됩니다.</li>
-            </ul>
+          <div class="warn">
+            <strong>주의</strong>
+            관리하지 않는 상품을 관리함으로 설정하지 않도록 주의해주세요. 수정이 불가합니다.<br>
+            사은품 선택 시 품고 전산에 등록되지 않으므로 상품으로 선택해주세요.<br>
+            최초 입고 SKU는 품고에서 체적 정보를 측정하여 자동 반영됩니다.
           </div>
         `;
       }
 
       return `
-        <h4>${escapeHtml(item.title)}</h4>
-        <p>${escapeHtml(item.body)}</p>
-        ${
-          item.notice?.length
-            ? `
-              <div class="info-box">
-                <div class="box-title">확인해주세요</div>
-                <ul class="mini-list">
-                  ${item.notice.map(x => `<li>${escapeHtml(x)}</li>`).join("")}
-                </ul>
-              </div>
-            `
-            : ""
-        }
+        <h3 class="detail-title">${escapeHtml(item.title)}</h3>
+        <p class="detail-body">${escapeHtml(item.body)}</p>
+        ${item.note ? `<div class="subnote">${escapeHtml(item.note)}</div>` : ""}
+        ${item.warn?.length ? `<div class="warn"><strong>주의</strong>${item.warn.map(x => escapeHtml(x)).join("<br>")}</div>` : ""}
       `;
-    }
-
-    function renderRightInfo(step) {
-      if (step.id === "client_register") {
-        return `
-          <div class="info-box">
-            <div class="box-title">완료 기준</div>
-            <ul class="mini-list">
-              <li>품고 나우 로그인 가능</li>
-              <li>필요한 구성원 계정 추가 완료</li>
-            </ul>
-          </div>
-          <div class="warn-box">
-            <div class="box-title">문제가 발생한 경우</div>
-            <ul class="mini-list">
-              <li>고객사 등록 버튼이 보이지 않는 경우</li>
-              <li>메일 수신 후 24시간이 초과된 경우</li>
-              <li>사업자 주소 / 브랜드 고객센터 대표번호 / 반품지 주소 / 담당자명 / 연락처 / 이메일 정보를 전달해주세요.</li>
-            </ul>
-          </div>
-        `;
-      }
-
-      if (step.id === "fulfillment") {
-        return `
-          <div class="info-box">
-            <div class="box-title">완료 기준</div>
-            <ul class="mini-list">
-              <li>물류사 품고 확인 완료</li>
-              <li>연동 상태 연동중 확인 완료</li>
-              <li>불필요한 타 물류사 연동 철회 완료</li>
-            </ul>
-          </div>
-        `;
-      }
-
-      if (step.id === "sku") {
-        return `
-          <div class="info-box">
-            <div class="box-title">완료 기준</div>
-            <ul class="mini-list">
-              <li>SKU 등록 완료</li>
-              <li>판매처 상품과 연결상품 매핑 완료</li>
-            </ul>
-          </div>
-          <div class="warn-box">
-            <div class="box-title">자주 틀리는 항목</div>
-            <ul class="mini-list">
-              <li>SKU명을 옵션 없이 입력</li>
-              <li>실물과 다른 바코드 입력</li>
-              <li>SKU 유형을 사은품으로 선택</li>
-            </ul>
-          </div>
-        `;
-      }
-
-      if (step.id === "inbound") {
-        return `
-          <div class="info-box">
-            <div class="box-title">완료 기준</div>
-            <ul class="mini-list">
-              <li>입고 기준 확인 완료</li>
-              <li>포장 방법 확인 완료</li>
-            </ul>
-          </div>
-          <div class="warn-box">
-            <div class="box-title">주의</div>
-            <ul class="mini-list">
-              <li>기준 미준수 시 입고 지연 또는 추가 작업 비용이 발생할 수 있습니다.</li>
-            </ul>
-          </div>
-        `;
-      }
-
-      return `
-        <div class="info-box">
-          <div class="box-title">완료 기준</div>
-          <ul class="mini-list">
-            <li>연결 상품 이상 없음</li>
-            <li>재고 정상 반영</li>
-            <li>N배송 설정 완료</li>
-          </ul>
-        </div>
-      `;
-    }
-
-    function render() {
-      renderAccordion();
-      renderMain();
     }
 
     function escapeHtml(str = "") {
@@ -1173,6 +1011,11 @@
         .replaceAll(">", "&gt;")
         .replaceAll('"', "&quot;")
         .replaceAll("'", "&#39;");
+    }
+
+    function render() {
+      renderAccordion();
+      renderMain();
     }
 
     prevBtn.addEventListener("click", () => {
