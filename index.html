@@ -65,8 +65,23 @@
     .topbar{margin-bottom:18px;padding:0 4px}
 
     .badge{
-      display:inline-flex;align-items:center;gap:8px;padding:8px 13px;border-radius:999px;
-      background:var(--brand-soft);color:var(--brand);font-size:13px;font-weight:800;margin-bottom:12px;
+      display:inline-flex;
+      align-items:center;
+      gap:8px;
+      padding:8px 13px;
+      border-radius:999px;
+      background:var(--brand-soft);
+      color:var(--brand);
+      font-size:13px;
+      font-weight:800;
+      margin-bottom:12px;
+    }
+
+    .badge-logo{
+      height:20px;
+      width:auto;
+      flex:0 0 auto;
+      object-fit:contain;
     }
 
     h1{margin:0 0 8px;font-size:32px;line-height:1.18;letter-spacing:-.03em}
@@ -75,8 +90,11 @@
     .layout{display:grid;grid-template-columns:300px minmax(0,1fr);gap:18px;min-height:calc(100vh - 110px)}
 
     .card{
-      background:rgba(255,255,255,.92);border:1px solid rgba(255,255,255,.88);
-      border-radius:var(--radius-2xl);box-shadow:var(--shadow);backdrop-filter:blur(8px);
+      background:rgba(255,255,255,.92);
+      border:1px solid rgba(255,255,255,.88);
+      border-radius:var(--radius-2xl);
+      box-shadow:var(--shadow);
+      backdrop-filter:blur(8px);
     }
 
     .sidebar{display:flex;flex-direction:column;height:calc(100vh - 40px);position:sticky;top:20px;padding:18px}
@@ -130,7 +148,7 @@
     .guide-section + .guide-section{border-top:1px solid #eff3f6}
     .section-label{margin:0 0 14px;font-size:12px;font-weight:900;color:#7b8794;text-transform:uppercase;letter-spacing:.08em}
     .lead-box{background:linear-gradient(180deg,#fcfdff 0%, #f4f7ff 100%)}
-    .lead-text{margin:0;font-size:22px;line-height:1.5;font-weight:800;letter-spacing:-.025em;word-break:keep-all}
+    .lead-text{margin:0;font-size:22px;line-height:1.5;font-weight:800;letter-spacing:-.025em;word-break:keep-all;white-space:pre-line}
 
     .process-strip-wrap{padding:16px;border-radius:22px;background:var(--soft-blue);border:1px solid #e4edf7}
     .process-strip{display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:14px}
@@ -152,7 +170,7 @@
     .detail-item.hidden{display:none}
     .detail-item:last-child{border-bottom:none;padding-bottom:0}
     .detail-title{margin:0 0 10px;font-size:18px;font-weight:900;letter-spacing:-.02em;word-break:keep-all}
-    .detail-body{margin:0;font-size:15px;color:#374151;word-break:break-word;overflow-wrap:anywhere}
+    .detail-body{margin:0;font-size:15px;color:#374151;word-break:break-word;overflow-wrap:anywhere;white-space:pre-line}
     .detail-body p{margin:0 0 10px}
     .detail-body p:last-child{margin-bottom:0}
     .detail-body table{width:100%;min-width:560px;border-collapse:collapse;background:#fff}
@@ -160,32 +178,47 @@
     .detail-body th{background:#f8fafc;font-size:13px;font-weight:800;color:#374151}
     .detail-body .table-wrap{width:100%;overflow-x:auto;margin-top:12px;border:1px solid var(--line);border-radius:16px}
     .subnote{margin-top:12px;padding:14px 16px;border-radius:16px;background:#f8fbfd;border:1px solid var(--line);font-size:14px;color:#374151;white-space:pre-line;word-break:break-word;overflow-wrap:anywhere}
-    .warn{margin-top:12px;padding:14px 16px;border-radius:16px;background:var(--warn-bg);border:1px solid var(--warn-line);color:var(--warn-text);font-size:14px}
+    .warn{margin-top:12px;padding:14px 16px;border-radius:16px;background:var(--warn-bg);border:1px solid var(--warn-line);color:var(--warn-text);font-size:14px;white-space:pre-line}
     .warn strong{display:block;margin-bottom:6px;font-size:13px}
     .render-image{margin-top:14px;border:1px solid var(--line);border-radius:18px;overflow:hidden;background:#fff}
     .render-image img{width:100%;height:auto;object-fit:contain;background:#fff}
-    .render-caption{padding:12px 14px;border-top:1px solid var(--line);font-size:13px;color:var(--muted)}
+    .render-caption{padding:12px 14px;border-top:1px solid var(--line);font-size:13px;color:var(--muted);white-space:pre-line}
 
     .check-area{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
     .check-row{display:flex;gap:10px;align-items:flex-start;padding:15px 16px;border:1px solid var(--line);border-radius:16px;background:#fbfcfd;min-width:0;transition:all .15s ease}
     .check-row:hover{background:#fff;box-shadow:var(--shadow-soft)}
     .check-row input{width:18px;height:18px;margin-top:2px;accent-color:var(--brand);flex:0 0 auto}
-    .check-row span{font-size:14px;font-weight:700;word-break:break-word}
+    .check-row span{font-size:14px;font-weight:700;word-break:break-word;white-space:pre-line}
     .footer-nav{display:flex;justify-content:space-between;gap:12px;margin-top:18px;flex-wrap:wrap}
 
     .loading{padding:40px 20px;color:var(--muted);font-size:14px}
     .error{margin-top:12px;padding:16px;border-radius:16px;background:var(--danger-bg);border:1px solid var(--danger-line);color:var(--danger-text);font-size:14px;white-space:pre-line}
     .empty{color:var(--muted);font-size:14px}
 
-    .welcome-wrap{display:flex;align-items:center;justify-content:center;min-height:420px}
+    .welcome-wrap{
+      width:100%;
+      min-height:520px;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      padding:40px 20px;
+      background:linear-gradient(180deg,#f5f7ff 0%, #eef2ff 100%);
+      border-radius:var(--radius-2xl);
+    }
     .welcome-card{
-      width:min(760px,100%);padding:42px 34px;border-radius:28px;background:linear-gradient(180deg,#fbfcff 0%, #f5f8ff 100%);
-      border:1px solid #dbe5ff;text-align:center;box-shadow:0 20px 40px rgba(0,64,209,.08);
+      width:min(760px,100%);
+      padding:48px 36px;
+      border-radius:28px;
+      background:#fff;
+      text-align:center;
+      box-shadow:0 20px 40px rgba(0,64,209,.08);
+      border:1px solid #dbe5ff;
+      margin:0 auto;
     }
     .welcome-chip{display:inline-flex;padding:8px 12px;border-radius:999px;background:#fff;color:var(--brand);font-size:12px;font-weight:900;letter-spacing:.04em;margin-bottom:14px;border:1px solid #d9e4ff}
-    .welcome-title{margin:0 0 12px;font-size:34px;line-height:1.2;letter-spacing:-.04em}
-    .welcome-desc{margin:0 auto 24px;max-width:560px;font-size:16px;color:#4b5563;word-break:keep-all}
-    .welcome-note{margin:0 auto 26px;max-width:520px;padding:16px 18px;border-radius:18px;background:#fff;border:1px solid #e5ebf7;color:#374151;font-size:14px}
+    .welcome-title{margin:0 0 12px;font-size:34px;line-height:1.2;letter-spacing:-.04em;white-space:pre-line}
+    .welcome-desc{margin:0 auto 24px;max-width:560px;font-size:16px;color:#4b5563;word-break:keep-all;white-space:pre-line}
+    .welcome-note{margin:0 auto 26px;max-width:520px;padding:16px 18px;border-radius:18px;background:#fff;border:1px solid #e5ebf7;color:#374151;font-size:14px;white-space:pre-line}
     .welcome-actions{display:flex;justify-content:center;gap:10px;flex-wrap:wrap}
 
     .inquiry-shell{max-width:920px;margin:0 auto}
@@ -199,7 +232,7 @@
     .input,.select,.textarea{width:100%;border:1px solid #dbe3ee;border-radius:14px;background:#fff;padding:14px 14px;outline:none;transition:border-color .18s ease, box-shadow .18s ease;color:#111827}
     .input:focus,.select:focus,.textarea:focus{border-color:#b5c9ff;box-shadow:0 0 0 4px rgba(0,64,209,.08)}
     .textarea{min-height:120px;resize:vertical}
-    .hint{font-size:12px;color:#6b7280}
+    .hint{font-size:12px;color:#6b7280;white-space:pre-line}
     .choice-row{display:flex;gap:10px;flex-wrap:wrap}
     .choice-pill{border:1px solid #dbe3ee;background:#fff;border-radius:999px;padding:10px 14px;display:inline-flex;align-items:center;gap:8px;cursor:pointer;font-weight:700;color:#374151}
     .choice-pill input{accent-color:var(--brand)}
@@ -208,7 +241,7 @@
     .pack-thumb{width:120px;height:120px;border-radius:14px;overflow:hidden;background:#fff;border:1px solid #e5e7eb;cursor:pointer}
     .pack-thumb img{width:100%;height:100%;object-fit:cover}
     .pack-meta h4{margin:0 0 6px;font-size:15px;font-weight:900}
-    .pack-meta p{margin:0;font-size:14px;color:#4b5563}
+    .pack-meta p{margin:0;font-size:14px;color:#4b5563;white-space:pre-line}
 
     .summary-box{margin-top:18px;padding:18px;border:1px solid #dbe5ff;border-radius:20px;background:linear-gradient(180deg,#fbfcff 0%, #f5f8ff 100%)}
     .summary-box h3{margin:0 0 10px;font-size:18px}
@@ -216,7 +249,7 @@
     .summary-item{display:grid;grid-template-columns:160px minmax(0,1fr);gap:12px;padding:10px 0;border-bottom:1px solid #e6ecfb}
     .summary-item:last-child{border-bottom:none}
     .summary-key{font-size:13px;font-weight:900;color:#4b5563}
-    .summary-val{font-size:14px;color:#111827;word-break:break-word}
+    .summary-val{font-size:14px;color:#111827;word-break:break-word;white-space:pre-line}
 
     .modal{position:fixed;inset:0;display:none;align-items:center;justify-content:center;padding:20px;z-index:1000}
     .modal.open{display:flex}
@@ -224,7 +257,7 @@
     .modal-panel{position:relative;width:min(760px, 100%);max-height:85vh;overflow:auto;background:#fff;border-radius:26px;border:1px solid var(--line);box-shadow:0 24px 60px rgba(15,23,42,.20);padding:24px}
     .modal-head{display:flex;justify-content:space-between;align-items:flex-start;gap:12px;margin-bottom:18px}
     .modal-title{margin:0;font-size:24px;line-height:1.2;letter-spacing:-.03em}
-    .modal-sub{margin:8px 0 0;color:var(--muted);font-size:14px}
+    .modal-sub{margin:8px 0 0;color:var(--muted);font-size:14px;white-space:pre-line}
     .icon-btn{border:none;background:#f3f4f6;width:40px;height:40px;border-radius:12px;cursor:pointer;font-size:20px;line-height:1}
     .faq-list{display:flex;flex-direction:column;gap:10px}
     .faq-item{border:1px solid var(--line);border-radius:16px;overflow:hidden;background:#fff}
@@ -268,7 +301,10 @@
 <body>
   <div class="app">
     <div class="topbar">
-      <div class="badge">셀프 세팅 가이드</div>
+      <div class="badge" id="guideBadge">
+        <img id="companyLogo" class="badge-logo" src="여기에_회사로고_URL" alt="회사 로고">
+        <span>N배송 세팅 가이드</span>
+      </div>
       <h1 id="pageTitle">N배송 세팅 가이드</h1>
       <p class="sub" id="appSub">안내에 따라 순서대로 진행하면 설정을 직접 완료할 수 있어요.</p>
     </div>
@@ -276,11 +312,12 @@
     <div id="welcomeScreen" class="welcome-wrap card">
       <div class="welcome-card">
         <div class="welcome-chip">WELCOME</div>
-        <h2 class="welcome-title">N배송 설정 전 품고 문의 내용을 먼저 확인해주세요</h2>
-        <p class="welcome-desc">초도 입고 및 운영 관련 기본 정보를 먼저 전달해주시면, 제출 내용을 확인한 뒤 N배송 세팅 절차 가이드를 오픈해드릴게요.</p>
-        <div class="welcome-note">
-          제출해주신 내용은 품고 담당자가 확인 후 순차적으로 검토됩니다. 검토가 완료되면 현재 링크에서 N배송 세팅 가이드를 이어서 확인할 수 있습니다.
-        </div>
+        <h2 class="welcome-title">환영합니다 🎉
+N배송 세팅 가이드에 오신 것을 환영합니다</h2>
+        <p class="welcome-desc">초도 입고부터 출고 설정까지,
+안내된 순서대로 진행하시면 빠르게 운영을 시작하실 수 있어요.</p>
+        <div class="welcome-note">N배송 설정 전 필요한 품고 문의 내용을 먼저 전달해주시면,
+제출 내용을 확인한 뒤 N배송 세팅 절차 가이드를 오픈해드릴게요.</div>
         <div class="welcome-actions">
           <button class="btn primary" id="startInquiryBtn" type="button">문의 내용 작성하기</button>
         </div>
@@ -292,7 +329,7 @@
         <div class="hero">
           <div>
             <div class="step-chip">사전 문의 접수</div>
-            <h2>초도 입고 및 운영 정보를 입력해주세요</h2>
+            <h2>N배송 세팅 전 필요한 정보를 입력해주세요</h2>
             <p>입력해주신 내용을 기준으로 품고에서 확인 후 N배송 세팅 절차를 오픈합니다.</p>
           </div>
         </div>
@@ -306,12 +343,12 @@
 
             <div class="field">
               <label for="skuCount"><span class="label-text">2. 초도 입고 SKU 종 수</span><span class="req">*</span></label>
-              <input class="input" id="skuCount" type="number" min="0" placeholder="예: 12" />
+              <input class="input" id="skuCount" type="number" min="0" placeholder="예: 10" />
             </div>
 
-            <div class="field">
+            <div class="field full">
               <label for="pltCount"><span class="label-text">3. 초도 입고 PLT 수</span><span class="req">*</span></label>
-              <input class="input" id="pltCount" type="number" min="0" placeholder="예: 4" />
+              <input class="input" id="pltCount" type="number" min="0" placeholder="예: 10" />
             </div>
 
             <div class="field full">
@@ -376,9 +413,7 @@
           </div>
 
           <div class="sidebar-footer">
-            <div class="side-note">
-              설명 과정은 다음 버튼을 눌러야 다음 순서가 보입니다.
-            </div>
+            <div class="side-note">설명 과정은 다음 버튼을 눌러야 다음 순서가 보입니다.</div>
           </div>
         </aside>
 
@@ -474,9 +509,7 @@
           <p class="modal-sub">입력하신 내용을 전송하고 있어요. 잠시만 기다려주세요.</p>
         </div>
       </div>
-      <div class="summary-box">
-        제출된 내용을 품고에서 확인 후 N배송 세팅 절차 가이드가 오픈됩니다!
-      </div>
+      <div class="summary-box">제출된 내용을 품고에서 확인 후 N배송 세팅 절차 가이드가 오픈됩니다!</div>
     </div>
   </div>
 
@@ -497,6 +530,7 @@
     const CONFIG = {
       SPREADSHEET_ID: '1JzTyCkZHBMEQiKNqIXLB8KUiVY8Y-33KICB2lwM06GQ',
       GAS_WEBAPP_URL: '여기에_배포한_GAS_WEBAPP_URL',
+      COMPANY_LOGO_URL: 'https://drive.google.com/file/d/1tgVRxlRQ63QkShpmz1434yuWDD9MpKjw/view?usp=drive_link',
       SHEETS: {
         steps: 'steps',
         contents: 'contents',
@@ -509,17 +543,18 @@
       PACK_OPTIONS: {
         '기본 포장': {
           title: '기본 포장',
-          desc: '제품 자체에는 별도 완충 포장을 하지 않고, 박스 내부 상·하단에 에어캡을 넣어 출고하는 방식입니다.\n 해당 포장 방법은 내품 파손이 발생하더라도 택배사 사고 처리가 불가합니다.',
+          desc: `제품 자체에는 별도 완충 포장을 하지 않고, 박스 내부 상·하단에 에어캡을 넣어 출고하는 방식입니다.
+해당 포장은 내품 파손 발생 시 택배 사고 처리가 불가합니다.`,
           image: 'https://drive.google.com/file/d/1tITH7c-WsVejDK2F2JsECSvHMcpDnMJt/view?usp=drive_link'
         },
         '에어캡 포장': {
           title: '에어캡 포장',
-          desc: '제품을 에어캡으로 완충 포장하여 출고하는 방식입니다.\n 해당 포장 방법은 송장 당 추가 비용이 발생합니다.',
+          desc: '제품을 에어캡으로 완충 포장하여 출고하는 방식입니다.\n추가 비용이 발생합니다.',
           image: 'https://drive.google.com/file/d/110e8PsWHq-2XkOYg7bXiONNn_1XpA-ip/view?usp=drive_link'
         },
         '버블페이퍼 포장': {
           title: '버블페이퍼 포장',
-          desc: '제품을 버블페이퍼로 완충 포장하여 출고하는 방식입니다. \n 해당 포장 방법은 송장 당 추가 비용이 발생합니다.',
+          desc: '제품을 버블페이퍼로 완충 포장하여 출고하는 방식입니다.\n추가 비용이 발생합니다.',
           image: 'https://drive.google.com/file/d/1W2CYbdHLX7Uj2InTm-0HH-CaKnmAOomg/view?usp=drive_link'
         }
       }
@@ -557,6 +592,7 @@
     const errorBox = document.getElementById('errorBox');
     const appSub = document.getElementById('appSub');
     const pageTitle = document.getElementById('pageTitle');
+    const companyLogo = document.getElementById('companyLogo');
 
     const startInquiryBtn = document.getElementById('startInquiryBtn');
     const backToWelcomeBtn = document.getElementById('backToWelcomeBtn');
@@ -584,6 +620,8 @@
 
     async function init() {
       try {
+        applyCompanyLogo_();
+
         const [stepsRows, contentsRows, checklistRows, faqRows, clientRows] = await Promise.all([
           querySheet(CONFIG.SHEETS.steps),
           querySheet(CONFIG.SHEETS.contents),
@@ -604,9 +642,9 @@
 
         const customerName = String(CLIENT_INFO['고객사명'] || '').trim();
         document.title = `${customerName} | N배송 세팅 가이드`;
-        pageTitle.textContent = customerName ? `${customerName} 셀프 온보딩` : '품고 셀프 온보딩';
+        pageTitle.textContent = customerName ? `${customerName} N배송 세팅 가이드` : 'N배송 세팅 가이드';
         appSub.textContent = customerName
-          ? `${customerName} 전용 셀프 세팅 페이지입니다. 아래 순서대로 진행해주세요.`
+          ? `${customerName} 전용 N배송 세팅 가이드입니다. 아래 순서대로 진행해주세요.`
           : CONFIG.DEFAULT_SUBTITLE;
 
         state = loadState();
@@ -627,6 +665,16 @@
           '상세 오류:\n' + (err?.message || String(err))
         );
       }
+    }
+
+    function applyCompanyLogo_() {
+      const logoUrl = normalizeImageUrl_(CONFIG.COMPANY_LOGO_URL);
+      if (!logoUrl || logoUrl.includes('여기에_회사로고_URL')) {
+        companyLogo.style.display = 'none';
+        return;
+      }
+      companyLogo.src = logoUrl;
+      companyLogo.style.display = 'block';
     }
 
     function routeInitialScreen() {
@@ -803,7 +851,7 @@
       heroChip.textContent = `STEP ${currentIndex + 1}`;
       heroTitle.textContent = step.title;
       heroDesc.textContent = step.desc;
-      leadText.innerHTML = step.leadHtml || '<span class="empty">리드문구가 비어 있습니다.</span>';
+      leadText.innerHTML = convertEscapedNewlines_(step.leadHtml || '<span class="empty">리드문구가 비어 있습니다.</span>');
 
       const checks = getChecks(step.id);
       const checkedCount = checks.filter(Boolean).length;
@@ -840,7 +888,7 @@
       step.checks.forEach((label, i) => {
         const row = document.createElement('label');
         row.className = 'check-row';
-        row.innerHTML = `<input type="checkbox" ${checks[i] ? 'checked' : ''}><span>${escapeHtml(label)}</span>`;
+        row.innerHTML = `<input type="checkbox" ${checks[i] ? 'checked' : ''}><span>${escapeHtml(label).replaceAll('\\n', '\n')}</span>`;
         row.querySelector('input').addEventListener('change', (e) => {
           checks[i] = e.target.checked;
           saveState();
@@ -854,52 +902,38 @@
 
     function renderDetail(item) {
       const title = `<h3 class="detail-title">${escapeHtml(item.title)}</h3>`;
-      const body = item.bodyHtml ? `<div class="detail-body">${wrapTables(item.bodyHtml)}</div>` : '';
-      const note = item.noteHtml ? `<div class="subnote">${item.noteHtml}</div>` : '';
-      const warn = item.warnHtml ? `<div class="warn"><strong>주의</strong>${item.warnHtml}</div>` : '';
+      const body = item.bodyHtml ? `<div class="detail-body">${wrapTables(convertEscapedNewlines_(item.bodyHtml))}</div>` : '';
+      const note = item.noteHtml ? `<div class="subnote">${convertEscapedNewlines_(item.noteHtml)}</div>` : '';
+      const warn = item.warnHtml ? `<div class="warn"><strong>주의</strong>${convertEscapedNewlines_(item.warnHtml)}</div>` : '';
       const normalizedImageUrl = normalizeImageUrl_(item.imageUrl);
-      const image = normalizedImageUrl ? `<div class="render-image"><img src="${escapeAttr(normalizedImageUrl)}" alt="${escapeAttr(item.title)}">${item.imageCaption ? `<div class="render-caption">${item.imageCaption}</div>` : ''}</div>` : '';
-      if (item.type === 'path') return `${title}<div class="subnote">${escapeHtml(stripHtml(item.bodyHtml)).replaceAll('>', '→')}</div>${warn}`;
+      const image = normalizedImageUrl ? `<div class="render-image"><img src="${escapeAttr(normalizedImageUrl)}" alt="${escapeAttr(item.title)}">${item.imageCaption ? `<div class="render-caption">${escapeHtml(item.imageCaption).replaceAll('\\n', '\n')}</div>` : ''}</div>` : '';
+      if (item.type === 'path') return `${title}<div class="subnote">${escapeHtml(stripHtml(item.bodyHtml)).replaceAll('>', '→').replaceAll('\\n', '\n')}</div>${warn}`;
       if (item.type === 'link') return `${title}${body}${warn}${item.linkUrl ? `<div style="margin-top:12px;"><a class="btn primary" href="${escapeAttr(item.linkUrl)}" target="_blank" rel="noopener noreferrer">${escapeHtml(item.linkText || '바로가기')}</a></div>` : ''}`;
       return `${title}${body}${image}${note}${warn}`;
+    }
+
+    function convertEscapedNewlines_(text) {
+      return String(text || '').replace(/\\n/g, '\n');
     }
 
     function normalizeImageUrl_(url) {
       const raw = String(url || '').trim();
       if (!raw) return '';
-
-      // 이미 직접 이미지 링크면 그대로 사용
-      if (/^https?:\/\//i.test(raw) && !/drive\.google\.com/i.test(raw)) {
-        return raw;
-      }
-
-      // 구글 드라이브 공유 링크 / 파일 링크에서 fileId 추출
+      if (/^https?:\/\//i.test(raw) && !/drive\.google\.com/i.test(raw)) return raw;
       const fileId = extractGoogleDriveFileId_(raw);
-      if (fileId) {
-        return `https://drive.google.com/thumbnail?id=${encodeURIComponent(fileId)}&sz=w1600`;
-      }
-
+      if (fileId) return `https://drive.google.com/thumbnail?id=${encodeURIComponent(fileId)}&sz=w1600`;
       return raw;
     }
 
     function extractGoogleDriveFileId_(url) {
       const raw = String(url || '').trim();
       if (!raw) return '';
-
-      // file/d/FILE_ID
       let match = raw.match(/\/file\/d\/([a-zA-Z0-9_-]+)/);
       if (match && match[1]) return match[1];
-
-      // open?id=FILE_ID 또는 uc?id=FILE_ID
       match = raw.match(/[?&]id=([a-zA-Z0-9_-]+)/);
       if (match && match[1]) return match[1];
-
-      // drive/folders 는 이미지가 아니라 제외
       if (/\/folders\//.test(raw)) return '';
-
-      // 혹시 fileId만 단독 입력한 경우
       if (/^[a-zA-Z0-9_-]{20,}$/.test(raw)) return raw;
-
       return '';
     }
 
@@ -965,7 +999,7 @@
         ['행사 진행 예정 여부', values.eventPlan || '-'],
         ['문의 사항', values.inquiryText || '없음']
       ];
-      summaryList.innerHTML = rows.map(([k, v]) => `<div class="summary-item"><div class="summary-key">${escapeHtml(k)}</div><div class="summary-val">${escapeHtml(v)}</div></div>`).join('');
+      summaryList.innerHTML = rows.map(([k, v]) => `<div class="summary-item"><div class="summary-key">${escapeHtml(k)}</div><div class="summary-val">${escapeHtml(v).replaceAll('\\n', '\n')}</div></div>`).join('');
       summaryModal.classList.add('open');
       summaryModal.setAttribute('aria-hidden', 'false');
       document.body.style.overflow = 'hidden';
@@ -1047,7 +1081,7 @@
           ${imagePart}
           <div class="pack-meta">
             <h4>${escapeHtml(info.title)}</h4>
-            <p>${escapeHtml(info.desc)}</p>
+            <p>${escapeHtml(info.desc).replaceAll('\\n', '\n')}</p>
           </div>
         </div>
       `;
@@ -1082,7 +1116,7 @@
         step.faqs.forEach((faq, idx) => {
           const item = document.createElement('div');
           item.className = 'faq-item' + (idx === 0 ? ' open' : '');
-          item.innerHTML = `<button class="faq-q" type="button"><span>${escapeHtml(faq.q)}</span><span class="faq-arrow">⌄</span></button><div class="faq-a">${faq.aHtml}</div>`;
+          item.innerHTML = `<button class="faq-q" type="button"><span>${escapeHtml(faq.q)}</span><span class="faq-arrow">⌄</span></button><div class="faq-a">${convertEscapedNewlines_(faq.aHtml)}</div>`;
           item.querySelector('.faq-q').addEventListener('click', () => item.classList.toggle('open'));
           faqList.appendChild(item);
         });
