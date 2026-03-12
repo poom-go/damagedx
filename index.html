@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>N배송 설정 가이드</title>
+  <title>N배송 세팅 가이드</title>
 
   <link rel="stylesheet" as="style" crossorigin
     href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable.css" />
@@ -208,7 +208,7 @@
     .pack-thumb{width:120px;height:120px;border-radius:14px;overflow:hidden;background:#fff;border:1px solid #e5e7eb;cursor:pointer}
     .pack-thumb img{width:100%;height:100%;object-fit:cover}
     .pack-meta h4{margin:0 0 6px;font-size:15px;font-weight:900}
-    .pack-meta p{margin:0;font-size:14px;color:#4b5563;white-space:pre-line;}
+    .pack-meta p{margin:0;font-size:14px;color:#4b5563}
 
     .summary-box{margin-top:18px;padding:18px;border:1px solid #dbe5ff;border-radius:20px;background:linear-gradient(180deg,#fbfcff 0%, #f5f8ff 100%)}
     .summary-box h3{margin:0 0 10px;font-size:18px}
@@ -268,18 +268,18 @@
 <body>
   <div class="app">
     <div class="topbar">
-      <div class="badge">N배송 세팅가이드</div>
-      <h1 id="pageTitle">N배송 세팅가이드</h1>
+      <div class="badge">셀프 세팅 가이드</div>
+      <h1 id="pageTitle">N배송 세팅 가이드</h1>
       <p class="sub" id="appSub">안내에 따라 순서대로 진행하면 설정을 직접 완료할 수 있어요.</p>
     </div>
 
     <div id="welcomeScreen" class="welcome-wrap card">
       <div class="welcome-card">
         <div class="welcome-chip">WELCOME</div>
-        <h2 class="welcome-title">가이드 확인 이전,품고 문의 내용을 먼저 확인해주세요</h2>
-        <p class="welcome-desc">네이버에 제출한 질의서 더블 체크의 목적이며, 품고에서 제출 내용을 확인 후 N배송 세팅가이드가 오픈됩니다.</p>
+        <h2 class="welcome-title">N배송 설정 전 품고 문의 내용을 먼저 확인해주세요</h2>
+        <p class="welcome-desc">초도 입고 및 운영 관련 기본 정보를 먼저 전달해주시면, 제출 내용을 확인한 뒤 N배송 세팅 절차 가이드를 오픈해드릴게요.</p>
         <div class="welcome-note">
-          가이드 오픈은 메일로 알림이 발송되니 참고해주세요🙂
+          제출해주신 내용은 품고 담당자가 확인 후 순차적으로 검토됩니다. 검토가 완료되면 현재 링크에서 N배송 세팅 가이드를 이어서 확인할 수 있습니다.
         </div>
         <div class="welcome-actions">
           <button class="btn primary" id="startInquiryBtn" type="button">문의 내용 작성하기</button>
@@ -306,12 +306,12 @@
 
             <div class="field">
               <label for="skuCount"><span class="label-text">2. 초도 입고 SKU 종 수</span><span class="req">*</span></label>
-              <input class="input" id="skuCount" type="number" min="0" placeholder="예: 10" />
+              <input class="input" id="skuCount" type="number" min="0" placeholder="예: 12" />
             </div>
 
             <div class="field">
               <label for="pltCount"><span class="label-text">3. 초도 입고 PLT 수</span><span class="req">*</span></label>
-              <input class="input" id="pltCount" type="number" min="0" placeholder="예: 10" />
+              <input class="input" id="pltCount" type="number" min="0" placeholder="예: 4" />
             </div>
 
             <div class="field full">
@@ -509,17 +509,17 @@
       PACK_OPTIONS: {
         '기본 포장': {
           title: '기본 포장',
-          desc: '제품 자체에는 별도 완충 포장을 하지 않고, 박스 내부 상·하단에 에어캡을 넣어 출고하는 방식입니다.\n해당 포장은 내품파손 발생 시 택배 사고 처리가 불가합니다.',
+          desc: '제품 자체에는 별도 완충 포장을 하지 않고, 박스 내부 상·하단에 에어캡을 넣어 출고하는 방식입니다.\n 해당 포장 방법은 내품 파손이 발생하더라도 택배사 사고 처리가 불가합니다.',
           image: 'https://drive.google.com/file/d/1tITH7c-WsVejDK2F2JsECSvHMcpDnMJt/view?usp=drive_link'
         },
         '에어캡 포장': {
           title: '에어캡 포장',
-          desc: '제품을 에어캡으로 완충 포장하여 출고하는 방식입니다.\n송장 당 추가 비용이 발생합니다.',
+          desc: '제품을 에어캡으로 완충 포장하여 출고하는 방식입니다.\n 해당 포장 방법은 송장 당 추가 비용이 발생합니다.',
           image: 'https://drive.google.com/file/d/110e8PsWHq-2XkOYg7bXiONNn_1XpA-ip/view?usp=drive_link'
         },
         '버블페이퍼 포장': {
           title: '버블페이퍼 포장',
-          desc: '제품을 버블페이퍼로 완충 포장하여 출고하는 방식입니다.\n송장 당 추가 비용이 발생합니다.',
+          desc: '제품을 버블페이퍼로 완충 포장하여 출고하는 방식입니다. \n 해당 포장 방법은 송장 당 추가 비용이 발생합니다.',
           image: 'https://drive.google.com/file/d/1W2CYbdHLX7Uj2InTm-0HH-CaKnmAOomg/view?usp=drive_link'
         }
       }
@@ -603,9 +603,10 @@
         if (!DATA.length) throw new Error('활성화된 steps 데이터가 없습니다.');
 
         const customerName = String(CLIENT_INFO['고객사명'] || '').trim();
-        document.title = `${customerName} | 품고 N배송 세팅 가이드`;
+        document.title = `${customerName} | N배송 세팅 가이드`;
+        pageTitle.textContent = customerName ? `${customerName} 셀프 온보딩` : '품고 셀프 온보딩';
         appSub.textContent = customerName
-          ? `${customerName} 전용 N배송 세팅 가이드입니다. 아래 순서대로 진행해주세요.`
+          ? `${customerName} 전용 셀프 세팅 페이지입니다. 아래 순서대로 진행해주세요.`
           : CONFIG.DEFAULT_SUBTITLE;
 
         state = loadState();
