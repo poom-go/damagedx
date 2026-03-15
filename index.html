@@ -225,34 +225,6 @@
       justify-content:flex-start;
     }
 
-    .section-label{
-      margin:0 0 8px;
-      font-size:12px;
-      font-weight:900;
-      color:#7b8794;
-      text-transform:uppercase;
-      letter-spacing:.08em;
-    }
-
-    .hero-box{
-      margin-bottom:10px;
-      padding:12px 14px;
-      border-radius:16px;
-      border:1px solid #e4ebf8;
-      background:linear-gradient(180deg,#fcfdff 0%, #f4f7ff 100%);
-      flex:0 0 auto;
-    }
-
-    .hero-text{
-      margin:0;
-      font-size:18px;
-      line-height:1.45;
-      font-weight:900;
-      letter-spacing:-.025em;
-      word-break:keep-all;
-      white-space:pre-line;
-    }
-
     .screen-body{
       min-height:0;
       flex:1 1 auto;
@@ -330,8 +302,8 @@
     }
 
     .subnote{
-      padding:14px 16px;
-      border-radius:16px;
+      padding:12px 14px;
+      border-radius:14px;
       background:#f8fbfd;
       border:1px solid var(--line);
       font-size:14px;
@@ -343,8 +315,8 @@
     }
 
     .warn{
-      padding:14px 16px;
-      border-radius:16px;
+      padding:12px 14px;
+      border-radius:14px;
       background:var(--warn-bg);
       border:1px solid var(--warn-line);
       color:var(--warn-text);
@@ -528,11 +500,11 @@
     }
 
     .textarea{
-      min-height:110px;
+      min-height:120px;
       resize:vertical;
     }
 
-    .hint{font-size:12px;color:#6b7280;white-space:pre-line}
+    .hint{font-size:12px;color:#6b7280;white-space:pre-line;line-height:1.55}
     .choice-row{display:flex;gap:10px;flex-wrap:wrap}
     .choice-pill{
       border:1px solid #dbe3ee;
@@ -547,6 +519,18 @@
       color:#374151;
     }
     .choice-pill input{accent-color:var(--brand)}
+
+    .compact-note{
+      margin-top:-2px;
+      padding:10px 12px;
+      border-radius:12px;
+      background:#f8fafc;
+      border:1px solid #e6edf5;
+      font-size:12px;
+      color:#64748b;
+      line-height:1.55;
+      white-space:pre-line;
+    }
 
     .pack-select-grid{
       display:grid;
@@ -632,13 +616,6 @@
       font-weight:900;
       line-height:1.3;
       word-break:keep-all;
-    }
-
-    .pack-desc-panel{
-      display:grid;
-      grid-template-columns:1fr;
-      gap:8px;
-      margin-top:2px;
     }
 
     .pack-desc-box{
@@ -780,7 +757,6 @@
       .window-sub{display:none}
       .pane-top,.pane-content,.pane-footer{padding-left:18px;padding-right:18px}
       .pane-title{font-size:24px}
-      .hero-text{font-size:18px}
       .form-grid,.check-area,.pack-select-grid{grid-template-columns:1fr}
       .pack-thumb{height:210px}
       .pane-footer{
@@ -1169,7 +1145,7 @@
     }
 
     function renderInquiryWizard() {
-      const totalSteps = 3;
+      const totalSteps = 2;
       windowTitleText.textContent = '원활한 운영을 위해 아래 양식을 모두 기입하여 제출해주세요.';
 
       const remain = Math.max(totalSteps - inquiryStep - 1, 0);
@@ -1186,10 +1162,7 @@
       paneContent.innerHTML = '';
       const card = document.createElement('div');
       card.className = 'screen-card';
-      card.innerHTML =
-        inquiryStep === 0 ? renderInquiryStep1()
-        : inquiryStep === 1 ? renderInquiryStep2()
-        : renderInquiryStep3();
+      card.innerHTML = inquiryStep === 0 ? renderInquiryStep1() : renderInquiryStep2();
 
       paneContent.appendChild(card);
       bindInquiryScreenEvents();
@@ -1207,7 +1180,7 @@
               renderInquiryWizard();
             }
           },
-          inquiryStep < 2 ? {
+          inquiryStep < 1 ? {
             label: '다음',
             kind: 'primary',
             disabled: inquirySubmitting,
@@ -1231,10 +1204,6 @@
 
     function renderInquiryStep1() {
       return `
-        <div class="hero-box">
-          <p class="hero-text">먼저 로그인 계정과 담당자 정보를 입력해주세요.</p>
-        </div>
-
         <div class="screen-body">
           <div class="form-grid">
             <div class="field full">
@@ -1258,8 +1227,41 @@
             </div>
 
             <div class="field">
-              <label for="brandPhone">대표번호 <span class="req">*</span></label>
-              <input class="input" id="brandPhone" type="text" placeholder="대표번호">
+              <label for="brandPhone">브랜드 대표번호 <span class="req">*</span></label>
+              <input class="input" id="brandPhone" type="text" placeholder="브랜드 대표번호">
+            </div>
+
+            <div class="field full">
+              <label for="inboundDate">초도 입고일 <span class="req">*</span></label>
+              <input class="input" id="inboundDate" type="date">
+            </div>
+
+            <div class="field full">
+              <label>초도 입고월 행사 유무 <span class="req">*</span></label>
+              <div class="choice-row">
+                <label class="choice-pill"><input type="radio" name="eventPlan" value="Y"> Y</label>
+                <label class="choice-pill"><input type="radio" name="eventPlan" value="N"> N</label>
+              </div>
+              <div class="compact-note">* 초도 입고 4/1, 4월 중 예정된 행사가 있는 경우 Y를 선택해주세요.</div>
+            </div>
+
+            <div id="eventFields" class="field full hidden">
+              <div class="form-grid" style="padding:0;">
+                <div class="field">
+                  <label for="eventName">행사명 <span class="req">*</span></label>
+                  <input class="input" id="eventName" type="text" placeholder="행사명">
+                </div>
+
+                <div class="field">
+                  <label for="eventDate">행사 일자 <span class="req">*</span></label>
+                  <input class="input" id="eventDate" type="date">
+                </div>
+
+                <div class="field full">
+                  <label for="eventExpectedCount">예상 출고 송장 건 수 <span class="req">*</span></label>
+                  <input class="input" id="eventExpectedCount" type="number" min="0" placeholder="예상 출고 송장 건 수">
+                </div>
+              </div>
             </div>
 
             <div class="field full">
@@ -1294,78 +1296,27 @@
       const selectedInfo = CONFIG.PACK_OPTIONS[selected];
 
       return `
-        <div class="hero-box">
-          <p class="hero-text">운영 예정인 포장 방법을 선택해주세요.</p>
-        </div>
-
         <div class="screen-body">
           <div class="pack-select-grid">
             ${options}
           </div>
 
-          <div class="pack-desc-panel">
-            <div class="pack-desc-box" id="packDescBox">
-              <p class="pack-desc-head">${selectedInfo ? escapeHtml(selectedInfo.title) : '포장 방법 설명'}</p>
-              <p class="pack-desc-text">${selectedInfo ? escapeHtml(selectedInfo.desc) : '위 포장 방법 중 하나를 선택하면 설명이 표시됩니다.'}</p>
+          <div class="pack-desc-box" id="packDescBox">
+            <p class="pack-desc-head">${selectedInfo ? escapeHtml(selectedInfo.title) : '포장 방법 설명'}</p>
+            <p class="pack-desc-text">${selectedInfo ? escapeHtml(selectedInfo.desc) : '위 포장 방법 중 하나를 선택하면 설명이 표시됩니다.'}</p>
+          </div>
+
+          <div class="field full">
+            <label>단수 상품(SKU) 운영 유무 <span class="req">*</span></label>
+            <div class="choice-row">
+              <label class="choice-pill"><input type="radio" name="singleShipment" value="Y"> Y</label>
+              <label class="choice-pill"><input type="radio" name="singleShipment" value="N"> N</label>
             </div>
           </div>
 
-          <div id="inquiryStepError" class="error hidden"></div>
-        </div>
-      `;
-    }
-
-    function renderInquiryStep3() {
-      return `
-        <div class="hero-box">
-          <p class="hero-text">운영 예정 정보와 문의사항을 입력해주세요.</p>
-        </div>
-
-        <div class="screen-body">
-          <div class="form-grid">
-            <div class="field full">
-              <label>단수 출고 여부 <span class="req">*</span></label>
-              <div class="hint">운영 예정 상품(SKU) 중 상품 자체에 송장을 부착해 출고해야 하는 SKU가 있다면 선택해주세요.</div>
-              <div class="choice-row">
-                <label class="choice-pill"><input type="radio" name="singleShipment" value="Y"> Y</label>
-                <label class="choice-pill"><input type="radio" name="singleShipment" value="N"> N</label>
-              </div>
-            </div>
-
-            <div class="field">
-              <label for="inboundDate">초도 입고 예정일 <span class="req">*</span></label>
-              <input class="input" id="inboundDate" type="date">
-            </div>
-
-            <div class="field">
-              <label>초도 입고 예정 월 행사 여부 <span class="req">*</span></label>
-              <div class="choice-row">
-                <label class="choice-pill"><input type="radio" name="eventPlan" value="Y"> Y</label>
-                <label class="choice-pill"><input type="radio" name="eventPlan" value="N"> N</label>
-              </div>
-            </div>
-
-            <div id="eventFields" class="field full hidden">
-              <div class="form-grid" style="padding:0;">
-                <div class="field">
-                  <label for="eventName">행사명 <span class="req">*</span></label>
-                  <input class="input" id="eventName" type="text" placeholder="행사명">
-                </div>
-                <div class="field">
-                  <label for="eventDate">행사 일자 <span class="req">*</span></label>
-                  <input class="input" id="eventDate" type="date">
-                </div>
-                <div class="field full">
-                  <label for="eventExpectedCount">예상 출고 송장 건 수 <span class="req">*</span></label>
-                  <input class="input" id="eventExpectedCount" type="number" min="0" placeholder="예상 출고 송장 건 수">
-                </div>
-              </div>
-            </div>
-
-            <div class="field full">
-              <label for="inquiryText">문의사항</label>
-              <textarea class="textarea" id="inquiryText" placeholder="예: 운영/시스템/반품/포장 관련 문의사항"></textarea>
-            </div>
+          <div class="field full">
+            <label for="inquiryText">품고 문의사항</label>
+            <textarea class="textarea" id="inquiryText" placeholder="예: 운영/시스템/반품/포장 관련 문의사항"></textarea>
           </div>
 
           <div id="inquiryStepError" class="error hidden"></div>
@@ -1455,13 +1406,13 @@
         brandAddress: document.getElementById('brandAddress')?.value?.trim?.() || state.inquiryDraft?.brandAddress || '',
         brandPhone: document.getElementById('brandPhone')?.value?.trim?.() || state.inquiryDraft?.brandPhone || '',
         returnDest: document.querySelector('input[name="returnDest"]:checked')?.value || state.inquiryDraft?.returnDest || '',
-        packType: document.querySelector('input[name="packTypeCard"]:checked')?.value || state.inquiryDraft?.packType || '',
-        singleShipment: document.querySelector('input[name="singleShipment"]:checked')?.value || state.inquiryDraft?.singleShipment || '',
         inboundDate: document.getElementById('inboundDate')?.value || state.inquiryDraft?.inboundDate || '',
         eventPlan: document.querySelector('input[name="eventPlan"]:checked')?.value || state.inquiryDraft?.eventPlan || '',
         eventName: document.getElementById('eventName')?.value?.trim?.() || state.inquiryDraft?.eventName || '',
         eventDate: document.getElementById('eventDate')?.value || state.inquiryDraft?.eventDate || '',
         eventExpectedCount: document.getElementById('eventExpectedCount')?.value || state.inquiryDraft?.eventExpectedCount || '',
+        packType: document.querySelector('input[name="packTypeCard"]:checked')?.value || state.inquiryDraft?.packType || '',
+        singleShipment: document.querySelector('input[name="singleShipment"]:checked')?.value || state.inquiryDraft?.singleShipment || '',
         inquiryText: document.getElementById('inquiryText')?.value?.trim?.() || state.inquiryDraft?.inquiryText || ''
       };
     }
@@ -1524,23 +1475,20 @@
         if (!draft.managerName) return '담당자명을 입력해주세요.';
         if (!draft.managerPhone) return '연락처를 입력해주세요.';
         if (!draft.brandAddress) return '브랜드 주소를 입력해주세요.';
-        if (!draft.brandPhone) return '대표번호를 입력해주세요.';
-        if (!draft.returnDest) return '반품 회수지를 선택해주세요.';
-      }
-
-      if (stepIndex === 1) {
-        if (!draft.packType) return '포장 방법을 선택해주세요.';
-      }
-
-      if (stepIndex === 2) {
-        if (!draft.singleShipment) return '단수 출고 여부를 선택해주세요.';
-        if (!draft.inboundDate) return '초도 입고 예정일을 입력해주세요.';
-        if (!draft.eventPlan) return '초도 입고 예정 월 행사 여부를 선택해주세요.';
+        if (!draft.brandPhone) return '브랜드 대표번호를 입력해주세요.';
+        if (!draft.inboundDate) return '초도 입고일을 입력해주세요.';
+        if (!draft.eventPlan) return '초도 입고월 행사 유무를 선택해주세요.';
         if (draft.eventPlan === 'Y') {
           if (!draft.eventName) return '행사명을 입력해주세요.';
           if (!draft.eventDate) return '행사 일자를 입력해주세요.';
           if (String(draft.eventExpectedCount || '') === '') return '예상 출고 송장 건 수를 입력해주세요.';
         }
+        if (!draft.returnDest) return '반품 회수지를 선택해주세요.';
+      }
+
+      if (stepIndex === 1) {
+        if (!draft.packType) return '포장 방법을 선택해주세요.';
+        if (!draft.singleShipment) return '단수 상품(SKU) 운영 유무를 선택해주세요.';
       }
 
       return '';
@@ -1556,13 +1504,13 @@
 
       state.inquiryDraft = collectInquiryDraft();
       saveState();
-      inquiryStep = Math.min(2, inquiryStep + 1);
+      inquiryStep = Math.min(1, inquiryStep + 1);
       renderInquiryWizard();
     }
 
     async function submitInquiryWizard() {
       clearInquiryError();
-      const error = validateInquiryStep(2);
+      const error = validateInquiryStep(1);
       if (error) {
         showInquiryError(error);
         return;
@@ -1634,11 +1582,6 @@
 
       paneContent.innerHTML = `
         <div class="screen-card">
-          <div class="hero-box">
-            <div class="section-label">접수 완료</div>
-            <p class="hero-text">제출된 내용을 품고에서 확인하고 있어요.</p>
-          </div>
-
           <div class="screen-body" style="justify-content:center;">
             <div class="subnote" style="font-size:16px; line-height:1.8;">
               N배송 세팅 가이드가 오픈되기 전까지 조금만 기다려주세요🙏
@@ -1692,11 +1635,6 @@
 
       paneContent.innerHTML = `
         <div class="screen-card">
-          <div class="hero-box">
-            <div class="section-label">이번 단계에서 할 일</div>
-            <p class="hero-text">${convertEscapedNewlines_(step.leadHtml || '현재 화면 안내를 확인해주세요.')}</p>
-          </div>
-
           <div class="screen-body">
             ${renderGuideScreen(page.item)}
             ${renderChecklist(step)}
@@ -1781,7 +1719,6 @@
 
       return `
         <div>
-          <div class="section-label" style="margin-top:6px;">이 단계 체크리스트</div>
           <div class="check-area">
             ${step.checks.map((label, i) => `
               <label class="check-row">
