@@ -5,9 +5,28 @@ const state = {
   token: '',
   client: null,
   response: null,
+  ui: {},
+  faqs: {
+    presurvey: [],
+    guide: {
+      step1: [],
+      step2: [],
+      step3: [],
+      step4: [],
+      step5: []
+    }
+  },
+  steps: {
+    step1: [],
+    step2: [],
+    step3: [],
+    step4: [],
+    step5: []
+  },
   assets: {
     logoUrl: './logo.png'
-  }
+  },
+  currentStep: 1
 };
 
 const PACKAGING_IMAGE_LINKS = {
@@ -34,12 +53,13 @@ async function init() {
       token: state.token
     });
 
-    if (!data.ok) {
-      throw new Error(data.message || '초기화 실패');
-    }
+    if (!data.ok) throw new Error(data.message || '초기화 실패');
 
     state.client = data.client;
-    state.response = data.response;
+    state.response = data.response || null;
+    state.ui = data.ui || {};
+    state.faqs = data.faqs || state.faqs;
+    state.steps = data.steps || state.steps;
     state.assets = data.assets || state.assets;
 
     renderByState();
@@ -70,6 +90,7 @@ function renderByState() {
     return;
   }
 
+  state.currentStep = 1;
   renderGuide();
 }
 
@@ -79,28 +100,23 @@ function renderIntroAndForm() {
     <div class="container">
       ${renderTopbar()}
       <section class="hero">
-        <h1>원활한 운영을 위한 사전 문의</h1>
-        <p>
-          초도 입고와 출고를 안정적으로 운영하기 위해 필요한 정보를 사전에 확인하고 있습니다.
-          아래 사전 문의를 제출해주시면 품고에서 확인 후 이후 N배송 가이드를 순차적으로 오픈해드립니다.
-        </p>
-        <div class="hero-actions">
-          <button class="btn btn-primary" id="goFormBtn" type="button">제출하러 가기</button>
-        </div>
+        <h1>${escapeHtml(state.ui.INTRO_TITLE || '원활한 운영을 위한 사전 문의')}</h1>
+        <p>${escapeHtml(state.ui.INTRO_DESC || '')}</p>
       </section>
 
-      <div id="formWrap" style="display:none; margin-top:18px;">
+      <div id="formWrap" style="margin-top:18px;">
         ${renderPreSurveyForm()}
       </div>
+
+      ${renderFaqSection(
+        state.ui.PRE_FAQ_TITLE || '자주 묻는 질문',
+        state.faqs.presurvey || []
+      )}
     </div>
   `;
 
-  document.getElementById('goFormBtn').addEventListener('click', () => {
-    const wrap = document.getElementById('formWrap');
-    wrap.style.display = 'block';
-    wrap.scrollIntoView({ behavior: 'smooth', block: 'start' });
-    bindPreSurveyForm();
-  });
+  bindPreSurveyForm();
+  bindFaqToggle();
 }
 
 function renderPreSurveyForm() {
@@ -184,6 +200,15 @@ function renderPreSurveyForm() {
               ${radioChip('singleSkuYn', 'N', '없음', r.singleSkuYn)}
             </div>
             <div class="help">상품(SKU)에 박스 포장 없이, 송장만 부착하여 출고하는 형태를 의미합니다.</div>
+          </div>
+
+          <div class="form-group full">
+            <label>반품 회수지 <span class="req">*</span></label>
+            <div class="radio-row">
+              ${radioChip('returnDest', '품고', '품고', r.returnDest)}
+              ${radioChip('returnDest', '자사물류', '자사물류', r.returnDest)}
+            </div>
+            <div class="help">반품 발생 시 회수 및 입고를 진행할 기준지를 선택해주세요.</div>
           </div>
 
           <div class="form-group full">
@@ -300,11 +325,8 @@ function renderWaitingGuideOpen() {
       ${renderTopbar()}
       <section class="wait-wrap">
         <div class="wait-icon">⏳</div>
-        <h2>사전문의가 제출되었습니다</h2>
-        <p>
-          제출해주신 내용을 품고에서 확인하고 있습니다.<br/>
-          확인 후 N배송 가이드를 오픈해드릴 예정이며, 최대 1영업일 소요될 수 있는 점 양해 부탁드립니다.
-        </p>
+        <h2>${escapeHtml(state.ui.GUIDE_WAIT_TITLE || '사전문의가 제출되었습니다')}</h2>
+        <p>${escapeHtml(state.ui.GUIDE_WAIT_DESC || '')}</p>
       </section>
     </div>
   `;
@@ -312,238 +334,275 @@ function renderWaitingGuideOpen() {
 
 function renderGuide() {
   const app = document.getElementById('app');
-  app.innerHTML = `
-    <div class="container">
-      ${renderTopbar()}
-      <div class="guide-layout">
-        <aside class="guide-sidebar">
-          <h3>온보딩 가이드</h3>
-          <div class="step-nav">
-            <button class="active" data-step-anchor="step1">STEP1. 품고 나우 로그인</button>
-            <button data-step-anchor="step2">STEP2. 판매처 등록</button>
-            <button data-step-anchor="step3">STEP3. SKU 등록</button>
-            <button data-step-anchor="step4">STEP4. 입고 준비</button>
-            <button data-step-anchor="step5">STEP5. N배송 설정하기</button>
-          </div>
-        </aside>
+  const currentStep = state.currentStep || 1;
+  const stepTitleMap = {
+    1: '품고 나우 로그인',
+    2: '판매처 등록',
+    3: 'SKU 등록',
+    4: '입고 준비',
+    5: 'N배송 설정하기'
+  };
 
-        <main class="guide-content">
-          ${renderGuideStep1()}
-          ${renderGuideStep2()}
-          ${renderGuideStep3()}
-          ${renderGuideStep4()}
-          ${renderGuideStep5()}
-        </main>
+  app.innerHTML = `
+    <div class="container guide-shell">
+      <div class="guide-wizard">
+        ${renderWizardHeader(currentStep, stepTitleMap[currentStep])}
+        ${renderWizardProgress(currentStep)}
+        ${renderWizardBody(currentStep)}
+        ${renderWizardFooter(currentStep)}
+      </div>
+    </div>
+
+    <div id="helpDrawer" class="help-drawer hidden">
+      <div class="help-backdrop" id="helpBackdrop"></div>
+      <div class="help-panel">
+        <div class="help-head">
+          <h3>도움말</h3>
+          <button type="button" class="icon-btn" id="closeHelpBtn">✕</button>
+        </div>
+        <div class="help-body">
+          ${renderStepFaqContent(currentStep)}
+        </div>
       </div>
     </div>
   `;
 
-  bindGuideNav();
-  bindLockedStepButtons();
+  bindWizardNav();
+  bindHelpDrawer();
 }
 
-function renderGuideStep1() {
+function renderWizardHeader(stepNo, stepTitle) {
   return `
-    <section class="step-card" id="step1">
-      <div class="step-head">
-        <div class="step-title-wrap">
-          <h2>STEP1. 품고 나우 로그인 하기</h2>
-          <p>기본 계정 접속과 구성원 등록까지 먼저 진행해주세요.</p>
-        </div>
-        <div class="step-status status-open">OPEN</div>
-      </div>
-
-      <div class="task-list">
-        <div class="task-item">
-          <h4>품고 나우 로그인 하기</h4>
-          <p>안내받은 계정으로 품고 나우에 로그인해주세요.</p>
-        </div>
-        <div class="task-item">
-          <h4>구성원 추가하기</h4>
-          <p>운영에 필요한 구성원이 있다면 함께 등록해주세요.</p>
+    <div class="wizard-header">
+      <div class="wizard-header-left">
+        <img class="wizard-logo" src="${state.assets.logoUrl || './logo.png'}" alt="logo" />
+        <div class="wizard-title">
+          ${escapeHtml(state.client.name)}_STEP ${stepNo}. ${escapeHtml(stepTitle)}
         </div>
       </div>
-    </section>
+    </div>
   `;
 }
 
-function renderGuideStep2() {
+function renderWizardProgress(currentStep) {
+  const steps = [1, 2, 3, 4, 5];
+  const progressPercent = ((currentStep - 1) / (steps.length - 1)) * 100;
+
   return `
-    <section class="step-card" id="step2">
-      <div class="step-head">
-        <div class="step-title-wrap">
-          <h2>STEP2. 판매처 등록</h2>
-          <p>판매처/풀필먼트/N배송 약관 동의 등 기초 세팅을 진행해주세요.</p>
-        </div>
-        <div class="step-status status-open">OPEN</div>
+    <div class="wizard-progress-wrap">
+      <div class="wizard-progress-bar">
+        <div class="wizard-progress-fill" style="width:${progressPercent}%"></div>
       </div>
 
-      <div class="task-list">
-        <div class="task-item">
-          <h4>판매처 등록</h4>
-          <p>운영할 판매처를 등록해주세요.</p>
-        </div>
-        <div class="task-item">
-          <h4>풀필먼트 연동</h4>
-          <p>출고 운영을 위한 풀필먼트 연동을 진행해주세요.</p>
-        </div>
-        <div class="task-item">
-          <h4>N배송 약관 동의</h4>
-          <p>N배송 운영에 필요한 약관 동의를 진행해주세요.</p>
-        </div>
+      <div class="wizard-step-track">
+        ${steps.map((step, idx) => `
+          <div class="wizard-step-node ${step === currentStep ? 'active' : ''} ${step < currentStep ? 'done' : ''}">
+            <div class="wizard-step-circle">${step}</div>
+            <div class="wizard-step-label">STEP ${step}</div>
+            ${idx < steps.length - 1 ? `<div class="wizard-step-arrow">></div>` : ''}
+          </div>
+        `).join('')}
       </div>
-
-      <div class="step-actions">
-        <button type="button" class="btn btn-primary" data-request-step="3">다음 단계 보기</button>
-      </div>
-      <div class="lock-note">다음 단계는 품고 확인 후 오픈됩니다.</div>
-    </section>
+    </div>
   `;
 }
 
-function renderGuideStep3() {
-  const open = String(state.client.step3Open).toUpperCase() === 'Y';
+function renderWizardBody(stepNo) {
+  const stepKey = `step${stepNo}`;
+  const items = state.steps[stepKey] || [];
+  const isOpen = isStepOpen(stepNo);
+
+  if (!isOpen && stepNo >= 3) {
+    return `
+      <div class="wizard-body">
+        <div class="wizard-locked">
+          <h2>아직 오픈되지 않은 단계입니다</h2>
+          <p>품고에서 확인 후 다음 단계가 오픈됩니다. 현재 단계까지 진행 후 안내를 기다려주세요.</p>
+        </div>
+      </div>
+    `;
+  }
+
+  if (!items.length) {
+    return `
+      <div class="wizard-body">
+        <div class="wizard-empty">
+          <h2>콘텐츠 준비중</h2>
+          <p>시트의 STEP콘텐츠 탭에서 내용을 추가해주세요.</p>
+        </div>
+      </div>
+    `;
+  }
+
   return `
-    <section class="step-card" id="step3">
-      <div class="step-head">
-        <div class="step-title-wrap">
-          <h2>STEP3. SKU 등록</h2>
-          <p>SKU 등록 및 연결 상품 매핑을 진행하는 단계입니다.</p>
-        </div>
-        <div class="step-status ${open ? 'status-open' : 'status-locked'}">${open ? 'OPEN' : 'LOCKED'}</div>
-      </div>
+    <div class="wizard-body">
+      ${items.map(item => renderWizardContentBlock(item)).join('')}
+    </div>
+  `;
+}
 
-      <div class="task-list">
-        <div class="task-item">
-          <h4>SKU 등록</h4>
-          <p>운영 예정 상품의 SKU를 등록해주세요.</p>
-        </div>
-        <div class="task-item">
-          <h4>연결 상품 매핑</h4>
-          <p>판매처 상품과 물류 운영 SKU를 연결해주세요.</p>
-        </div>
-      </div>
+function renderWizardContentBlock(item) {
+  const layout = item.layout || 'text-media';
+  const media = renderStepMedia(item);
 
-      <div class="step-actions">
+  const textCol = `
+    <div class="wizard-col wizard-text">
+      <div class="wizard-content-card">
+        <h3>${escapeHtml(item.title || '')}</h3>
+        <div class="wizard-content-desc">${nl2br(escapeHtml(item.desc || ''))}</div>
         ${
-          open
-            ? `<button type="button" class="btn btn-primary" data-request-step="4">다음 단계 보기</button>`
-            : `<button type="button" class="btn btn-light" data-request-step="3">품고에서 확인중입니다</button>`
+          item.buttonText
+            ? `<div class="wizard-inline-btn-wrap">
+                <a href="${escapeAttr(item.buttonLink || '#')}" class="screen-link">${escapeHtml(item.buttonText)}</a>
+              </div>`
+            : ''
         }
       </div>
+    </div>
+  `;
 
-      ${
-        open
-          ? `<div class="lock-note">다음 단계 또한 품고 확인 후 순차 오픈됩니다.</div>`
-          : `<div class="lock-note">품고에서 확인 후 다음 가이드를 오픈해드립니다. 기다려주세요.</div>`
-      }
+  const mediaCol = `
+    <div class="wizard-col wizard-media">
+      <div class="wizard-media-card">
+        ${media}
+      </div>
+    </div>
+  `;
+
+  return `
+    <section class="wizard-block ${layout === 'media-text' ? 'reverse' : ''}">
+      ${layout === 'media-text' ? mediaCol + textCol : textCol + mediaCol}
     </section>
   `;
 }
 
-function renderGuideStep4() {
-  const open = String(state.client.step4Open).toUpperCase() === 'Y';
+function renderStepMedia(item) {
+  const mediaType = (item.mediaType || '').toLowerCase();
+  const mediaValue = item.mediaValue || '';
+
+  if (!mediaValue) {
+    return `<div class="wizard-media-empty">시각 자료 준비중</div>`;
+  }
+
+  if (mediaType === 'image') {
+    return `<img src="${escapeAttr(mediaValue)}" alt="${escapeAttr(item.title || '')}" class="wizard-media-image">`;
+  }
+
+  if (mediaType === 'video') {
+    if (mediaValue.includes('youtube.com') || mediaValue.includes('youtu.be') || mediaValue.includes('embed')) {
+      return `<iframe class="wizard-media-video" src="${escapeAttr(mediaValue)}" frameborder="0" allowfullscreen></iframe>`;
+    }
+    return `<video class="wizard-media-video" controls playsinline src="${escapeAttr(mediaValue)}"></video>`;
+  }
+
+  if (mediaType === 'html') {
+    return `<div class="wizard-media-html">${mediaValue}</div>`;
+  }
+
+  return `<div class="wizard-media-empty">지원하지 않는 미디어 타입입니다.</div>`;
+}
+
+function renderWizardFooter(currentStep) {
+  const prevDisabled = currentStep === 1;
+  const nextDisabled = currentStep === 5;
+
   return `
-    <section class="step-card" id="step4">
-      <div class="step-head">
-        <div class="step-title-wrap">
-          <h2>STEP4. 입고 준비</h2>
-          <p>입고 가이드를 확인하고 초도 입고 패킹리스트를 제출해주세요.</p>
-        </div>
-        <div class="step-status ${open ? 'status-open' : 'status-locked'}">${open ? 'OPEN' : 'LOCKED'}</div>
+    <div class="wizard-footer">
+      <button type="button" class="btn btn-light" id="prevStepBtn" ${prevDisabled ? 'disabled' : ''}>이전</button>
+      <div class="wizard-footer-right">
+        <button type="button" class="btn btn-light" id="helpBtn">도움말</button>
+        <button type="button" class="btn btn-primary" id="nextStepBtn" ${nextDisabled ? 'disabled' : ''}>다음</button>
       </div>
+    </div>
+  `;
+}
 
-      <div class="task-list">
-        <div class="task-item">
-          <h4>입고 가이드 보기</h4>
-          <p>입고 시 유의사항 및 입고 기준을 확인해주세요. 이 항목은 별도 화면 전환이 필요한 가이드 영역으로 연결할 수 있습니다.</p>
-        </div>
-        <div class="task-item">
-          <h4>초도 입고 패킹리스트 제출</h4>
-          <p>초도 입고될 상품 정보를 패킹리스트 양식에 맞춰 제출해주세요.</p>
-        </div>
-      </div>
+function renderStepFaqContent(stepNo) {
+  const faqMap = {
+    1: state.faqs.guide.step1 || [],
+    2: state.faqs.guide.step2 || [],
+    3: state.faqs.guide.step3 || [],
+    4: state.faqs.guide.step4 || [],
+    5: state.faqs.guide.step5 || []
+  };
 
-      <div class="step-actions">
-        ${
-          open
-            ? `
-              <a href="#step4" class="screen-link">입고 가이드 보기</a>
-              <button type="button" class="btn btn-primary" data-request-step="5">다음 단계 보기</button>
-            `
-            : `<button type="button" class="btn btn-light" data-request-step="4">품고에서 확인중입니다</button>`
+  const items = faqMap[stepNo] || [];
+  if (!items.length) {
+    return `<div class="help-empty">등록된 도움말이 없습니다.</div>`;
+  }
+
+  return items.map(item => `
+    <div class="help-faq-item">
+      <div class="help-faq-q">${escapeHtml(item.question)}</div>
+      <div class="help-faq-a">${escapeHtml(item.answer)}</div>
+    </div>
+  `).join('');
+}
+
+function bindWizardNav() {
+  const prevBtn = document.getElementById('prevStepBtn');
+  const nextBtn = document.getElementById('nextStepBtn');
+
+  if (prevBtn) {
+    prevBtn.addEventListener('click', () => {
+      if (state.currentStep > 1) {
+        state.currentStep -= 1;
+        renderGuide();
+      }
+    });
+  }
+
+  if (nextBtn) {
+    nextBtn.addEventListener('click', async () => {
+      const nextStep = state.currentStep + 1;
+      if (nextStep > 5) return;
+
+      if (nextStep >= 3 && !isStepOpen(nextStep)) {
+        try {
+          const result = await apiGet('requestStepOpen', {
+            code: state.code,
+            token: state.token,
+            step: String(nextStep)
+          });
+
+          toast(result.message || '품고에서 확인중입니다.');
+        } catch (err) {
+          toast(err.message || '요청 처리에 실패했습니다.');
         }
-      </div>
-
-      ${
-        open
-          ? `<div class="lock-note">품고 입고 완료 후 마지막 단계가 오픈됩니다.</div>`
-          : `<div class="lock-note">품고에 입고가 완료된 후 오픈 가능합니다. 입고 완료 후 담당자의 안내를 기다려주세요.</div>`
+        return;
       }
-    </section>
-  `;
-}
 
-function renderGuideStep5() {
-  const open = String(state.client.step5Open).toUpperCase() === 'Y';
-  return `
-    <section class="step-card" id="step5">
-      <div class="step-head">
-        <div class="step-title-wrap">
-          <h2>STEP5. N배송 설정하기</h2>
-          <p>최종 설정을 완료하면 온보딩 가이드가 마무리됩니다.</p>
-        </div>
-        <div class="step-status ${open ? 'status-open' : 'status-locked'}">${open ? 'OPEN' : 'LOCKED'}</div>
-      </div>
-
-      <div class="task-list">
-        <div class="task-item">
-          <h4>N배송 설정하기</h4>
-          <p>최종 운영 설정을 완료해주세요. 여기까지 진행되면 가이드가 종료됩니다.</p>
-        </div>
-      </div>
-
-      ${
-        open
-          ? `<div class="step-actions"><button type="button" class="btn btn-primary">가이드 완료</button></div>`
-          : `<div class="step-actions"><button type="button" class="btn btn-light" data-request-step="5">품고에서 확인중입니다</button></div>`
-      }
-    </section>
-  `;
-}
-
-function bindGuideNav() {
-  document.querySelectorAll('[data-step-anchor]').forEach(btn => {
-    btn.addEventListener('click', () => {
-      const target = document.getElementById(btn.dataset.stepAnchor);
-      if (!target) return;
-
-      document.querySelectorAll('[data-step-anchor]').forEach(b => b.classList.remove('active'));
-      btn.classList.add('active');
-
-      target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      state.currentStep = nextStep;
+      renderGuide();
     });
-  });
+  }
 }
 
-function bindLockedStepButtons() {
-  document.querySelectorAll('[data-request-step]').forEach(btn => {
-    btn.addEventListener('click', async () => {
-      const step = btn.dataset.requestStep;
-      try {
-        const result = await apiGet('requestStepOpen', {
-          code: state.code,
-          token: state.token,
-          step
-        });
+function bindHelpDrawer() {
+  const helpBtn = document.getElementById('helpBtn');
+  const closeBtn = document.getElementById('closeHelpBtn');
+  const backdrop = document.getElementById('helpBackdrop');
+  const drawer = document.getElementById('helpDrawer');
 
-        if (!result.ok) throw new Error(result.message || '요청 실패');
-        toast(result.message || '품고에서 확인중입니다.');
-      } catch (err) {
-        toast(err.message || '요청 처리에 실패했습니다.');
-      }
-    });
-  });
+  function openDrawer() {
+    drawer.classList.remove('hidden');
+  }
+
+  function closeDrawer() {
+    drawer.classList.add('hidden');
+  }
+
+  if (helpBtn) helpBtn.addEventListener('click', openDrawer);
+  if (closeBtn) closeBtn.addEventListener('click', closeDrawer);
+  if (backdrop) backdrop.addEventListener('click', closeDrawer);
+}
+
+function isStepOpen(stepNo) {
+  if (stepNo === 1 || stepNo === 2) return true;
+  if (stepNo === 3) return String(state.client.step3Open).toUpperCase() === 'Y';
+  if (stepNo === 4) return String(state.client.step4Open).toUpperCase() === 'Y';
+  if (stepNo === 5) return String(state.client.step5Open).toUpperCase() === 'Y';
+  return false;
 }
 
 function bindSummaryModalButtons(data) {
@@ -573,6 +632,7 @@ function bindSummaryModalButtons(data) {
       state.client.preSubmitted = 'Y';
       if (result.guideOpen) {
         state.client.guideOpen = 'Y';
+        state.currentStep = 1;
         renderGuide();
       } else {
         renderWaitingGuideOpen();
@@ -613,6 +673,7 @@ function openSummaryModal(data) {
       <h4>3. 출고</h4>
       <div class="summary-table">
         <div class="summary-key">단수 출고 SKU 유무</div><div class="summary-val">${escapeHtml(data.singleSkuYn)}</div>
+        <div class="summary-key">반품 회수지</div><div class="summary-val">${escapeHtml(data.returnDest)}</div>
         <div class="summary-key">행사 유무</div><div class="summary-val">${escapeHtml(data.eventYn)}</div>
         <div class="summary-key">행사명</div><div class="summary-val">${escapeHtml(data.eventName || '-')}</div>
         <div class="summary-key">예상 송장건수</div><div class="summary-val">${escapeHtml(data.expectedOrders || '-')}</div>
@@ -648,6 +709,7 @@ function readForm(form) {
     firstInboundDate: (fd.get('firstInboundDate') || '').toString().trim(),
     inboundType: (fd.get('inboundType') || '').toString().trim(),
     singleSkuYn: (fd.get('singleSkuYn') || '').toString().trim(),
+    returnDest: (fd.get('returnDest') || '').toString().trim(),
     eventYn: (fd.get('eventYn') || '').toString().trim(),
     eventName: (fd.get('eventName') || '').toString().trim(),
     expectedOrders: (fd.get('expectedOrders') || '').toString().trim(),
@@ -658,24 +720,25 @@ function readForm(form) {
 }
 
 function validateFormData(data) {
-  if (!data.email) return { ok: false, message: '이메일을 입력해주세요.' };
-  if (!data.managerName) return { ok: false, message: '담당자명을 입력해주세요.' };
-  if (!data.phone) return { ok: false, message: '연락처를 입력해주세요.' };
-  if (!data.brandAddress) return { ok: false, message: '브랜드 사업자 주소를 입력해주세요.' };
-  if (!data.csPhone) return { ok: false, message: 'CS 대표번호를 입력해주세요.' };
-  if (!data.firstInboundDate) return { ok: false, message: '초도 입고일을 입력해주세요.' };
-  if (!data.inboundType) return { ok: false, message: '입고 방식을 선택해주세요.' };
-  if (!data.singleSkuYn) return { ok: false, message: '단수 출고 SKU 유무를 선택해주세요.' };
-  if (!data.eventYn) return { ok: false, message: '행사 유무를 선택해주세요.' };
-  if (!data.packingMethod) return { ok: false, message: '포장 방법을 선택해주세요.' };
+  if (!data.email) return { ok:false, message:'이메일을 입력해주세요.' };
+  if (!data.managerName) return { ok:false, message:'담당자명을 입력해주세요.' };
+  if (!data.phone) return { ok:false, message:'연락처를 입력해주세요.' };
+  if (!data.brandAddress) return { ok:false, message:'브랜드 사업자 주소를 입력해주세요.' };
+  if (!data.csPhone) return { ok:false, message:'CS 대표번호를 입력해주세요.' };
+  if (!data.firstInboundDate) return { ok:false, message:'초도 입고일을 입력해주세요.' };
+  if (!data.inboundType) return { ok:false, message:'입고 방식을 선택해주세요.' };
+  if (!data.singleSkuYn) return { ok:false, message:'단수 출고 SKU 유무를 선택해주세요.' };
+  if (!data.returnDest) return { ok:false, message:'반품 회수지를 선택해주세요.' };
+  if (!data.eventYn) return { ok:false, message:'행사 유무를 선택해주세요.' };
+  if (!data.packingMethod) return { ok:false, message:'포장 방법을 선택해주세요.' };
 
   if (data.eventYn === 'Y') {
-    if (!data.eventName) return { ok: false, message: '행사명을 입력해주세요.' };
-    if (!data.expectedOrders) return { ok: false, message: '예상 송장건수를 입력해주세요.' };
-    if (!data.eventDatetime) return { ok: false, message: '행사 일시를 입력해주세요.' };
+    if (!data.eventName) return { ok:false, message:'행사명을 입력해주세요.' };
+    if (!data.expectedOrders) return { ok:false, message:'예상 송장건수를 입력해주세요.' };
+    if (!data.eventDatetime) return { ok:false, message:'행사 일시를 입력해주세요.' };
   }
 
-  return { ok: true };
+  return { ok:true };
 }
 
 function renderTopbar() {
@@ -724,6 +787,33 @@ function renderPackCard(value, title, desc, selectedValue) {
 
       <div class="pack-desc">${escapeHtml(desc)}</div>
     </div>
+  `;
+}
+
+function renderFaqSection(title, items = [], compact = false) {
+  if (!items || !items.length) return '';
+
+  return `
+    <section class="section-card faq-section ${compact ? 'faq-section-compact' : ''}">
+      <div class="section-title">
+        <div class="section-badge">?</div>
+        <h2>${escapeHtml(title)}</h2>
+      </div>
+
+      <div class="faq-list">
+        ${items.map((item, idx) => `
+          <div class="faq-item">
+            <button type="button" class="faq-q" data-faq-toggle="faq-${compact ? 'g' : 'p'}-${idx}">
+              <span>${escapeHtml(item.question)}</span>
+              <span class="faq-icon">+</span>
+            </button>
+            <div class="faq-a" id="faq-${compact ? 'g' : 'p'}-${idx}">
+              ${escapeHtml(item.answer)}
+            </div>
+          </div>
+        `).join('')}
+      </div>
+    </section>
   `;
 }
 
@@ -778,6 +868,27 @@ async function apiGet(action, params = {}) {
   }
 
   return await response.json();
+}
+
+function bindFaqToggle() {
+  document.querySelectorAll('[data-faq-toggle]').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const targetId = btn.getAttribute('data-faq-toggle');
+      const answer = document.getElementById(targetId);
+      if (!answer) return;
+
+      const isOpen = answer.classList.contains('open');
+      answer.classList.toggle('open', !isOpen);
+      btn.classList.toggle('open', !isOpen);
+
+      const icon = btn.querySelector('.faq-icon');
+      if (icon) icon.textContent = isOpen ? '+' : '−';
+    });
+  });
+}
+
+function nl2br(str = '') {
+  return String(str).replace(/\n/g, '<br>');
 }
 
 function toast(message) {
