@@ -25,34 +25,17 @@ body{min-height:100vh}
   width:100%;
 }
 
-.wizard-block-full{
-  display:block;
-}
-
-.wizard-col-full{
-  width:100%;
-}
-
-.wizard-media-card-html-only{
-  padding:0;
-  background:transparent;
-  border:none;
-  min-height:auto;
-  display:block;
-  overflow:visible;
-}
-
 .container{
-  width:min(1200px, calc(100% - 32px));
+  width:min(1380px, calc(100% - 28px));
   margin:0 auto;
-  padding:28px 0 72px;
+  padding:20px 0 56px;
 }
 
 .topbar{
   display:flex;
   align-items:center;
   justify-content:center;
-  margin-bottom:20px;
+  margin-bottom:18px;
 }
 
 .logo{
@@ -65,7 +48,7 @@ body{min-height:100vh}
   border:1px solid var(--line);
   border-radius:32px;
   box-shadow:var(--shadow);
-  padding:56px 28px;
+  padding:48px 28px;
   text-align:center;
 }
 
@@ -77,7 +60,7 @@ body{min-height:100vh}
 
 .hero p{
   margin:0 auto;
-  max-width:720px;
+  max-width:760px;
   color:var(--sub);
   font-size:16px;
   line-height:1.8;
@@ -435,14 +418,14 @@ textarea{
   display:block;
 }
 
-/* Wizard */
+/* GUIDE / WIZARD */
 .guide-shell{
   display:flex;
   justify-content:center;
 }
 
 .guide-wizard{
-  width:min(1100px, 100%);
+  width:min(1360px, 100%);
   background:#fff;
   border:1px solid #E8EBF0;
   border-radius:28px;
@@ -451,8 +434,9 @@ textarea{
 }
 
 .wizard-header{
-  padding:24px 28px 18px;
+  padding:18px 28px;
   border-bottom:1px solid #EEF2F6;
+  background:#fff;
 }
 
 .wizard-header-left{
@@ -462,19 +446,20 @@ textarea{
 }
 
 .wizard-logo{
-  height:36px;
+  height:34px;
   object-fit:contain;
 }
 
 .wizard-title{
-  font-size:20px;
+  font-size:18px;
   font-weight:800;
   color:#111827;
 }
 
 .wizard-progress-wrap{
-  padding:22px 28px 10px;
+  padding:18px 28px 14px;
   border-bottom:1px solid #F1F5F9;
+  background:#fff;
 }
 
 .wizard-progress-bar{
@@ -483,7 +468,7 @@ textarea{
   border-radius:999px;
   background:#E5E7EB;
   overflow:hidden;
-  margin:0 auto 20px;
+  margin:0 auto 18px;
 }
 
 .wizard-progress-fill{
@@ -547,10 +532,8 @@ textarea{
 }
 
 .wizard-body{
-  padding:28px;
-  display:flex;
-  flex-direction:column;
-  gap:20px;
+  padding:22px;
+  background:#fff;
 }
 
 .wizard-block{
@@ -565,6 +548,15 @@ textarea{
 
 .wizard-block.reverse > *{
   direction:ltr;
+}
+
+.wizard-block-full{
+  width:100%;
+}
+
+.wizard-html-stage{
+  width:100%;
+  overflow:visible;
 }
 
 .wizard-col{
@@ -619,10 +611,6 @@ textarea{
   background:#000;
 }
 
-.wizard-media-html{
-  width:100%;
-}
-
 .wizard-media-empty,
 .wizard-empty,
 .wizard-locked,
@@ -645,7 +633,7 @@ textarea{
   position:sticky;
   bottom:0;
   z-index:5;
-  padding:18px 28px;
+  padding:16px 22px;
   background:rgba(255,255,255,.96);
   backdrop-filter:blur(8px);
   border-top:1px solid #EEF2F6;
@@ -826,7 +814,7 @@ textarea{
   z-index:50;
 }
 
-@media (max-width: 960px){
+@media (max-width: 1100px){
   .pack-grid{
     grid-template-columns:1fr;
   }
@@ -852,12 +840,12 @@ textarea{
 
 @media (max-width: 720px){
   .container{
-    width:min(100%, calc(100% - 20px));
-    padding-top:16px;
+    width:min(100%, calc(100% - 16px));
+    padding-top:12px;
   }
 
   .hero{
-    padding:38px 18px;
+    padding:34px 18px;
   }
 
   .hero h1{
@@ -878,6 +866,11 @@ textarea{
   }
 
   .wizard-title{
-    font-size:18px;
+    font-size:17px;
+    line-height:1.5;
+  }
+
+  .wizard-body{
+    padding:14px;
   }
 }
