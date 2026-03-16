@@ -25,6 +25,23 @@ body{min-height:100vh}
   width:100%;
 }
 
+.wizard-block-full{
+  display:block;
+}
+
+.wizard-col-full{
+  width:100%;
+}
+
+.wizard-media-card-html-only{
+  padding:0;
+  background:transparent;
+  border:none;
+  min-height:auto;
+  display:block;
+  overflow:visible;
+}
+
 .container{
   width:min(1200px, calc(100% - 32px));
   margin:0 auto;
