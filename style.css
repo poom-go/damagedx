@@ -11,6 +11,7 @@
 }
 
 *{box-sizing:border-box}
+
 html,body{
   margin:0;
   padding:0;
@@ -282,242 +283,25 @@ textarea{
 }
 
 .pack-figure{
-  height:230px;
-  border-radius:20px;
-  position:relative;
+  height:220px;
+  border-radius:18px;
+  background:#ffffff;
+  border:1px solid #eef2f6;
   overflow:hidden;
   margin-bottom:12px;
 }
 
-.realistic-box{
-  background:#ffffff;
+.pack-figure-svg{
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  padding:0;
 }
 
-/* 박스 날개 */
-.pkg-flap{
-  position:absolute;
-  background:linear-gradient(180deg,#cb925d,#b67942);
-  box-shadow:inset 0 0 0 1px rgba(105,63,26,.15);
-}
-
-.pkg-flap.top{
-  width:56%;
-  height:38px;
-  left:22%;
-  top:4px;
-  clip-path:polygon(8% 100%, 92% 100%, 100% 0, 0 0);
-  border-radius:6px 6px 0 0;
-}
-
-.pkg-flap.bottom{
-  width:56%;
-  height:38px;
-  left:22%;
-  bottom:4px;
-  clip-path:polygon(0 100%, 100% 100%, 92% 0, 8% 0);
-  border-radius:0 0 6px 6px;
-}
-
-.pkg-flap.left{
-  width:34px;
-  height:78%;
-  left:8px;
-  top:11%;
-  clip-path:polygon(100% 8%, 0 0, 0 100%, 100% 92%);
-  border-radius:6px 0 0 6px;
-}
-
-.pkg-flap.right{
-  width:34px;
-  height:78%;
-  right:8px;
-  top:11%;
-  clip-path:polygon(0 8%, 100% 0, 100% 100%, 0 92%);
-  border-radius:0 6px 6px 0;
-}
-
-/* 박스 내부 */
-.pkg-floor{
-  position:absolute;
-  inset:34px 34px;
-  border-radius:6px;
-  background:linear-gradient(180deg,#c99360 0%, #b97f4c 100%);
-  box-shadow:
-    inset 0 0 0 1px rgba(107,66,31,.12),
-    inset 0 18px 18px rgba(255,255,255,.12);
-}
-
-.pkg-side-shadow{
-  position:absolute;
-  top:46px;
-  bottom:46px;
-  width:18px;
-  background:linear-gradient(180deg,rgba(0,0,0,.08),rgba(0,0,0,.02));
-  opacity:.25;
-}
-
-.pkg-side-shadow.left{ left:34px; }
-.pkg-side-shadow.right{ right:34px; }
-
-/* 기본 포장 - 사방 완충재 */
-.pkg-inner-cushion{
-  position:absolute;
-  inset:54px 52px;
-  border-radius:10px;
-  background:
-    radial-gradient(circle at 8px 8px, rgba(255,255,255,.42) 0 2px, transparent 3px),
-    radial-gradient(circle at 24px 16px, rgba(255,255,255,.32) 0 2px, transparent 3px),
-    radial-gradient(circle at 48px 12px, rgba(255,255,255,.35) 0 2px, transparent 3px),
-    radial-gradient(circle at 16px 38px, rgba(255,255,255,.32) 0 2px, transparent 3px),
-    radial-gradient(circle at 50px 54px, rgba(255,255,255,.30) 0 2px, transparent 3px),
-    radial-gradient(circle at 84px 42px, rgba(255,255,255,.28) 0 2px, transparent 3px),
-    linear-gradient(180deg,#e8edf3 0%, #dfe6ee 100%);
-  box-shadow:
-    inset 0 0 0 1px rgba(130,146,166,.22),
-    inset 0 18px 24px rgba(255,255,255,.32);
-}
-
-/* 공통 제품 */
-.pkg-product{
-  position:absolute;
-  left:50%;
-  transform:translateX(-50%);
-  z-index:3;
-}
-
-/* 기본 포장 캔 */
-.pkg-product.can.basic{
-  width:72px;
-  height:132px;
-  top:56px;
-  border-radius:18px;
-  background:linear-gradient(180deg,#f7dbe1 0%, #efc8d0 100%);
-  box-shadow:
-    inset -8px 0 12px rgba(255,255,255,.22),
-    inset 8px 0 12px rgba(212,160,174,.22),
-    0 6px 10px rgba(0,0,0,.10);
-}
-
-.pkg-product.can.basic::before{
-  content:"";
-  position:absolute;
-  top:-8px;
-  left:8px;
-  right:8px;
-  height:14px;
-  border-radius:50%;
-  background:linear-gradient(180deg,#f9eef1,#ecc9d1);
-  box-shadow:0 1px 0 rgba(255,255,255,.6);
-}
-
-/* 에어캡 포장 */
-.pkg-product.can.wrapped{
-  width:78px;
-  height:136px;
-  top:52px;
-  border-radius:18px;
-  background:linear-gradient(180deg,#ffffff 0%, #f2f4f7 100%);
-  opacity:.96;
-  box-shadow:0 6px 10px rgba(0,0,0,.08);
-}
-
-.pkg-bubble-wrap.around-product{
-  position:absolute;
-  left:50%;
-  top:42px;
-  transform:translateX(-50%);
-  width:112px;
-  height:156px;
-  border-radius:18px;
-  z-index:4;
-  background:
-    radial-gradient(circle at 10px 10px, rgba(255,255,255,.85) 0 6px, rgba(214,221,232,.65) 7px, transparent 8px),
-    radial-gradient(circle at 28px 16px, rgba(255,255,255,.82) 0 6px, rgba(214,221,232,.62) 7px, transparent 8px),
-    radial-gradient(circle at 46px 10px, rgba(255,255,255,.82) 0 6px, rgba(214,221,232,.62) 7px, transparent 8px),
-    radial-gradient(circle at 64px 16px, rgba(255,255,255,.82) 0 6px, rgba(214,221,232,.62) 7px, transparent 8px),
-    radial-gradient(circle at 82px 10px, rgba(255,255,255,.82) 0 6px, rgba(214,221,232,.62) 7px, transparent 8px),
-    radial-gradient(circle at 18px 34px, rgba(255,255,255,.82) 0 6px, rgba(214,221,232,.62) 7px, transparent 8px),
-    radial-gradient(circle at 38px 40px, rgba(255,255,255,.82) 0 6px, rgba(214,221,232,.62) 7px, transparent 8px),
-    radial-gradient(circle at 58px 34px, rgba(255,255,255,.82) 0 6px, rgba(214,221,232,.62) 7px, transparent 8px),
-    radial-gradient(circle at 78px 40px, rgba(255,255,255,.82) 0 6px, rgba(214,221,232,.62) 7px, transparent 8px),
-    radial-gradient(circle at 18px 58px, rgba(255,255,255,.82) 0 6px, rgba(214,221,232,.62) 7px, transparent 8px),
-    radial-gradient(circle at 38px 64px, rgba(255,255,255,.82) 0 6px, rgba(214,221,232,.62) 7px, transparent 8px),
-    radial-gradient(circle at 58px 58px, rgba(255,255,255,.82) 0 6px, rgba(214,221,232,.62) 7px, transparent 8px),
-    radial-gradient(circle at 78px 64px, rgba(255,255,255,.82) 0 6px, rgba(214,221,232,.62) 7px, transparent 8px),
-    radial-gradient(circle at 18px 82px, rgba(255,255,255,.82) 0 6px, rgba(214,221,232,.62) 7px, transparent 8px),
-    radial-gradient(circle at 38px 88px, rgba(255,255,255,.82) 0 6px, rgba(214,221,232,.62) 7px, transparent 8px),
-    radial-gradient(circle at 58px 82px, rgba(255,255,255,.82) 0 6px, rgba(214,221,232,.62) 7px, transparent 8px),
-    radial-gradient(circle at 78px 88px, rgba(255,255,255,.82) 0 6px, rgba(214,221,232,.62) 7px, transparent 8px),
-    radial-gradient(circle at 18px 106px, rgba(255,255,255,.82) 0 6px, rgba(214,221,232,.62) 7px, transparent 8px),
-    radial-gradient(circle at 38px 112px, rgba(255,255,255,.82) 0 6px, rgba(214,221,232,.62) 7px, transparent 8px),
-    radial-gradient(circle at 58px 106px, rgba(255,255,255,.82) 0 6px, rgba(214,221,232,.62) 7px, transparent 8px),
-    radial-gradient(circle at 78px 112px, rgba(255,255,255,.82) 0 6px, rgba(214,221,232,.62) 7px, transparent 8px),
-    radial-gradient(circle at 28px 132px, rgba(255,255,255,.82) 0 6px, rgba(214,221,232,.62) 7px, transparent 8px),
-    radial-gradient(circle at 48px 138px, rgba(255,255,255,.82) 0 6px, rgba(214,221,232,.62) 7px, transparent 8px),
-    radial-gradient(circle at 68px 132px, rgba(255,255,255,.82) 0 6px, rgba(214,221,232,.62) 7px, transparent 8px),
-    linear-gradient(180deg, rgba(247,249,252,.45), rgba(233,238,244,.52));
-  box-shadow:
-    inset 0 0 0 1px rgba(206,214,224,.6),
-    0 4px 10px rgba(0,0,0,.04);
-}
-
-/* 버블페이퍼 포장 */
-.pkg-product.bottle.honey{
-  width:74px;
-  height:124px;
-  top:54px;
-  border-radius:22px 22px 16px 16px;
-  background:linear-gradient(180deg,#efc6cf 0%, #e8b2bf 100%);
-  box-shadow:
-    inset -8px 0 10px rgba(255,255,255,.22),
-    inset 8px 0 10px rgba(201,132,149,.18),
-    0 6px 10px rgba(0,0,0,.10);
-}
-
-.pkg-bottle-cap{
-  position:absolute;
-  left:50%;
-  top:44px;
-  transform:translateX(-50%);
-  width:44px;
-  height:20px;
-  border-radius:14px 14px 8px 8px;
-  background:linear-gradient(180deg,#efc3ce,#e8aebb);
-  z-index:4;
-  box-shadow:0 2px 4px rgba(0,0,0,.08);
-}
-
-.pkg-honeycomb-wrap{
-  position:absolute;
-  left:50%;
-  top:74px;
-  transform:translateX(-50%);
-  width:88px;
-  height:98px;
-  z-index:5;
-  opacity:.85;
-  background:
-    radial-gradient(circle at 10px 10px, transparent 0 5px, #dcbf8f 5.5px 8px, transparent 8.5px),
-    radial-gradient(circle at 26px 18px, transparent 0 5px, #dcbf8f 5.5px 8px, transparent 8.5px),
-    radial-gradient(circle at 42px 10px, transparent 0 5px, #dcbf8f 5.5px 8px, transparent 8.5px),
-    radial-gradient(circle at 58px 18px, transparent 0 5px, #dcbf8f 5.5px 8px, transparent 8.5px),
-    radial-gradient(circle at 74px 10px, transparent 0 5px, #dcbf8f 5.5px 8px, transparent 8.5px),
-    radial-gradient(circle at 10px 34px, transparent 0 5px, #dcbf8f 5.5px 8px, transparent 8.5px),
-    radial-gradient(circle at 26px 42px, transparent 0 5px, #dcbf8f 5.5px 8px, transparent 8.5px),
-    radial-gradient(circle at 42px 34px, transparent 0 5px, #dcbf8f 5.5px 8px, transparent 8.5px),
-    radial-gradient(circle at 58px 42px, transparent 0 5px, #dcbf8f 5.5px 8px, transparent 8.5px),
-    radial-gradient(circle at 74px 34px, transparent 0 5px, #dcbf8f 5.5px 8px, transparent 8.5px),
-    radial-gradient(circle at 10px 58px, transparent 0 5px, #dcbf8f 5.5px 8px, transparent 8.5px),
-    radial-gradient(circle at 26px 66px, transparent 0 5px, #dcbf8f 5.5px 8px, transparent 8.5px),
-    radial-gradient(circle at 42px 58px, transparent 0 5px, #dcbf8f 5.5px 8px, transparent 8.5px),
-    radial-gradient(circle at 58px 66px, transparent 0 5px, #dcbf8f 5.5px 8px, transparent 8.5px),
-    radial-gradient(circle at 74px 58px, transparent 0 5px, #dcbf8f 5.5px 8px, transparent 8.5px),
-    radial-gradient(circle at 10px 82px, transparent 0 5px, #dcbf8f 5.5px 8px, transparent 8.5px),
-    radial-gradient(circle at 26px 90px, transparent 0 5px, #dcbf8f 5.5px 8px, transparent 8.5px),
-    radial-gradient(circle at 42px 82px, transparent 0 5px, #dcbf8f 5.5px 8px, transparent 8.5px),
-    radial-gradient(circle at 58px 90px, transparent 0 5px, #dcbf8f 5.5px 8px, transparent 8.5px),
-    radial-gradient(circle at 74px 82px, transparent 0 5px, #dcbf8f 5.5px 8px, transparent 8.5px);
-  filter:drop-shadow(0 2px 2px rgba(0,0,0,.05));
+.pack-svg{
+  width:100%;
+  height:100%;
+  display:block;
 }
 
 .pack-desc{
@@ -667,6 +451,7 @@ textarea{
   background:#ecfdf3;
   color:#15803d;
 }
+
 .status-locked{
   background:#f3f4f6;
   color:#6b7280;
@@ -846,10 +631,12 @@ textarea{
   .guide-layout{
     grid-template-columns:1fr;
   }
+
   .guide-sidebar{
     position:relative;
     top:0;
   }
+
   .pack-grid{
     grid-template-columns:1fr;
   }
@@ -860,15 +647,19 @@ textarea{
     width:min(100%, calc(100% - 20px));
     padding-top:16px;
   }
+
   .hero{
     padding:38px 18px;
   }
+
   .hero h1{
     font-size:28px;
   }
+
   .form-grid{
     grid-template-columns:1fr;
   }
+
   .summary-table{
     grid-template-columns:1fr;
   }
