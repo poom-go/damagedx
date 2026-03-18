@@ -26,7 +26,7 @@ body{min-height:100vh}
 }
 
 .container{
-  width:min(1380px, calc(100% - 28px));
+  width:min(1600px, calc(100% - 28px));
   margin:0 auto;
   padding:20px 0 56px;
 }
@@ -425,7 +425,7 @@ textarea{
 }
 
 .guide-wizard{
-  width:min(1360px, 100%);
+  width:min(1560px, 100%);
   background:#fff;
   border:1px solid #E8EBF0;
   border-radius:28px;
@@ -532,14 +532,14 @@ textarea{
 }
 
 .wizard-body{
-  padding:22px;
+  padding:28px 32px;
   background:#fff;
 }
 
 .wizard-block{
   display:grid;
   grid-template-columns:minmax(0,1fr) minmax(0,1fr);
-  gap:18px;
+  gap:24px;
 }
 
 .wizard-block.reverse{
@@ -839,10 +839,11 @@ textarea{
 }
 
 @media (max-width: 720px){
-  .container{
-    width:min(100%, calc(100% - 16px));
-    padding-top:12px;
-  }
+.container{
+  width:min(1600px, calc(100% - 28px));
+  margin:0 auto;
+  padding:20px 0 56px;
+}
 
   .hero{
     padding:34px 18px;
