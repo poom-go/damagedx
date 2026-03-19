@@ -87,7 +87,7 @@ function buildGithubStepMap() {
     ],
     step2: [
       {
-        title: '판매처 등록 (1/2)',
+        title: '풀필먼트 연 (1/2)',
         desc: '판매처 등록 1단계를 진행해주세요.',
         mediaType: 'html',
         mediaValue: './steps/step2-1.html',
@@ -107,11 +107,31 @@ function buildGithubStepMap() {
     ],
     step3: [
       {
-        title: 'SKU 등록',
-        desc: 'SKU 등록을 진행해주세요.',
+        title: 'SKU 등록 (1/3)',
+        desc: 'SKU 등록 1단계를 진행해주세요.',
         mediaType: 'html',
-        mediaValue: './steps/step3.html',
-        layout: 'text-media'
+        mediaValue: './steps/step3-1.html',
+        layout: 'text-media',
+        subStep: 1,
+        totalSubSteps: 3
+      },
+      {
+        title: 'SKU 등록 (2/3)',
+        desc: 'SKU 등록 2단계를 진행해주세요.',
+        mediaType: 'html',
+        mediaValue: './steps/step3-2.html',
+        layout: 'text-media',
+        subStep: 2,
+        totalSubSteps: 3
+      },
+      {
+        title: 'SKU 등록 (3/3)',
+        desc: 'SKU 등록 3단계를 진행해주세요.',
+        mediaType: 'html',
+        mediaValue: './steps/step3-3.html',
+        layout: 'text-media',
+        subStep: 3,
+        totalSubSteps: 3
       }
     ],
     step4: [
@@ -440,9 +460,15 @@ function renderGuide() {
 }
 
 function renderWizardHeader(stepNo, stepTitle) {
-  const subLabel = stepNo === 2
-    ? `<span class="wizard-substep-badge">${state.currentSubStep}/2</span>`
-    : '';
+  let subLabel = '';
+
+  if (stepNo === 2) {
+    subLabel = `<span class="wizard-substep-badge">${state.currentSubStep}/2</span>`;
+  }
+
+  if (stepNo === 3) {
+    subLabel = `<span class="wizard-substep-badge">${state.currentSubStep}/3</span>`;
+  }
 
   return `
     <div class="wizard-header">
@@ -483,7 +509,7 @@ function getCurrentGuideItem(stepNo) {
   const stepKey = `step${stepNo}`;
   const items = state.steps[stepKey] || [];
 
-  if (stepNo === 2) {
+  if (stepNo === 2 || stepNo === 3) {
     return items.find(item => Number(item.subStep || 1) === Number(state.currentSubStep)) || items[0] || null;
   }
 
@@ -530,9 +556,15 @@ function renderWizardContentBlock(item, stepNo) {
   const mediaType = (item.mediaType || '').toLowerCase();
 
   if (mediaType === 'html') {
-    const subStepGuide = stepNo === 2
-      ? `<div class="wizard-substep-guide">판매처 등록 ${state.currentSubStep}/2</div>`
-      : '';
+    let subStepGuide = '';
+
+    if (stepNo === 2) {
+      subStepGuide = `<div class="wizard-substep-guide">판매처 등록 ${state.currentSubStep}/2</div>`;
+    }
+
+    if (stepNo === 3) {
+      subStepGuide = `<div class="wizard-substep-guide">SKU 등록 ${state.currentSubStep}/3</div>`;
+    }
 
     return `
       <section class="wizard-block-full wizard-block-html">
@@ -765,6 +797,22 @@ function bindWizardNav() {
 
   if (prevBtn) {
     prevBtn.addEventListener('click', () => {
+      // STEP3 내부 뒤로
+      if (state.currentStep === 3 && state.currentSubStep === 3) {
+        state.currentSubStep = 2;
+        saveGuideProgress();
+        renderGuide();
+        return;
+      }
+
+      if (state.currentStep === 3 && state.currentSubStep === 2) {
+        state.currentSubStep = 1;
+        saveGuideProgress();
+        renderGuide();
+        return;
+      }
+
+      // STEP2 내부 뒤로
       if (state.currentStep === 2 && state.currentSubStep === 2) {
         state.currentSubStep = 1;
         saveGuideProgress();
@@ -775,7 +823,9 @@ function bindWizardNav() {
       if (state.currentStep > 1) {
         state.currentStep -= 1;
 
-        if (state.currentStep === 2) {
+        if (state.currentStep === 3) {
+          state.currentSubStep = 3;
+        } else if (state.currentStep === 2) {
           state.currentSubStep = 2;
         } else {
           state.currentSubStep = 1;
@@ -789,10 +839,74 @@ function bindWizardNav() {
 
   if (nextBtn) {
     nextBtn.addEventListener('click', async () => {
+      // STEP2 내부 이동
       if (state.currentStep === 2 && state.currentSubStep === 1) {
         state.currentSubStep = 2;
         saveGuideProgress();
         renderGuide();
+        return;
+      }
+
+      // STEP2-2 완료
+      if (state.currentStep === 2 && state.currentSubStep === 2) {
+        if (isStepOpen(3)) {
+          state.currentStep = 3;
+          state.currentSubStep = 1;
+          saveGuideProgress();
+          renderGuide();
+          return;
+        }
+
+        try {
+          await apiGet('requestStepOpen', {
+            code: state.code,
+            token: state.token,
+            step: '3'
+          });
+        } catch (err) {
+          console.error(err);
+        }
+
+        openStepWaitModal();
+        return;
+      }
+
+      // STEP3 내부 이동
+      if (state.currentStep === 3 && state.currentSubStep === 1) {
+        state.currentSubStep = 2;
+        saveGuideProgress();
+        renderGuide();
+        return;
+      }
+
+      if (state.currentStep === 3 && state.currentSubStep === 2) {
+        state.currentSubStep = 3;
+        saveGuideProgress();
+        renderGuide();
+        return;
+      }
+
+      // STEP3-3 완료
+      if (state.currentStep === 3 && state.currentSubStep === 3) {
+        if (isStepOpen(4)) {
+          state.currentStep = 4;
+          state.currentSubStep = 1;
+          saveGuideProgress();
+          renderGuide();
+          return;
+        }
+
+        try {
+          await apiGet('requestStepOpen', {
+            code: state.code,
+            token: state.token,
+            step: '4'
+          });
+        } catch (err) {
+          console.error(err);
+        }
+
+        openStepWaitModal();
         return;
       }
 
@@ -924,6 +1038,12 @@ function loadGuideProgress() {
 
     if (state.currentStep === 2) {
       state.currentSubStep = savedSubStep === 2 ? 2 : 1;
+    } else if (state.currentStep === 3) {
+      if ([1, 2, 3].includes(savedSubStep)) {
+        state.currentSubStep = savedSubStep;
+      } else {
+        state.currentSubStep = 1;
+      }
     } else {
       state.currentSubStep = 1;
     }
