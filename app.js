@@ -51,21 +51,23 @@ async function init() {
 
     if (!data.ok) throw new Error(data.message || '초기화 실패');
 
-state.client = data.client;
-state.response = data.response || null;
-state.ui = data.ui || {};
-state.faqs = data.faqs || state.faqs;
-state.steps = buildGithubStepMap();
-state.assets = data.assets || state.assets;
-state.currentStep = 1;
-state.currentSubStep = 1;
+    state.client = data.client;
+    state.response = data.response || null;
+    state.ui = data.ui || {};
+    state.faqs = data.faqs || state.faqs;
+    state.steps = buildGithubStepMap();
+    state.assets = data.assets || state.assets;
+    state.currentStep = 1;
+    state.currentSubStep = 1;
 
-if (String(data.client?.preSubmitted || '').toUpperCase() === 'Y' &&
-    String(data.client?.guideOpen || '').toUpperCase() === 'Y') {
-  loadGuideProgress();
-}
+    if (
+      String(state.client?.preSubmitted || '').toUpperCase() === 'Y' &&
+      String(state.client?.guideOpen || '').toUpperCase() === 'Y'
+    ) {
+      loadGuideProgress();
+    }
 
-renderByState();
+    renderByState();
   } catch (err) {
     console.error(err);
     renderError(err?.message || '페이지를 불러오지 못했습니다.');
@@ -438,7 +440,9 @@ function renderGuide() {
 }
 
 function renderWizardHeader(stepNo, stepTitle) {
-  const subLabel = stepNo === 2 ? `<span class="wizard-substep-badge">${state.currentSubStep}/2</span>` : '';
+  const subLabel = stepNo === 2
+    ? `<span class="wizard-substep-badge">${state.currentSubStep}/2</span>`
+    : '';
 
   return `
     <div class="wizard-header">
@@ -596,11 +600,86 @@ async function hydrateCurrentStepHtml() {
     mount.innerHTML = normalizeStepHtml(html);
 
     initManualSteps(mount);
+    bindInjectedHtmlInteractions(mount);
     scheduleHtmlStageFit();
   } catch (err) {
     console.error(err);
     mount.innerHTML = `<div class="wizard-media-empty">HTML 파일을 불러오지 못했습니다.</div>`;
   }
+}
+
+function bindInjectedHtmlInteractions(scope) {
+  if (!scope || scope.dataset.injectedBound === 'true') return;
+  scope.dataset.injectedBound = 'true';
+
+  scope.addEventListener('click', (e) => {
+    const prevBtn = e.target.closest('[data-manual-prev]');
+    const nextBtn = e.target.closest('[data-manual-next]');
+    const stepBtn = e.target.closest('[data-manual-step]');
+    const viewer = e.target.closest('.manual-viewer');
+
+    if (!viewer) return;
+
+    if (stepBtn) {
+      e.preventDefault();
+      const step = Number(stepBtn.dataset.manualStep || 1);
+      updateManualViewer(viewer, step);
+      return;
+    }
+
+    if (prevBtn) {
+      e.preventDefault();
+      const current = Number(viewer.dataset.currentManualStep || 1);
+      updateManualViewer(viewer, current - 1);
+      return;
+    }
+
+    if (nextBtn) {
+      e.preventDefault();
+      const current = Number(viewer.dataset.currentManualStep || 1);
+      updateManualViewer(viewer, current + 1);
+    }
+  });
+}
+
+function initManualSteps(scope) {
+  const roots = (scope || document).querySelectorAll('.poomgo-step1-wrap .manual-viewer, .manual-viewer');
+
+  roots.forEach((viewer) => {
+    if (!viewer) return;
+    const current = Number(viewer.dataset.currentManualStep || 1);
+    updateManualViewer(viewer, current);
+  });
+}
+
+function updateManualViewer(viewer, step) {
+  if (!viewer) return;
+
+  const views = Array.from(viewer.querySelectorAll('.manual-step-view'));
+  const stepBtns = Array.from(viewer.querySelectorAll('[data-manual-step]'));
+  const prevBtns = Array.from(viewer.querySelectorAll('[data-manual-prev]'));
+  const nextBtns = Array.from(viewer.querySelectorAll('[data-manual-next]'));
+  const max = views.length || 1;
+  const current = Math.max(1, Math.min(step, max));
+
+  viewer.dataset.currentManualStep = String(current);
+
+  views.forEach((view) => {
+    const isActive = Number(view.dataset.stepView || 0) === current;
+    view.style.display = isActive ? 'flex' : 'none';
+  });
+
+  stepBtns.forEach((btn) => {
+    btn.classList.toggle('active', Number(btn.dataset.manualStep || 0) === current);
+  });
+
+  prevBtns.forEach((btn) => {
+    btn.disabled = current === 1;
+  });
+
+  nextBtns.forEach((btn) => {
+    btn.disabled = current === max;
+  });
 }
 
 function renderStepMedia(item) {
@@ -680,7 +759,7 @@ function renderStepFaqContent(stepNo) {
   `).join('');
 }
 
-function function bindWizardNav() {
+function bindWizardNav() {
   const prevBtn = document.getElementById('prevStepBtn');
   const nextBtn = document.getElementById('nextStepBtn');
 
@@ -737,38 +816,6 @@ function function bindWizardNav() {
       state.currentStep = nextStep;
       state.currentSubStep = 1;
       saveGuideProgress();
-      renderGuide();
-    });
-  }
-}
-
-  if (nextBtn) {
-    nextBtn.addEventListener('click', async () => {
-      if (state.currentStep === 2 && state.currentSubStep === 1) {
-        state.currentSubStep = 2;
-        renderGuide();
-        return;
-      }
-
-      const nextStep = state.currentStep + 1;
-      if (nextStep > 5) return;
-
-      if (nextStep >= 3 && !isStepOpen(nextStep)) {
-        try {
-          const result = await apiGet('requestStepOpen', {
-            code: state.code,
-            token: state.token,
-            step: String(nextStep)
-          });
-          toast(result.message || '품고에서 확인중입니다.');
-        } catch (err) {
-          toast(err?.message || '요청 처리에 실패했습니다.');
-        }
-        return;
-      }
-
-      state.currentStep = nextStep;
-      state.currentSubStep = 1;
       renderGuide();
     });
   }
@@ -841,6 +888,50 @@ function isStepOpen(stepNo) {
   return false;
 }
 
+function getProgressStorageKey() {
+  return `poomgo-guide-progress:${state.code}:${state.token}`;
+}
+
+function saveGuideProgress() {
+  if (!state.code || !state.token) return;
+
+  const payload = {
+    step: Number(state.currentStep || 1),
+    subStep: Number(state.currentSubStep || 1)
+  };
+
+  try {
+    localStorage.setItem(getProgressStorageKey(), JSON.stringify(payload));
+  } catch (err) {
+    console.error('guide progress save error', err);
+  }
+}
+
+function loadGuideProgress() {
+  if (!state.code || !state.token) return;
+
+  try {
+    const raw = localStorage.getItem(getProgressStorageKey());
+    if (!raw) return;
+
+    const parsed = JSON.parse(raw);
+    const savedStep = Number(parsed.step || 1);
+    const savedSubStep = Number(parsed.subStep || 1);
+
+    if (savedStep >= 1 && savedStep <= 5) {
+      state.currentStep = savedStep;
+    }
+
+    if (state.currentStep === 2) {
+      state.currentSubStep = savedSubStep === 2 ? 2 : 1;
+    } else {
+      state.currentSubStep = 1;
+    }
+  } catch (err) {
+    console.error('guide progress load error', err);
+  }
+}
+
 function bindSummaryModalButtons(data) {
   const closeBtn = document.getElementById('closeSummaryBtn');
   const editBtn = document.getElementById('editBtn');
@@ -866,15 +957,15 @@ function bindSummaryModalButtons(data) {
       closeSummaryModal();
 
       state.client.preSubmitted = 'Y';
-if (result.guideOpen) {
-  state.client.guideOpen = 'Y';
-  state.currentStep = 1;
-  state.currentSubStep = 1;
-  saveGuideProgress();
-  renderGuide();
-} else {
-  renderWaitingGuideOpen();
-}
+      if (result.guideOpen) {
+        state.client.guideOpen = 'Y';
+        state.currentStep = 1;
+        state.currentSubStep = 1;
+        saveGuideProgress();
+        renderGuide();
+      } else {
+        renderWaitingGuideOpen();
+      }
     } catch (err) {
       toast(err?.message || '제출에 실패했습니다.');
       confirmBtn.disabled = false;
@@ -1153,84 +1244,4 @@ function escapeHtml(str = '') {
 
 function escapeAttr(str = '') {
   return escapeHtml(str);
-}
-
-function getProgressStorageKey() {
-  return `poomgo-guide-progress:${state.code}:${state.token}`;
-}
-
-function saveGuideProgress() {
-  if (!state.code || !state.token) return;
-
-  const payload = {
-    step: Number(state.currentStep || 1),
-    subStep: Number(state.currentSubStep || 1)
-  };
-
-  localStorage.setItem(getProgressStorageKey(), JSON.stringify(payload));
-}
-
-function loadGuideProgress() {
-  if (!state.code || !state.token) return;
-
-  try {
-    const raw = localStorage.getItem(getProgressStorageKey());
-    if (!raw) return;
-
-    const parsed = JSON.parse(raw);
-    const savedStep = Number(parsed.step || 1);
-    const savedSubStep = Number(parsed.subStep || 1);
-
-    if (savedStep >= 1 && savedStep <= 5) {
-      state.currentStep = savedStep;
-    }
-
-    if (savedStep === 2) {
-      state.currentSubStep = savedSubStep === 2 ? 2 : 1;
-    } else {
-      state.currentSubStep = 1;
-    }
-  } catch (err) {
-    console.error('guide progress load error', err);
-  }
-}
-
-function getProgressStorageKey() {
-  return `poomgo-guide-progress:${state.code}:${state.token}`;
-}
-
-function saveGuideProgress() {
-  if (!state.code || !state.token) return;
-
-  const payload = {
-    step: Number(state.currentStep || 1),
-    subStep: Number(state.currentSubStep || 1)
-  };
-
-  localStorage.setItem(getProgressStorageKey(), JSON.stringify(payload));
-}
-
-function loadGuideProgress() {
-  if (!state.code || !state.token) return;
-
-  try {
-    const raw = localStorage.getItem(getProgressStorageKey());
-    if (!raw) return;
-
-    const parsed = JSON.parse(raw);
-    const savedStep = Number(parsed.step || 1);
-    const savedSubStep = Number(parsed.subStep || 1);
-
-    if (savedStep >= 1 && savedStep <= 5) {
-      state.currentStep = savedStep;
-    }
-
-    if (savedStep === 2) {
-      state.currentSubStep = savedSubStep === 2 ? 2 : 1;
-    } else {
-      state.currentSubStep = 1;
-    }
-  } catch (err) {
-    console.error('guide progress load error', err);
-  }
 }
