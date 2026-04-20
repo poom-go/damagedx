@@ -1,36 +1,33 @@
 <!DOCTYPE html>
-<html lang="ko">
+<html>
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>N배송 세팅 가이드</title>
-  <link rel="stylesheet" href="./style.css" />
+  <meta charset="UTF-8">
+  <title>파손 등록</title>
 </head>
 <body>
-  <div id="app" class="app">
-    <div class="loading-wrap">
-      <div class="spinner"></div>
-      <p>불러오는 중입니다...</p>
-    </div>
+  <h2>파손 등록</h2>
+
+  <div>
+    담당자: <input id="manager"><br><br>
+    고객사: <input id="client"><br><br>
+
+    항목:
+    <select id="type">
+      <option value="파손-반출">파손-반출</option>
+      <option value="파손-변상">파손-변상</option>
+    </select><br><br>
+
+    바코드: <input id="barcode"><br><br>
+    수량: <input id="qty" type="number" value="1" min="1"><br><br>
+    메모: <input id="memo"><br><br>
+
+    <button onclick="createReceipt()">등록 완료</button>
   </div>
 
-  <div id="summaryModal" class="modal hidden">
-    <div class="modal-backdrop"></div>
-    <div class="modal-panel">
-      <div class="modal-head">
-        <h3>입력 내용 확인</h3>
-        <button id="closeSummaryBtn" class="icon-btn" type="button" aria-label="닫기">✕</button>
-      </div>
-      <div id="summaryContent" class="summary-content"></div>
-      <div class="modal-actions">
-        <button id="editBtn" class="btn btn-light" type="button">수정하기</button>
-        <button id="confirmSubmitBtn" class="btn btn-primary" type="button">제출하기</button>
-      </div>
-    </div>
-  </div>
+  <hr>
+  <div id="result"></div>
 
-  <div id="toast" class="toast hidden" aria-live="polite"></div>
-
-  <script src="./app.js"></script>
+  <script src="config.js"></script>
+  <script src="index.js"></script>
 </body>
 </html>
